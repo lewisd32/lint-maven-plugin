@@ -6,12 +6,20 @@ try
     File file = new File( basedir, "build.log" );
     String buf = FileUtils.fileRead( file, "UTF-8" );
 
-    if ( buf.indexOf( "[LINT] Version property names must not contain a hyphen: 'maven-version'" ) < 0 )
-    {
-        System.err.println( "Did not complete with expected violations." );
-        return false;
+	String[] expectedErrors = new String[] {
+		"[LINT] Version property names must not contain a hyphen: 'maven-version'",
+		"[LINT] Version property names must not contain a hyphen: 'maven-jar-version'",
+		"[LINT] Version property names must not contain a hyphen: 'dummy-api-version'" };
+
+	boolean passed = true;		
+	for (String expectedError : expectedErrors) {
+	    if ( buf.indexOf( expectedError ) < 0 )
+	    {
+	        System.err.println( "Did not find expected violation: " + expectedError );
+	        passed = false;
+	    }
     }
-    
+    return passed;
     
 }
 catch( Throwable t )
