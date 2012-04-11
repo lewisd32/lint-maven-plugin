@@ -36,8 +36,8 @@ public class RuleModelProviderImpl implements RuleModelProvider {
 		return ruleModels;
 	}
 
-	public void addModelBuilder(final ModelBuilder simpleModelBuilder) {
-		modelBuilders.put(simpleModelBuilder.getModelId(), simpleModelBuilder);
+	public void addModelBuilder(final ModelBuilder modelBuilder) {
+		modelBuilders.put(modelBuilder.getModelId(), modelBuilder);
 	}
 
 }

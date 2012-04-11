@@ -1,0 +1,23 @@
+import java.io.*;
+import org.codehaus.plexus.util.FileUtils;
+
+try
+{
+    File file = new File( basedir, "build.log" );
+    String buf = FileUtils.fileRead( file, "UTF-8" );
+
+    if ( buf.indexOf( "[LINT] Version property names must not contain a hyphen: 'dummy-version'" ) < 0 )
+    {
+        System.err.println( "Did not complete with expected violations." );
+        return false;
+    }
+    
+    
+}
+catch( Throwable t )
+{
+    t.printStackTrace();
+    return false;
+}
+
+return true;

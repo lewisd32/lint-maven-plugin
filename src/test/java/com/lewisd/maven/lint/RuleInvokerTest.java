@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.maven.project.MavenProject;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JMock;
@@ -18,6 +19,7 @@ public class RuleInvokerTest {
 
 	@Test
 	public void shouldInvokeRuleWithRequiredModels() {
+		final MavenProject mavenProject = new MavenProject();
 		final RuleModelProvider modelProvider = mockery.mock(RuleModelProvider.class);
 		final ResultCollector resultCollector = mockery.mock(ResultCollector.class);
 		final Rule rule = mockery.mock(Rule.class);
@@ -25,7 +27,7 @@ public class RuleInvokerTest {
 		final Set<String> requiredModels = new HashSet<String>();
 		final Map<String,Object> models = new HashMap<String,Object>();
 		
-		RuleInvoker ruleInvoker = new RuleInvoker(modelProvider);
+		RuleInvoker ruleInvoker = new RuleInvoker(mavenProject, modelProvider);
 		
 		mockery.checking(new Expectations()
 		{{
@@ -35,7 +37,7 @@ public class RuleInvokerTest {
 			one(modelProvider).getModels(requiredModels);
 			will(returnValue(models));
 			
-			one(rule).invoke(models, resultCollector);
+			one(rule).invoke(mavenProject, models, resultCollector);
 		}});
 
 		
