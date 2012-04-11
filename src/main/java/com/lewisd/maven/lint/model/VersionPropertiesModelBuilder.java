@@ -23,7 +23,7 @@ public class VersionPropertiesModelBuilder implements ModelBuilder {
 	}
 
 	public Object buildModel(final Map<String, Object> models) {
-		final Map<Object, String> versionPropertyByObject = new HashMap<Object, String>();
+		final Map<Object, VersionProperty> versionPropertyByObject = new HashMap<Object, VersionProperty>();
 		
 		final MavenProject mavenProject = (MavenProject) models.get(MAVEN_PROJECT);
 		final Model originalModel = mavenProject.getOriginalModel();
@@ -45,15 +45,15 @@ public class VersionPropertiesModelBuilder implements ModelBuilder {
 		return versionPropertyByObject;
 	}
 
-	private void addDependencyVersionsIfContainsProperty(final Map<Object, String> versionPropertyByObject, final List<Dependency> dependencies) {
+	private void addDependencyVersionsIfContainsProperty(final Map<Object, VersionProperty> versionPropertyByObject, final List<Dependency> dependencies) {
 		for (final Dependency dependency : dependencies) {
 			addVersionIfContainsProperty(versionPropertyByObject, dependency, dependency.getVersion());
 		}
 	}
 
-	private void addVersionIfContainsProperty( final Map<Object, String> versionPropertyByObject, final Object object, final String version) {
+	private void addVersionIfContainsProperty( final Map<Object, VersionProperty> versionPropertyByObject, final Object object, final String version) {
 		if (version != null && version.contains("${")) {
-			versionPropertyByObject.put(object, version);
+			versionPropertyByObject.put(object, new VersionProperty(version));
 		}
 	}
 
