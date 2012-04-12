@@ -1,12 +1,43 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
+  
+  <parent>
+    <groupId>org.sonatype.oss</groupId>
+    <artifactId>oss-parent</artifactId>
+    <version>7</version>
+  </parent>
+
   <groupId>com.lewisd</groupId>
   <artifactId>lint-maven-plugin</artifactId>
   <packaging>maven-plugin</packaging>
   <version>0.0.1-SNAPSHOT</version>
   <name>lint-maven-plugin Maven Mojo</name>
-  <url>http://maven.apache.org</url>
+  <url>https://github.com/lewisd32/lint-maven-plugin</url>
+  <description>POM Lint plugin for Maven</description>
+  <licenses>
+  	<license>
+  	  <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+  	</license>
+  </licenses>
+
+  <scm>
+    <url>https://github.com/lewisd32/lint-maven-plugin</url>
+    <connection>scm:git:git@github.com:lewisd32/lint-maven-plugin.git</connection>
+    <developerConnection>scm:git:git@github.com:lewisd32/lint-maven-plugin.git</developerConnection>
+  </scm>  
+  
+  <inceptionYear>2012</inceptionYear>
+  
+  <developers>
+    <developer>
+      <id>lewisd32</id>
+      <name>Derek Lewis</name>
+      <email>github@lewisd.com</email>
+    </developer>
+  </developers>
   
   <properties>
     <maven.version>2.2.1</maven.version>
@@ -146,6 +177,33 @@
                   <streamLogs>false</streamLogs>
                   <debug>true</debug>
                 </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>gpg-sign-release-artifacts</id>
+      <activation>
+        <property>
+          <name>performRelease</name>
+          <value>true</value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <version>1.4</version>
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
               </execution>
             </executions>
           </plugin>
