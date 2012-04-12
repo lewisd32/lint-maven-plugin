@@ -5,7 +5,8 @@
 
 	<bean id="VersionPropertiesModelBuilder" class="com.lewisd.maven.lint.model.VersionPropertiesModelBuilder" />
 
-	<bean id="VersionPropertiesMustNotUseHyphen" class="com.lewisd.maven.lint.rules.basic.VersionPropertiesMustNotUseHyphen" />
+	<bean id="VersionPropertiesMustNotUseHyphenRule" class="com.lewisd.maven.lint.rules.basic.VersionPropertiesMustNotUseHyphenRule" />
 	<bean id="VersionPropertiesMustUseProjectVersionRule" class="com.lewisd.maven.lint.rules.basic.VersionPropertiesMustUseProjectVersionRule" />
+	<bean id="GroupArtifactVersionMustBeInCorrectOrderRule" class="com.lewisd.maven.lint.rules.basic.GroupArtifactVersionMustBeInCorrectOrderRule" />
 
 </beans>

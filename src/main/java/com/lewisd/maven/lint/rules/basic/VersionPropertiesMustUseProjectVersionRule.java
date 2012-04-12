@@ -3,6 +3,7 @@ package com.lewisd.maven.lint.rules.basic;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.maven.model.InputLocation;
 import org.apache.maven.project.MavenProject;
 
 import com.lewisd.maven.lint.ResultCollector;
@@ -23,7 +24,8 @@ public class VersionPropertiesMustUseProjectVersionRule extends AbstractRule {
 			final VersionProperty versionProperty = entry.getValue();
 			for (String propertyName : versionProperty.getPropertyNames()) {
 				if (propertyName.equals("version")) {
-					resultCollector.addViolation(mavenProject, "Use '${project.version}' instead of '${version}'", entry.getKey());
+					InputLocation location = getLocation(entry.getKey(), "version");
+					resultCollector.addViolation(mavenProject, "Use '${project.version}' instead of '${version}'", location);
 				}
 			}
 		}

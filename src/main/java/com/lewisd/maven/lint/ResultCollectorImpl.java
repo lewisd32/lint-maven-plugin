@@ -3,6 +3,7 @@ package com.lewisd.maven.lint;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.maven.model.InputLocation;
 import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.project.MavenProject;
 
@@ -26,8 +27,8 @@ public class ResultCollectorImpl implements ResultCollector {
 		}
 	}
 
-	public void addViolation(final MavenProject mavenProject, final String message, final Object object) {
-		violations.add(new Violation(mavenProject, message, object));
+	public void addViolation(final MavenProject mavenProject, final String message, final InputLocation inputLocation) {
+		violations.add(new Violation(mavenProject, message, inputLocation));
 	}
 
 	public boolean hasViolations() {

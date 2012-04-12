@@ -82,7 +82,7 @@ public class CheckMojo extends AbstractMojo {
 		  runtimeUrls[i] = new File(element).toURI().toURL();
 		}
 		URLClassLoader classLoader = new URLClassLoader(runtimeUrls, Thread.currentThread().getContextClassLoader());
-
+		
 		applicationContext = new GenericApplicationContext();
 		ClassPathResource classPathResource = new ClassPathResource(configLocation, classLoader);
 		XmlBeanDefinitionReader xmlBeanDefinitionReader = new XmlBeanDefinitionReader(applicationContext);

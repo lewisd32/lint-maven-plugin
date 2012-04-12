@@ -1,12 +1,11 @@
 package com.lewisd.maven.lint.model;
 
+import java.util.Arrays;
 import java.util.Collections;
 
 import junit.framework.Assert;
 
 import org.junit.Test;
-
-import edu.emory.mathcs.backport.java.util.Arrays;
 
 public class VersionPropertyTest {
 
