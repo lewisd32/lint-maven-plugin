@@ -5,6 +5,6 @@
 
 	<bean id="VersionPropertiesModelBuilder" class="com.lewisd.maven.lint.model.VersionPropertiesModelBuilder" />
 
-	<bean id="VersionPropertiesMustUsePeriodRule" class="com.lewisd.maven.lint.rules.basic.VersionPropertiesMustUseProjectVersionRule" />
+	<bean id="VersionPropertiesMustUseProjectVersionRule" class="com.lewisd.maven.lint.rules.basic.VersionPropertiesMustUseProjectVersionRule" />
 
 </beans>
