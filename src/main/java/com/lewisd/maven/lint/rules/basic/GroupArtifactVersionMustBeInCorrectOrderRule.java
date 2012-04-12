@@ -1,17 +1,15 @@
 package com.lewisd.maven.lint.rules.basic;
 
-import java.util.Collections;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import org.apache.maven.model.Dependency;
 import org.apache.maven.model.InputLocation;
 import org.apache.maven.project.MavenProject;
 
@@ -32,35 +30,34 @@ public class GroupArtifactVersionMustBeInCorrectOrderRule extends AbstractRule {
 	}
 
 	@Override
-	protected void addRequiredModels(Set<String> requiredModels) {
+	protected void addRequiredModels(final Set<String> requiredModels) {
 	}
 
-	public void invoke(MavenProject mavenProject, final Map<String, Object> models, final ResultCollector resultCollector) {
+	public void invoke(final MavenProject mavenProject, final Map<String, Object> models, final ResultCollector resultCollector) {
 		
-		List<Dependency> dependencies = mavenProject.getOriginalModel().getDependencies();
+		final Collection<Object> objectsToCheck = modelUtil.findGAVObjects(mavenProject);
 		
-		for (Dependency dependency : dependencies) {
-			Map<Object, InputLocation> locations = getLocations(dependency);
-			SortedMap<InputLocation, Object> sortedLocations = new TreeMap<InputLocation, Object>(new InputLocationMapValueComparator());
+		for (final Object object: objectsToCheck) {
+			final Map<Object, InputLocation> locations = modelUtil.getLocations(object);
+			final SortedMap<InputLocation, Object> sortedLocations = new TreeMap<InputLocation, Object>(new InputLocationMapValueComparator());
+			locations.keySet().retainAll(sortOrder.keySet());
 			
-			for(Map.Entry<Object, InputLocation> entry : locations.entrySet()) {
+			for(final Map.Entry<Object, InputLocation> entry : locations.entrySet()) {
 				sortedLocations.put(entry.getValue(), entry.getKey());
 			}
 			
-			locations.keySet().retainAll(sortOrder.keySet());
-			
-			SortedMap<Object, InputLocation> expectedLocations = new TreeMap<Object, InputLocation>(new ElementOrderComparator());
+			final SortedMap<Object, InputLocation> expectedLocations = new TreeMap<Object, InputLocation>(new ElementOrderComparator());
 			expectedLocations.putAll(locations);
 
-			Iterator<Entry<Object, InputLocation>> expectedLocationsIterator = expectedLocations.entrySet().iterator();
-			Iterator<Entry<InputLocation, Object>> sortedLocationsIterator = sortedLocations.entrySet().iterator();
+			final Iterator<Entry<Object, InputLocation>> expectedLocationsIterator = expectedLocations.entrySet().iterator();
+			final Iterator<Entry<InputLocation, Object>> sortedLocationsIterator = sortedLocations.entrySet().iterator();
 			
 			while (expectedLocationsIterator.hasNext() && sortedLocationsIterator.hasNext()) {
-				Entry<Object, InputLocation> expectedLocationsEntry = expectedLocationsIterator.next();
-				Entry<InputLocation, Object> sortedLocationsEntry = sortedLocationsIterator.next();
+				final Entry<Object, InputLocation> expectedLocationsEntry = expectedLocationsIterator.next();
+				final Entry<InputLocation, Object> sortedLocationsEntry = sortedLocationsIterator.next();
 				
-				Object expectedLocationsElement = expectedLocationsEntry.getKey();
-				Object sortedLocationsElement = sortedLocationsEntry.getValue();
+				final Object expectedLocationsElement = expectedLocationsEntry.getKey();
+				final Object sortedLocationsElement = sortedLocationsEntry.getValue();
 				
 				if (!expectedLocationsElement.equals(sortedLocationsElement)) {
 					resultCollector.addViolation(mavenProject, "Found '" + sortedLocationsElement + "' but was expecting '" + expectedLocationsElement + "'", sortedLocationsEntry.getKey());
@@ -69,23 +66,12 @@ public class GroupArtifactVersionMustBeInCorrectOrderRule extends AbstractRule {
 			}
 			
 		}
-		
-		
-//		for (Map.Entry<Object,VersionProperty> entry : versionPropertyByObject.entrySet()) {
-//			final VersionProperty versionProperty = entry.getValue();
-//			for (String propertyName : versionProperty.getPropertyNames()) {
-//				if (propertyName.contains("-")) {
-//					InputLocation location = getLocation(entry.getKey(), "version");
-//					resultCollector.addViolation(mavenProject, "Version property names must not contain a hyphen: '" + propertyName + "'", location);
-//				}
-//			}
-//		}
 	}
 	
 	private class InputLocationMapValueComparator implements Comparator<InputLocation> {
 
 		@Override
-		public int compare(InputLocation a, InputLocation b) {
+		public int compare(final InputLocation a, final InputLocation b) {
 			if (a.getLineNumber() == b.getLineNumber()) {
 				return a.getColumnNumber() - b.getColumnNumber();
 			} else {
@@ -98,9 +84,9 @@ public class GroupArtifactVersionMustBeInCorrectOrderRule extends AbstractRule {
 	private class ElementOrderComparator implements Comparator<Object> {
 		
 		@Override
-		public int compare(Object a, Object b) {
-			int va = sortOrder.get(a);
-			int vb = sortOrder.get(b);
+		public int compare(final Object a, final Object b) {
+			final int va = sortOrder.get(a);
+			final int vb = sortOrder.get(b);
 			return va - vb;
 		}
 		

@@ -1,26 +1,28 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
 
-	<groupId>localhost</groupId>
-	<artifactId>it-compare-dependencies-001</artifactId>
-	<version>1.0.1</version>
-	<packaging>jar</packaging>
-	<name>compare dependency versions</name>
+  <groupId>localhost</groupId>
+  <artifactId>it-fail-when-dependency-uses-version-instead-of-project-version</artifactId>
+  <version>1.0.1</version>
+  <packaging>jar</packaging>
+  <name>compare dependency versions</name>
 
-	<build>
-		<plugins>
-			<plugin>
-				<artifactId>maven-jar-plugin</artifactId>
-				<dependencies>
-					<dependency>
-						<groupId>localhost</groupId>
-						<artifactId>dummy-api</artifactId>
-						<version>${version}</version>
-					</dependency>
-				</dependencies>
-			</plugin>
-		</plugins>
-	</build>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>localhost</groupId>
+        <artifactId>dummy-maven-plugin</artifactId>
+        <version>1.0</version>
+        <dependencies>
+          <dependency>
+            <groupId>localhost</groupId>
+            <artifactId>dummy-api</artifactId>
+            <version>${version}</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+    </plugins>
+  </build>
 
 </project>

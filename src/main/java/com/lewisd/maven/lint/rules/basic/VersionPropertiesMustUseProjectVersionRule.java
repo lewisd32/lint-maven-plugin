@@ -24,7 +24,7 @@ public class VersionPropertiesMustUseProjectVersionRule extends AbstractRule {
 			final VersionProperty versionProperty = entry.getValue();
 			for (String propertyName : versionProperty.getPropertyNames()) {
 				if (propertyName.equals("version")) {
-					InputLocation location = getLocation(entry.getKey(), "version");
+					InputLocation location = modelUtil.getLocation(entry.getKey(), "version");
 					resultCollector.addViolation(mavenProject, "Use '${project.version}' instead of '${version}'", location);
 				}
 			}

@@ -1,0 +1,68 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>it-fail-when-gavtc-fields-in-wrong-order</artifactId>
+  <groupId>localhost</groupId>
+  <version>1.0</version>
+  <packaging>jar</packaging>
+  <name>compare dependency versions</name>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <version>1.0</version>
+          <artifactId>dummy-maven-plugin</artifactId>
+          <groupId>localhost</groupId>
+          <dependencies>
+            <dependency>
+              <artifactId>dummy-b</artifactId>
+              <groupId>localhost</groupId>
+              <version>1.0</version>
+            </dependency>
+          </dependencies>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+    <plugins>
+      <plugin>
+        <artifactId>dummy-maven-plugin</artifactId>
+        <groupId>localhost</groupId>
+        <dependencies>
+          <dependency>
+            <artifactId>dummy-a</artifactId>
+            <groupId>localhost</groupId>
+            <version>1.0</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+    </plugins>
+  </build>
+  
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>localhost</groupId>
+        <version>1.0</version>
+        <artifactId>dummy-d</artifactId>
+      </dependency>
+      <dependency>
+        <groupId>localhost</groupId>
+        <artifactId>dummy-d</artifactId>
+        <version>1.0</version>
+        <classifier></classifier>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <dependencies>
+    <dependency>
+      <type>jar</type>
+      <artifactId>dummy-a</artifactId>
+      <groupId>localhost</groupId>
+      <version>1.0</version>
+    </dependency>
+  </dependencies>
+
+</project>
