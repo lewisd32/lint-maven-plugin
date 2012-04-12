@@ -63,6 +63,13 @@
     <pluginManagement>
       <plugins>
         <plugin>
+        	<artifactId>maven-compiler-plugin</artifactId>
+        	<configuration>
+        		<source>1.6</source>
+        		<target>1.6</target>
+        	</configuration>
+        </plugin>
+        <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>mrm-maven-plugin</artifactId>
 	        <version>1.0-alpha-1</version>
