@@ -68,21 +68,23 @@ public class CheckMojo extends AbstractMojo {
 	 * @required
 	 */
 	private String configLocation;
-
+	
 	private GenericApplicationContext applicationContext;
 
 	private Collection<ModelBuilder> modelBuilders;
+
+	private URLClassLoader classLoader;
 	
 	private void initializeConfig() throws DependencyResolutionRequiredException, IOException {
 		
-		List runtimeClasspathElements = project.getTestClasspathElements();
-		URL[] runtimeUrls = new URL[runtimeClasspathElements.size()];
-		for (int i = 0; i < runtimeClasspathElements.size(); i++) {
-		  String element = (String) runtimeClasspathElements.get(i);
-		  runtimeUrls[i] = new File(element).toURI().toURL();
+		List testClasspathElements = project.getTestClasspathElements();
+		URL[] testUrls = new URL[testClasspathElements.size()];
+		for (int i = 0; i < testClasspathElements.size(); i++) {
+		  String element = (String) testClasspathElements.get(i);
+		  testUrls[i] = new File(element).toURI().toURL();
 		}
-		URLClassLoader classLoader = new URLClassLoader(runtimeUrls, Thread.currentThread().getContextClassLoader());
-		
+		classLoader = new URLClassLoader(testUrls, Thread.currentThread().getContextClassLoader());
+	
 		applicationContext = new GenericApplicationContext();
 		ClassPathResource classPathResource = new ClassPathResource(configLocation, classLoader);
 		XmlBeanDefinitionReader xmlBeanDefinitionReader = new XmlBeanDefinitionReader(applicationContext);
@@ -96,6 +98,7 @@ public class CheckMojo extends AbstractMojo {
 		ResultCollector resultCollector = new ResultCollectorImpl(getLog());
 		try {
 			initializeConfig();
+			
 			RuleModelProvider modelProvider = new RuleModelProviderImpl(project);
 			RuleInvoker ruleInvoker = new RuleInvoker(project, modelProvider);
 			Collection<Rule> rules = getRules();
@@ -122,4 +125,5 @@ public class CheckMojo extends AbstractMojo {
 		Map<String, Rule> rules = applicationContext.getBeansOfType(Rule.class);
 		return rules.values();
 	}
+	
 }

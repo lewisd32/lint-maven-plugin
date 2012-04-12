@@ -11,16 +11,9 @@ public class RuleModelProviderImpl implements RuleModelProvider {
 	private final HashMap<String, Object> models = new HashMap<String, Object>();
 	private final HashMap<String, ModelBuilder> modelBuilders = new HashMap<String, ModelBuilder>();
 
-	public RuleModelProviderImpl(MavenProject oldMavenProject) {
-		/*
-		File file = oldMavenProject.getFile();
+	public RuleModelProviderImpl(MavenProject mavenProject) {
 		
-		DefaultModelReader defaultModelReader = new DefaultModelReader();
-		Map<String, ?> options = new HashMap<String, Object>();
-		options.put(ModelReader.INPUT_SOURCE, '');
-		Model newModel = defaultModelReader.read(file, options);
-		*/
-		models.put("mavenProject", oldMavenProject);
+		models.put("mavenProject", mavenProject);
 	}
 
 	public Map<String, Object> getModels(final Set<String> requiredModels) {
