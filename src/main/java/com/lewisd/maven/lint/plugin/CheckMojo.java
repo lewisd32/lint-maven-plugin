@@ -64,7 +64,7 @@ public class CheckMojo extends AbstractMojo {
 	/**
 	 * The root spring config location.
 	 * 
-	 * @parameter expression="${maven.lint.config.location}" default-value="/config/maven_lint.xml"
+	 * @parameter expression="${maven.lint.config.location}" default-value="config/maven_lint.xml"
 	 * @required
 	 */
 	private String configLocation;

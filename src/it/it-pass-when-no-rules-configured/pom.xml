@@ -8,5 +8,35 @@
   <packaging>jar</packaging>
   <name>compare dependency versions</name>
 
+  <properties>
+    <maven-version>2.0.10</maven-version>
+    <maven-jar-version>2.4</maven-jar-version>
+    <dummy-api-version>1.0.1</dummy-api-version>
+  </properties>
+
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>${maven-jar-version}</version>
+        <dependencies>
+          <dependency>
+            <groupId>localhost</groupId>
+            <artifactId>dummy-api</artifactId>
+            <version>${dummy-api-version}</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+    </plugins>
+  </build>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-artifact</artifactId>
+      <version>${maven-version}</version>
+    </dependency>
+  </dependencies>
+
 
 </project>
