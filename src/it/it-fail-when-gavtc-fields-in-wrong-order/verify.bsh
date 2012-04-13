@@ -15,8 +15,8 @@ try
 		"[LINT] Found 'artifactId' but was expecting 'groupId' : 39 ",
 		"[LINT] Found 'version' but was expecting 'artifactId' : 52 ",
 		"[LINT] Found 'version' but was expecting 'classifier' : 58 ",
-		"[LINT] Found 'type' but was expecting 'groupId' : 66 ",
-		"[LINT] Found 'exclusion' but was expecting 'version' : 75 " };
+		"[LINT] Found 'exclusion' but was expecting 'version' : 75 ",
+		"[LINT] Found 'type' but was expecting 'groupId' : 66 " };
 
 	boolean passed = true;		
 	for (String expectedError : expectedErrors) {

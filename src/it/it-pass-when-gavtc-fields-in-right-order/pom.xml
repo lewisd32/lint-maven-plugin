@@ -1,0 +1,120 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>localhost</groupId>
+    <artifactId>dummy-parent</artifactId>
+    <version>1.0</version>
+  </parent>
+  
+  <groupId>localhost</groupId>
+  <artifactId>it-fail-when-gavtc-fields-in-wrong-order</artifactId>
+  <version>1.0</version>
+  <packaging>jar</packaging>
+  <name>compare dependency versions</name>
+  
+  <description>Check that GAV order check passes</description>
+  <licenses>
+  	<license>
+  	  <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+  	</license>
+  </licenses>
+
+  <scm>
+    <url>https://github.com/lewisd32/lint-maven-plugin</url>
+    <connection>scm:git:git@github.com:lewisd32/lint-maven-plugin.git</connection>
+    <developerConnection>scm:git:git@github.com:lewisd32/lint-maven-plugin.git</developerConnection>
+  </scm>  
+  
+  <inceptionYear>2012</inceptionYear>
+  
+  <developers>
+    <developer>
+      <id>lewisd32</id>
+      <name>Derek Lewis</name>
+      <email>github@lewisd.com</email>
+    </developer>
+  </developers>
+  
+  <prerequisites>
+    <maven>3.0.0</maven>
+  </prerequisites>
+  
+  <properties>
+    <unused.property>foo</unused.property>
+  </properties>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>localhost</groupId>
+          <artifactId>dummy-maven-plugin</artifactId>
+          <version>1.0</version>
+          <configuration>
+          </configuration>
+          <dependencies>
+            <dependency>
+              <groupId>localhost</groupId>
+              <artifactId>dummy-b</artifactId>
+              <version>1.0</version>
+            </dependency>
+          </dependencies>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+    <plugins>
+      <plugin>
+        <groupId>localhost</groupId>
+        <artifactId>dummy-maven-plugin</artifactId>
+        <executions>
+          <execution></execution>
+        </executions>
+        <dependencies>
+          <dependency>
+            <groupId>localhost</groupId>
+            <artifactId>dummy-a</artifactId>
+            <version>1.0</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+    </plugins>
+  </build>
+  
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>localhost</groupId>
+        <artifactId>dummy-d</artifactId>
+        <version>1.0</version>
+      </dependency>
+      <dependency>
+        <groupId>localhost</groupId>
+        <artifactId>dummy-d</artifactId>
+        <classifier></classifier>
+        <version>1.0</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <dependencies>
+    <dependency>
+      <groupId>localhost</groupId>
+      <artifactId>dummy-a</artifactId>
+      <type>jar</type>
+      <version>1.0</version>
+    </dependency>
+    <dependency>
+      <groupId>localhost</groupId>
+      <artifactId>dummy-b</artifactId>
+      <version>1.0</version>
+      <exclusions>
+        <exclusion></exclusion>
+      </exclusions>
+    </dependency>
+  </dependencies>
+
+</project>

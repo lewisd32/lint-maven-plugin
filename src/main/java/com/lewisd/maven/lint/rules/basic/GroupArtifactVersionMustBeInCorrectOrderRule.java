@@ -60,8 +60,9 @@ public class GroupArtifactVersionMustBeInCorrectOrderRule extends AbstractRule {
 					expectedOrderElements.add(location);
 				}
 			}
-			// Next, find the remaining elements, for which we don't care about the order
-			for (Object location : locations.keySet()) {
+			// Next, find the remaining elements, for which we don't care about the order,
+			// so add them in the order they actually are.
+			for (Object location : actualOrderedElements.values()) {
 				if (!expectedOrderElements.contains(location)) {
 					expectedOrderElements.add(location);
 				}
