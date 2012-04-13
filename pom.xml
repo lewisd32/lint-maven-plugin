@@ -9,11 +9,14 @@
 
   <groupId>com.lewisd</groupId>
   <artifactId>lint-maven-plugin</artifactId>
-  <packaging>maven-plugin</packaging>
   <version>0.0.2-SNAPSHOT</version>
+  <packaging>maven-plugin</packaging>
+
   <name>lint-maven-plugin Maven Mojo</name>
-  <url>https://github.com/lewisd32/lint-maven-plugin</url>
   <description>POM Lint plugin for Maven</description>
+
+  <url>https://github.com/lewisd32/lint-maven-plugin</url>
+
   <licenses>
   	<license>
   	  <name>The Apache Software License, Version 2.0</name>
