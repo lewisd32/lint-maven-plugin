@@ -7,14 +7,16 @@ try
     String buf = FileUtils.fileRead( file, "UTF-8" );
 
 	String[] expectedErrors = new String[] {
+		"[LINT] Completed with 9 violations",
 		"[LINT] Found 'artifactId' but was expecting 'groupId' : 5 ",
-		"[LINT] Found 'version' but was expecting 'groupId' : 15 ",
-		"[LINT] Found 'artifactId' but was expecting 'groupId' : 20 ",
-		"[LINT] Found 'artifactId' but was expecting 'groupId' : 30 ",
-		"[LINT] Found 'artifactId' but was expecting 'groupId' : 34 ",
-		"[LINT] Found 'version' but was expecting 'artifactId' : 47 ",
-		"[LINT] Found 'version' but was expecting 'classifier' : 53 ",
-		"[LINT] Found 'type' but was expecting 'groupId' : 61 " };
+		"[LINT] Found 'configuration' but was expecting 'version' : 17 ",
+		"[LINT] Found 'artifactId' but was expecting 'groupId' : 22 ",
+		"[LINT] Found 'execution' but was expecting 'artifactId' : 34 ",
+		"[LINT] Found 'artifactId' but was expecting 'groupId' : 39 ",
+		"[LINT] Found 'version' but was expecting 'artifactId' : 52 ",
+		"[LINT] Found 'version' but was expecting 'classifier' : 58 ",
+		"[LINT] Found 'type' but was expecting 'groupId' : 66 ",
+		"[LINT] Found 'exclusion' but was expecting 'version' : 75 " };
 
 	boolean passed = true;		
 	for (String expectedError : expectedErrors) {

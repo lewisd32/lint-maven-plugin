@@ -45,6 +45,8 @@
   <properties>
     <maven.version>3.0</maven.version>
     <spring.version>3.1.1.RELEASE</spring.version>
+    
+    <it.extra.maven.opts></it.extra.maven.opts>
   </properties>
   
   <dependencies>
@@ -125,7 +127,7 @@
     </pluginManagement>
     
   </build>
-
+  
   <profiles>
     <profile>
       <id>run-its</id>
@@ -183,11 +185,17 @@
               <filterProperties>
                 <repository.proxy.url>${repository.proxy.url}</repository.proxy.url>
               </filterProperties>
-              <mavenOpts>-Xmx256m</mavenOpts>
+              <mavenOpts>-Xmx256m ${it.extra.maven.opts}</mavenOpts>
             </configuration>
           </plugin>
         </plugins>
       </build>
+    </profile>
+    <profile>
+      <id>debug-its</id>
+      <properties>
+        <it.extra.maven.opts>-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=8000</it.extra.maven.opts>
+      </properties>
     </profile>
     <profile>
       <id>gpg-sign-release-artifacts</id>

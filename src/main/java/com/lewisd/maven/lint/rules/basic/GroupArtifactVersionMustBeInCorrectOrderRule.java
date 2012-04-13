@@ -2,10 +2,10 @@ package com.lewisd.maven.lint.rules.basic;
 
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -18,17 +18,23 @@ import com.lewisd.maven.lint.rules.AbstractRule;
 
 public class GroupArtifactVersionMustBeInCorrectOrderRule extends AbstractRule {
 	
-	private static final Map<Object, Integer> sortOrder = new HashMap<Object, Integer>();
+	private static final List<Object> sortOrder = new LinkedList<Object>();
 	
 	static {
-		sortOrder.put("", 0);
-		sortOrder.put("groupId", 1);
-		sortOrder.put("artifactId", 2);
-		sortOrder.put("classifier", 3);
-		sortOrder.put("type", 4);
-		sortOrder.put("version", 5);
+		sortOrder.add("");
+		sortOrder.add("modelVersion"); // for <project>
+		sortOrder.add("extensions"); // for <plugin>
+		sortOrder.add("groupId");
+		sortOrder.add("artifactId");
+		sortOrder.add("classifier");
+		sortOrder.add("type"); // for <dependencies>
+		sortOrder.add("version");
+		sortOrder.add("scope"); // for <dependencies>
+		
+		// We don't enforce the order of <configuration>, <exclusions>, <executions>, <dependencies>, and any other
+		// unlisted elements, other than they must be after the ones we do enforce.
 	}
-
+	
 	@Override
 	protected void addRequiredModels(final Set<String> requiredModels) {
 	}
@@ -39,31 +45,44 @@ public class GroupArtifactVersionMustBeInCorrectOrderRule extends AbstractRule {
 		
 		for (final Object object: objectsToCheck) {
 			final Map<Object, InputLocation> locations = modelUtil.getLocations(object);
-			final SortedMap<InputLocation, Object> sortedLocations = new TreeMap<InputLocation, Object>(new InputLocationMapValueComparator());
-			locations.keySet().retainAll(sortOrder.keySet());
-			
+
+			// Sort the locations by their location in the file
+			final SortedMap<InputLocation, Object> actualOrderedElements = new TreeMap<InputLocation, Object>(new InputLocationMapValueComparator());
 			for(final Map.Entry<Object, InputLocation> entry : locations.entrySet()) {
-				sortedLocations.put(entry.getValue(), entry.getKey());
+				actualOrderedElements.put(entry.getValue(), entry.getKey());
 			}
 			
-			final SortedMap<Object, InputLocation> expectedLocations = new TreeMap<Object, InputLocation>(new ElementOrderComparator());
-			expectedLocations.putAll(locations);
 
-			final Iterator<Entry<Object, InputLocation>> expectedLocationsIterator = expectedLocations.entrySet().iterator();
-			final Iterator<Entry<InputLocation, Object>> sortedLocationsIterator = sortedLocations.entrySet().iterator();
+			final List<Object> expectedOrderElements = new LinkedList<Object>();
+			// First, find the elements that do exist, for which we care about the order
+			for (Object location : sortOrder) {
+				if (locations.containsKey(location)) {
+					expectedOrderElements.add(location);
+				}
+			}
+			// Next, find the remaining elements, for which we don't care about the order
+			for (Object location : locations.keySet()) {
+				if (!expectedOrderElements.contains(location)) {
+					expectedOrderElements.add(location);
+				}
+			}
 			
-			while (expectedLocationsIterator.hasNext() && sortedLocationsIterator.hasNext()) {
-				final Entry<Object, InputLocation> expectedLocationsEntry = expectedLocationsIterator.next();
-				final Entry<InputLocation, Object> sortedLocationsEntry = sortedLocationsIterator.next();
-				
-				final Object expectedLocationsElement = expectedLocationsEntry.getKey();
-				final Object sortedLocationsElement = sortedLocationsEntry.getValue();
-				
-				if (!expectedLocationsElement.equals(sortedLocationsElement)) {
-					resultCollector.addViolation(mavenProject, "Found '" + sortedLocationsElement + "' but was expecting '" + expectedLocationsElement + "'", sortedLocationsEntry.getKey());
+			// Don't expect any elements that aren't actually there
+			expectedOrderElements.retainAll(locations.keySet());
+			
+
+			Iterator<Object> expectedOrderElementIterator = expectedOrderElements.iterator();
+			Iterator<Object> actualOrderedElementsIterator = actualOrderedElements.values().iterator();
+			
+			while (expectedOrderElementIterator.hasNext() && actualOrderedElementsIterator.hasNext()) {
+				Object expectedElement = expectedOrderElementIterator.next();
+				Object actualElement = actualOrderedElementsIterator.next();
+				if (!expectedElement.equals(actualElement)) {
+					resultCollector.addViolation(mavenProject, "Found '" + actualElement + "' but was expecting '" + expectedElement + "'", locations.get(actualElement));
 					break;
 				}
 			}
+			
 			
 		}
 	}
@@ -77,17 +96,6 @@ public class GroupArtifactVersionMustBeInCorrectOrderRule extends AbstractRule {
 			} else {
 				return a.getLineNumber() - b.getLineNumber();
 			}
-		}
-		
-	}
-	
-	private class ElementOrderComparator implements Comparator<Object> {
-		
-		@Override
-		public int compare(final Object a, final Object b) {
-			final int va = sortOrder.get(a);
-			final int vb = sortOrder.get(b);
-			return va - vb;
 		}
 		
 	}

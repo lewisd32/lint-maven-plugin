@@ -4,10 +4,15 @@ import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
+import org.apache.maven.model.Dependency;
+import org.apache.maven.model.Exclusion;
 import org.apache.maven.model.InputLocation;
 import org.apache.maven.model.Model;
+import org.apache.maven.model.Plugin;
+import org.apache.maven.model.PluginExecution;
 import org.apache.maven.project.MavenProject;
 
 public class ModelUtil {
@@ -57,7 +62,25 @@ public class ModelUtil {
 	@SuppressWarnings("rawtypes")
 	public Map<Object, InputLocation> getLocations(Object modelObject) {
 		Class klass = modelObject.getClass();
-		return getLocations(modelObject, klass);
+		Map<Object, InputLocation> locations = getLocations(modelObject, klass);
+		
+		if (modelObject instanceof Plugin) {
+			Plugin plugin = (Plugin) modelObject;
+			List<PluginExecution> executions = plugin.getExecutions();
+			if (executions != null && !executions.isEmpty()) {
+				PluginExecution pluginExecution = executions.get(0);
+				locations.put("execution", pluginExecution.getLocation(""));
+			}
+		} else if (modelObject instanceof Dependency) {
+			Dependency dependency = (Dependency) modelObject;
+			List<Exclusion> exclusions = dependency.getExclusions();
+			if (exclusions != null && !exclusions.isEmpty()) {
+				Exclusion exclusion = exclusions.get(0);
+				locations.put("exclusion", exclusion.getLocation(""));
+			}
+		}
+		
+		return locations;
 	}
 	
 	public Collection<Object> findGAVObjects(final MavenProject mavenProject) {

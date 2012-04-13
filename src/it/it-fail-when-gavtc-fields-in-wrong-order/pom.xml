@@ -12,9 +12,11 @@
     <pluginManagement>
       <plugins>
         <plugin>
-          <version>1.0</version>
-          <artifactId>dummy-maven-plugin</artifactId>
           <groupId>localhost</groupId>
+          <artifactId>dummy-maven-plugin</artifactId>
+          <configuration>
+          </configuration>
+          <version>1.0</version>
           <dependencies>
             <dependency>
               <artifactId>dummy-b</artifactId>
@@ -27,8 +29,11 @@
     </pluginManagement>
     <plugins>
       <plugin>
-        <artifactId>dummy-maven-plugin</artifactId>
         <groupId>localhost</groupId>
+        <executions>
+          <execution></execution>
+        </executions>
+        <artifactId>dummy-maven-plugin</artifactId>
         <dependencies>
           <dependency>
             <artifactId>dummy-a</artifactId>
@@ -61,6 +66,14 @@
       <type>jar</type>
       <artifactId>dummy-a</artifactId>
       <groupId>localhost</groupId>
+      <version>1.0</version>
+    </dependency>
+    <dependency>
+      <groupId>localhost</groupId>
+      <artifactId>dummy-b</artifactId>
+      <exclusions>
+        <exclusion></exclusion>
+      </exclusions>
       <version>1.0</version>
     </dependency>
   </dependencies>
