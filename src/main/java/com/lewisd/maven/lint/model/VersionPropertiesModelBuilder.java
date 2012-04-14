@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.maven.project.MavenProject;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.lewisd.maven.lint.ModelBuilder;
 import com.lewisd.maven.lint.util.ModelUtil;
@@ -15,7 +16,12 @@ public class VersionPropertiesModelBuilder implements ModelBuilder {
 
 	private static final String MAVEN_PROJECT = "mavenProject";
 	
-	private ModelUtil modelUtil = new ModelUtil();
+	private final ModelUtil modelUtil;
+
+	@Autowired
+	public VersionPropertiesModelBuilder(final ModelUtil modelUtil) {
+		this.modelUtil = modelUtil;
+	}
 
 	public Set<String> getRequiredModels() {
 		return Collections.singleton(MAVEN_PROJECT);

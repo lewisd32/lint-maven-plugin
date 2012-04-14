@@ -43,7 +43,7 @@ import com.lewisd.maven.lint.RuleModelProvider;
 import com.lewisd.maven.lint.RuleModelProviderImpl;
 
 /**
- * Goal which performs rule checking on poms.
+ * Perform checks on the POM, and fail the build if violations are found.
  * 
  * @goal check
  * @phase verify
@@ -89,6 +89,8 @@ public class CheckMojo extends AbstractMojo {
 		ClassPathResource classPathResource = new ClassPathResource(configLocation, classLoader);
 		XmlBeanDefinitionReader xmlBeanDefinitionReader = new XmlBeanDefinitionReader(applicationContext);
 		xmlBeanDefinitionReader.loadBeanDefinitions(classPathResource);
+		
+		applicationContext.refresh();
 
 		Map<String, ModelBuilder> modelBuildersByBeanName = applicationContext.getBeansOfType(ModelBuilder.class);
 		modelBuilders = modelBuildersByBeanName.values();

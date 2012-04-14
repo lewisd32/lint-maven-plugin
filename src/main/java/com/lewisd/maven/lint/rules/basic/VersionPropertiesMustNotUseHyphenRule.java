@@ -5,12 +5,20 @@ import java.util.Set;
 
 import org.apache.maven.model.InputLocation;
 import org.apache.maven.project.MavenProject;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.lewisd.maven.lint.ResultCollector;
 import com.lewisd.maven.lint.model.VersionProperty;
 import com.lewisd.maven.lint.rules.AbstractRule;
+import com.lewisd.maven.lint.util.ExpressionEvaluator;
+import com.lewisd.maven.lint.util.ModelUtil;
 
 public class VersionPropertiesMustNotUseHyphenRule extends AbstractRule {
+
+	@Autowired
+	public VersionPropertiesMustNotUseHyphenRule(ExpressionEvaluator expressionEvaluator, ModelUtil modelUtil) {
+		super(expressionEvaluator, modelUtil);
+	}
 
 	@Override
 	protected void addRequiredModels(Set<String> requiredModels) {

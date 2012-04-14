@@ -12,8 +12,13 @@ public abstract class AbstractRule implements Rule {
 	protected static final String VERSION_PROPERTIES = "versionProperties";
 	protected static final String MAVEN_PROJECT = "mavenProject";
 	
-	protected ExpressionEvaluator expressionEvaluator = new ExpressionEvaluator();
-	protected ModelUtil modelUtil = new ModelUtil();
+	protected final ExpressionEvaluator expressionEvaluator;
+	protected final ModelUtil modelUtil;
+	
+	protected AbstractRule(final ExpressionEvaluator expressionEvaluator, final ModelUtil modelUtil) {
+		this.expressionEvaluator = expressionEvaluator;
+		this.modelUtil = modelUtil;
+	}
 
 	public Set<String> getRequiredModels() {
 		final Set<String> requiredModels = new HashSet<String>();
@@ -22,6 +27,7 @@ public abstract class AbstractRule implements Rule {
 	}
 	
 	protected abstract void addRequiredModels(Set<String> requiredModels);
+	
 	
 
 }

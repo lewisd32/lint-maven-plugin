@@ -5,26 +5,34 @@ import java.util.Set;
 
 import org.apache.maven.model.InputLocation;
 import org.apache.maven.project.MavenProject;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.lewisd.maven.lint.ResultCollector;
 import com.lewisd.maven.lint.model.VersionProperty;
 import com.lewisd.maven.lint.rules.AbstractRule;
+import com.lewisd.maven.lint.util.ExpressionEvaluator;
+import com.lewisd.maven.lint.util.ModelUtil;
 
 public class VersionPropertiesMustUseProjectVersionRule extends AbstractRule {
 	
+	@Autowired
+	public VersionPropertiesMustUseProjectVersionRule(final ExpressionEvaluator expressionEvaluator, final ModelUtil modelUtil) {
+		super(expressionEvaluator, modelUtil);
+	}
+
 	@Override
-	protected void addRequiredModels(Set<String> requiredModels) {
+	protected void addRequiredModels(final Set<String> requiredModels) {
 		requiredModels.add(VERSION_PROPERTIES);
 	}
 
-	public void invoke(MavenProject mavenProject, final Map<String, Object> models, final ResultCollector resultCollector) {
+	public void invoke(final MavenProject mavenProject, final Map<String, Object> models, final ResultCollector resultCollector) {
 		final Map<Object, VersionProperty> versionPropertyByObject = (Map<Object, VersionProperty>) models.get(VERSION_PROPERTIES);
 		
-		for (Map.Entry<Object,VersionProperty> entry : versionPropertyByObject.entrySet()) {
+		for (final Map.Entry<Object,VersionProperty> entry : versionPropertyByObject.entrySet()) {
 			final VersionProperty versionProperty = entry.getValue();
-			for (String propertyName : versionProperty.getPropertyNames()) {
+			for (final String propertyName : versionProperty.getPropertyNames()) {
 				if (propertyName.equals("version")) {
-					InputLocation location = modelUtil.getLocation(entry.getKey(), "version");
+					final InputLocation location = modelUtil.getLocation(entry.getKey(), "version");
 					resultCollector.addViolation(mavenProject, "Use '${project.version}' instead of '${version}'", location);
 				}
 			}

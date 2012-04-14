@@ -12,9 +12,12 @@ import java.util.TreeMap;
 
 import org.apache.maven.model.InputLocation;
 import org.apache.maven.project.MavenProject;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.lewisd.maven.lint.ResultCollector;
 import com.lewisd.maven.lint.rules.AbstractRule;
+import com.lewisd.maven.lint.util.ExpressionEvaluator;
+import com.lewisd.maven.lint.util.ModelUtil;
 
 public class GroupArtifactVersionMustBeInCorrectOrderRule extends AbstractRule {
 	
@@ -35,6 +38,11 @@ public class GroupArtifactVersionMustBeInCorrectOrderRule extends AbstractRule {
 		// unlisted elements, other than they must be after the ones we do enforce.
 	}
 	
+	@Autowired
+	public GroupArtifactVersionMustBeInCorrectOrderRule(final ExpressionEvaluator expressionEvaluator, final ModelUtil modelUtil) {
+		super(expressionEvaluator, modelUtil);
+	}
+
 	@Override
 	protected void addRequiredModels(final Set<String> requiredModels) {
 	}
@@ -55,14 +63,14 @@ public class GroupArtifactVersionMustBeInCorrectOrderRule extends AbstractRule {
 
 			final List<Object> expectedOrderElements = new LinkedList<Object>();
 			// First, find the elements that do exist, for which we care about the order
-			for (Object location : sortOrder) {
+			for (final Object location : sortOrder) {
 				if (locations.containsKey(location)) {
 					expectedOrderElements.add(location);
 				}
 			}
 			// Next, find the remaining elements, for which we don't care about the order,
 			// so add them in the order they actually are.
-			for (Object location : actualOrderedElements.values()) {
+			for (final Object location : actualOrderedElements.values()) {
 				if (!expectedOrderElements.contains(location)) {
 					expectedOrderElements.add(location);
 				}
@@ -72,12 +80,12 @@ public class GroupArtifactVersionMustBeInCorrectOrderRule extends AbstractRule {
 			expectedOrderElements.retainAll(locations.keySet());
 			
 
-			Iterator<Object> expectedOrderElementIterator = expectedOrderElements.iterator();
-			Iterator<Object> actualOrderedElementsIterator = actualOrderedElements.values().iterator();
+			final Iterator<Object> expectedOrderElementIterator = expectedOrderElements.iterator();
+			final Iterator<Object> actualOrderedElementsIterator = actualOrderedElements.values().iterator();
 			
 			while (expectedOrderElementIterator.hasNext() && actualOrderedElementsIterator.hasNext()) {
-				Object expectedElement = expectedOrderElementIterator.next();
-				Object actualElement = actualOrderedElementsIterator.next();
+				final Object expectedElement = expectedOrderElementIterator.next();
+				final Object actualElement = actualOrderedElementsIterator.next();
 				if (!expectedElement.equals(actualElement)) {
 					resultCollector.addViolation(mavenProject, "Found '" + actualElement + "' but was expecting '" + expectedElement + "'", locations.get(actualElement));
 					break;

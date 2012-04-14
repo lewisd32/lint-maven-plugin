@@ -14,16 +14,14 @@ import org.apache.maven.model.Model;
 import org.apache.maven.model.Plugin;
 import org.apache.maven.model.PluginExecution;
 import org.apache.maven.project.MavenProject;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class ModelUtil {
 
 	private final ReflectionUtil reflectionUtil;
 	private final ExpressionEvaluator expressionEvaluator;
 
-	public ModelUtil() {
-		this(new ReflectionUtil(), new ExpressionEvaluator());
-	}
-	
+	@Autowired
 	public ModelUtil(ReflectionUtil reflectionUtil, ExpressionEvaluator expressionEvaluator) {
 		this.reflectionUtil = reflectionUtil;
 		this.expressionEvaluator = expressionEvaluator;

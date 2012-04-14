@@ -3,14 +3,13 @@ package com.lewisd.maven.lint.util;
 import java.util.Collection;
 import java.util.LinkedList;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 public class ExpressionEvaluator {
 	
 	private final ReflectionUtil reflectionUtil;
 
-	public ExpressionEvaluator() {
-		this(new ReflectionUtil());
-	}
-	
+	@Autowired
 	public ExpressionEvaluator(ReflectionUtil reflectionUtil) {
 		this.reflectionUtil = reflectionUtil;
 	}
