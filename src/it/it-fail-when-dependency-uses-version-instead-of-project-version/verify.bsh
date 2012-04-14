@@ -6,12 +6,19 @@ try
     File file = new File( basedir, "build.log" );
     String buf = FileUtils.fileRead( file, "UTF-8" );
 
-    if ( buf.indexOf( "[LINT] Use '${project.version}' instead of '${version}'" ) < 0 )
-    {
-        System.err.println( "Did not complete with expected violations." );
-        return false;
+	String[] expectedErrors = new String[] {
+		"[LINT] Completed with 1 violation",
+		"[LINT] VERSIONPROP: Use '${project.version}' instead of '${version}'" };
+
+	boolean passed = true;		
+	for (String expectedError : expectedErrors) {
+	    if ( buf.indexOf( expectedError ) < 0 )
+	    {
+	        System.err.println( "Did not find expected violation: " + expectedError );
+	        passed = false;
+	    }
     }
-    
+    return passed;
     
 }
 catch( Throwable t )

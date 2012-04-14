@@ -24,6 +24,11 @@ public class VersionPropertiesMustUseProjectVersionRule extends AbstractRule {
 	protected void addRequiredModels(final Set<String> requiredModels) {
 		requiredModels.add(VERSION_PROPERTIES);
 	}
+	
+	@Override
+	public String getIdentifier() {
+		return "VERSIONPROP";
+	}
 
 	public void invoke(final MavenProject mavenProject, final Map<String, Object> models, final ResultCollector resultCollector) {
 		final Map<Object, VersionProperty> versionPropertyByObject = (Map<Object, VersionProperty>) models.get(VERSION_PROPERTIES);
@@ -33,7 +38,7 @@ public class VersionPropertiesMustUseProjectVersionRule extends AbstractRule {
 			for (final String propertyName : versionProperty.getPropertyNames()) {
 				if (propertyName.equals("version")) {
 					final InputLocation location = modelUtil.getLocation(entry.getKey(), "version");
-					resultCollector.addViolation(mavenProject, "Use '${project.version}' instead of '${version}'", location);
+					resultCollector.addViolation(mavenProject, this, "Use '${project.version}' instead of '${version}'", location);
 				}
 			}
 		}

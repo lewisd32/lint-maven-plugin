@@ -7,7 +7,7 @@ public interface ResultCollector {
 
 	void writeSummary();
 
-	void addViolation(MavenProject mavenProject, String message, InputLocation inputLocation);
+	void addViolation(MavenProject mavenProject, Rule rule, String message, InputLocation inputLocation);
 
 	boolean hasViolations();
 

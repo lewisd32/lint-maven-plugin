@@ -47,6 +47,11 @@ public class GroupArtifactVersionMustBeInCorrectOrderRule extends AbstractRule {
 	protected void addRequiredModels(final Set<String> requiredModels) {
 	}
 
+	@Override
+	public String getIdentifier() {
+		return "GAVORDER";
+	}
+
 	public void invoke(final MavenProject mavenProject, final Map<String, Object> models, final ResultCollector resultCollector) {
 		
 		final Collection<Object> objectsToCheck = modelUtil.findGAVObjects(mavenProject);
@@ -87,7 +92,7 @@ public class GroupArtifactVersionMustBeInCorrectOrderRule extends AbstractRule {
 				final Object expectedElement = expectedOrderElementIterator.next();
 				final Object actualElement = actualOrderedElementsIterator.next();
 				if (!expectedElement.equals(actualElement)) {
-					resultCollector.addViolation(mavenProject, "Found '" + actualElement + "' but was expecting '" + expectedElement + "'", locations.get(actualElement));
+					resultCollector.addViolation(mavenProject, this, "Found '" + actualElement + "' but was expecting '" + expectedElement + "'", locations.get(actualElement));
 					break;
 				}
 			}

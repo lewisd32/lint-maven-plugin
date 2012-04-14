@@ -10,4 +10,6 @@ public interface Rule {
 	Set<String> getRequiredModels();
 	
 	void invoke(MavenProject mavenProject, Map<String,Object> models, ResultCollector resultCollector);
+	
+	String getIdentifier();
 }

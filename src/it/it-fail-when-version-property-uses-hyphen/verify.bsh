@@ -7,9 +7,9 @@ try
     String buf = FileUtils.fileRead( file, "UTF-8" );
 
 	String[] expectedErrors = new String[] {
-		"[LINT] Version property names must not contain a hyphen: 'dummy-plugin-version'",
-		"[LINT] Version property names must not contain a hyphen: 'dummy-impl-version'",
-		"[LINT] Version property names must not contain a hyphen: 'dummy-api-version'" };
+		"[LINT] VERSIONPROPHYPHEN: Version property names must not contain a hyphen: 'dummy-plugin-version'",
+		"[LINT] VERSIONPROPHYPHEN: Version property names must not contain a hyphen: 'dummy-impl-version'",
+		"[LINT] VERSIONPROPHYPHEN: Version property names must not contain a hyphen: 'dummy-api-version'" };
 
 	boolean passed = true;		
 	for (String expectedError : expectedErrors) {

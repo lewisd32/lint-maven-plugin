@@ -19,7 +19,7 @@ public class ResultCollectorImpl implements ResultCollector {
 	public void writeSummary() {
 		if (hasViolations()) {
 			log.info("[LINT] Completed with " + violations.size() + " violations");
-			for (Violation violation : violations) {
+			for (final Violation violation : violations) {
 				log.info("[LINT] " + violation);
 			}
 		} else {
@@ -27,8 +27,8 @@ public class ResultCollectorImpl implements ResultCollector {
 		}
 	}
 
-	public void addViolation(final MavenProject mavenProject, final String message, final InputLocation inputLocation) {
-		violations.add(new Violation(mavenProject, message, inputLocation));
+	public void addViolation(final MavenProject mavenProject, final Rule rule, final String message, final InputLocation inputLocation) {
+		violations.add(new Violation(mavenProject, rule, message, inputLocation));
 	}
 
 	public boolean hasViolations() {
