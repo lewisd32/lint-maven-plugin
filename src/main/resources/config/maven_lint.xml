@@ -18,5 +18,7 @@
 	<bean id="VersionPropertiesMustNotUseHyphenRule" class="com.lewisd.maven.lint.rules.basic.VersionPropertiesMustNotUseHyphenRule" />
 	<bean id="VersionPropertiesMustUseProjectVersionRule" class="com.lewisd.maven.lint.rules.basic.VersionPropertiesMustUseProjectVersionRule" />
 	<bean id="GroupArtifactVersionMustBeInCorrectOrderRule" class="com.lewisd.maven.lint.rules.basic.GroupArtifactVersionMustBeInCorrectOrderRule" />
+  
+	<bean id="RedundantDependencyVersionsRule" class="com.lewisd.maven.lint.rules.basic.RedundantDependencyVersionsRule" />
 
 </beans>

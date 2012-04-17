@@ -14,8 +14,8 @@ public class ExpressionEvaluator {
 		this.reflectionUtil = reflectionUtil;
 	}
 
-	public Collection<Object> getPath(Object root, String path) {
-		final Collection<Object> objects = new LinkedList<Object>();
+	public <T> Collection<T> getPath(Object root, String path) {
+		final Collection<T> objects = new LinkedList<T>();
 		
 		getPath(root, path, objects);
 		
@@ -23,7 +23,7 @@ public class ExpressionEvaluator {
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private void getPath(Object root, String path, Collection<Object> objects) {
+	private <T> void getPath(Object root, String path, Collection<T> objects) {
 		final String[] pathParts = path.split("/", 2);
 		
 		final String element = pathParts[0];
@@ -32,7 +32,7 @@ public class ExpressionEvaluator {
 		
 		String methodName = "get" + Character.toString(firstCharacter) + element.substring(1);
 		
-		Object returned = reflectionUtil.callMethod(root, methodName, new Class[] {}, new Object[] {});
+		T returned = (T) reflectionUtil.callMethod(root, methodName, new Class[] {}, new Object[] {});
 		if (returned != null) {
 			if (returned instanceof Collection) {
 				if (pathParts.length > 1) {

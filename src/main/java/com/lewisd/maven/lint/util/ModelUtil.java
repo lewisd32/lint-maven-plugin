@@ -16,6 +16,8 @@ import org.apache.maven.model.PluginExecution;
 import org.apache.maven.project.MavenProject;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.lewisd.maven.lint.model.ExtDependency;
+
 public class ModelUtil {
 
 	private final ReflectionUtil reflectionUtil;
@@ -119,6 +121,39 @@ public class ModelUtil {
 		} catch (IllegalAccessException e) {
 			throw new IllegalArgumentException("Failed to get 'locations' field on object of type " + klass, e);
 		}
+	}
+
+	public Map<String, Dependency> mapByManagementKey(Collection<Dependency> dependencies) {
+		Map<String, Dependency> map = new HashMap<String, Dependency>();
+		
+		for (final Dependency dependency : dependencies) {
+			map.put(dependency.getManagementKey(), dependency);
+		}
+		
+		return map;
+	}
+
+	public ExtDependency findInheritedDependency(final MavenProject mavenProject, final Dependency dependency) {
+		final MavenProject parent = mavenProject.getParent();
+		
+		if (parent != null) {
+			final Map<String, Dependency> dependencies = mapByManagementKey(expressionEvaluator.<Dependency>getPath(parent.getOriginalModel(), "dependencies"));
+			final Map<String, Dependency> managedDependencies = mapByManagementKey(expressionEvaluator.<Dependency>getPath(parent.getOriginalModel(), "dependencyManagement/dependencies"));
+
+			Dependency parentDependency = dependencies.get(dependency.getManagementKey());
+			if (parentDependency != null) {
+				return new ExtDependency(parent, parentDependency);
+			}
+			
+			Dependency parentManagedDependency = managedDependencies.get(dependency.getManagementKey());
+			if (parentManagedDependency != null) {
+				return new ExtDependency(parent, parentManagedDependency);
+			}
+			
+			return findInheritedDependency(parent, dependency);
+		}
+		
+		return null;
 	}
 	
 
