@@ -1,0 +1,56 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>localhost</groupId>
+  <artifactId>it-pass-when-no-rules-configured</artifactId>
+  <version>1.0</version>
+  <packaging>jar</packaging>
+  <name>compare dependency versions</name>
+
+  <properties>
+    <dummy-plugin-version>1.0</dummy-plugin-version>
+    <dummy-impl-version>1.0</dummy-impl-version>
+    <dummy-api-version>1.0.1</dummy-api-version>
+  </properties>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>localhost</groupId>
+        <artifactId>dummy-maven-plugin</artifactId>
+        <version>${dummy-plugin-version}</version> <!-- NOLINT:VERSIONPROPHYPHEN should work on same line -->
+        <dependencies>
+          <dependency>
+            <groupId>localhost</groupId>
+            <artifactId>dummy-api</artifactId>
+            <version>${dummy-api-version}</version>
+            <!-- NOLINT:VERSIONPROPHYPHEN should work on next line -->
+          </dependency>
+        </dependencies>
+      </plugin>
+    </plugins>
+  </build>
+
+  <dependencies>
+    <dependency>
+      <groupId>localhost</groupId>
+      <artifactId>dummy-impl</artifactId>
+      <version>${dummy-impl-version}</version> <!-- NOLINT:VERSIONPROPHYPHEN --> <!-- should work without comment after -->
+    </dependency>
+    <dependency>
+      <groupId>localhost</groupId>
+      <artifactId>dummy-b</artifactId>
+      <version>${dummy-impl-version}</version> <!-- NOLINT:GAVORDER --> <!-- NOLINT:VERSIONPROPHYPHEN --> <!-- should suppress both violations -->
+      <type>jar</type> 
+    </dependency>
+    <dependency>
+      <groupId>localhost</groupId>
+      <artifactId>dummy-c</artifactId>
+      <version>${dummy-impl-version}</version>
+      <type>jar</type> <!-- NOLINT:GAVORDER --> <!-- NOLINT:VERSIONPROPHYPHEN --> <!-- should suppress neither violation -->
+    </dependency>
+  </dependencies>
+
+
+</project>

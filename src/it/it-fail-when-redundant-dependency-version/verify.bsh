@@ -7,11 +7,11 @@ try
     String buf = FileUtils.fileRead( file, "UTF-8" );
 
 	String[] expectedErrors = new String[] {
-		"[LINT] Completed with 4 violation",
-		"[LINT] REDUNDANTDEPVERSION: Dependency 'localhost:dummy-a:jar' has same version (1.0) as in dependencyManagement : 35",
-		"[LINT] REDUNDANTDEPVERSION: Dependency 'localhost:dummy-b:jar' has same version (1.0) as is inherited from localhost:dummy-parent:pom:1.0 : 40",
-		"[LINT] REDUNDANTDEPVERSION: Dependency 'localhost:dummy-c:jar' has same version (1.0) as is inherited from localhost:dummy-parent:pom:1.0 : 45", 
-		"[LINT] REDUNDANTDEPVERSION: Managed dependency 'localhost:dummy-d:jar' has same version (1.0) as is inherited from localhost:dummy-parent:pom:1.0 : 26" };
+		"[LINT] Completed with 4 violations",
+		"[LINT] REDUNDANTDEPVERSION: Dependency 'localhost:dummy-a:jar' has same version (1.0) as in dependencyManagement : 35:",
+		"[LINT] REDUNDANTDEPVERSION: Dependency 'localhost:dummy-b:jar' has same version (1.0) as is inherited from localhost:dummy-parent:pom:1.0 : 40:",
+		"[LINT] REDUNDANTDEPVERSION: Dependency 'localhost:dummy-c:jar' has same version (1.0) as is inherited from localhost:dummy-parent:pom:1.0 : 45:", 
+		"[LINT] REDUNDANTDEPVERSION: Managed dependency 'localhost:dummy-d:jar' has same version (1.0) as is inherited from localhost:dummy-parent:pom:1.0 : 26:" };
 
 	boolean passed = true;		
 	for (String expectedError : expectedErrors) {
