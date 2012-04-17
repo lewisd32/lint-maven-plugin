@@ -7,18 +7,8 @@
     http://www.springframework.org/schema/context
     http://www.springframework.org/schema/context/spring-context-3.0.xsd">
   
-    <context:annotation-config />
-  
-    <bean id="ReflectionUtil" class="com.lewisd.maven.lint.util.ReflectionUtil" />
-    <bean id="ModelUtil" class="com.lewisd.maven.lint.util.ModelUtil" />
-    <bean id="ExpressionEvaluator" class="com.lewisd.maven.lint.util.ExpressionEvaluator" />
-
-	<bean id="VersionPropertiesModelBuilder" class="com.lewisd.maven.lint.model.VersionPropertiesModelBuilder" />
-
-	<bean id="VersionPropertiesMustNotUseHyphenRule" class="com.lewisd.maven.lint.rules.basic.VersionPropertiesMustNotUseHyphenRule" />
-	<bean id="VersionPropertiesMustUseProjectVersionRule" class="com.lewisd.maven.lint.rules.basic.VersionPropertiesMustUseProjectVersionRule" />
-	<bean id="GroupArtifactVersionMustBeInCorrectOrderRule" class="com.lewisd.maven.lint.rules.basic.GroupArtifactVersionMustBeInCorrectOrderRule" />
-  
-	<bean id="RedundantDependencyVersionsRule" class="com.lewisd.maven.lint.rules.basic.RedundantDependencyVersionsRule" />
+  <import resource="classpath:config/maven_lint_init.xml" />
+  <import resource="classpath:config/maven_lint_model_builders.xml" />
+  <import resource="classpath:config/maven_lint_rules.xml" />
 
 </beans>
