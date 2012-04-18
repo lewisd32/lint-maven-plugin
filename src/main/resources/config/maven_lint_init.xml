@@ -14,6 +14,6 @@
   <bean id="ExpressionEvaluator" class="com.lewisd.maven.lint.util.ExpressionEvaluator" />
   
   <bean id="ResultCollector" class="com.lewisd.maven.lint.ResultCollectorImpl" />
-  <bean id="ViolationSupressor" class="com.lewisd.maven.lint.ViolationSupressorImpl" />
+  <bean id="ViolationSuppressor" class="com.lewisd.maven.lint.ViolationSuppressorImpl" />
 
 </beans>

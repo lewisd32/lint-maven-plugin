@@ -1,0 +1,56 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>localhost</groupId>
+  <artifactId>it-pass-when-no-rules-configured</artifactId>
+  <version>1.0</version>
+  <packaging>jar</packaging>
+  <name>compare dependency versions</name>
+
+  <properties>
+    <dummy-version>1.0.1</dummy-version>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>localhost</groupId> <!-- NOLINT:IDENTIFIER shouldFindSuppressionImmediatelyAfterClosingTag -->
+      <artifactId>dummy-a</artifactId>
+      <!-- NOLINT:IDENTIFIER shouldFindSuppressionOnNextLine -->
+      <version>${dummy-version}</version>
+      
+      <!-- NOLINT:IDENTIFIER shouldFindSuppressionAfterBlankLine -->
+    </dependency>
+    <dependency>
+      <groupId>localhost</groupId> <!-- foo
+      NOLINT:IDENTIFIER
+      shouldFindSuppressionInMultiLineComment
+      bar -->
+      <artifactId>dummy-b</artifactId>
+      <!-- foo
+      NOLINT:IDENTIFIER
+      shouldFindSuppressionInMultiLineCommentStartingOnNextLine
+      bar -->
+      <version>${dummy-version}</version> <!-- NOLINT:ID1 NOLINT:ID2 shouldFindMultipleSuppressionsInSingleComment -->
+    </dependency>
+    <dependency>
+      <groupId>localhost</groupId> <!-- NOLINT:ID1 
+      NOLINT:ID2
+      shouldFindMultipleSuppressionsInMultiLineComment -->
+      <artifactId>dummy-c</artifactId> <!-- NOLINT:ID1 --> <!-- NOLINT:ID2 shouldFindMultipleSuppressionsInMultipleComments -->
+      <version>${dummy-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>localhost</groupId>
+      <artifactId>dummy-d</artifactId> <!-- NOLINT:IDENTIFIER shouldNotFindSuppressionAfterTooManyClosingTags -->
+      <version>${dummy-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>localhost</groupId> <!-- NOLINT:IDENTIFIER shouldNotFindSuppressionBeforeViolation -->
+      <artifactId>dummy-e</artifactId>
+      <version>${dummy-version}</version>
+    </dependency>
+  </dependencies>
+
+
+</project>

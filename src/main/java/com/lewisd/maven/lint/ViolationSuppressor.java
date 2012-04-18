@@ -1,8 +1,7 @@
 package com.lewisd.maven.lint;
 
-import org.apache.maven.model.InputLocation;
 
-public interface ViolationSupressor {
+public interface ViolationSuppressor {
 
 	boolean isSuppressed(Violation violation);
 

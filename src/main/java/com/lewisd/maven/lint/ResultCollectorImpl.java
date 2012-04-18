@@ -12,12 +12,12 @@ public class ResultCollectorImpl implements ResultCollector {
 
 	private final Log log;
 	private final List<Violation> violations = new LinkedList<Violation>();
-	private ViolationSupressor violationSupressor;
+	private ViolationSuppressor violationSuppressor;
 
 	@Autowired
-	public ResultCollectorImpl(final Log log, ViolationSupressor violationSupressor) {
+	public ResultCollectorImpl(final Log log, ViolationSuppressor violationSuppressor) {
 		this.log = log;
-		this.violationSupressor = violationSupressor;
+		this.violationSuppressor = violationSuppressor;
 	}
 
 	public void writeSummary() {
@@ -33,7 +33,7 @@ public class ResultCollectorImpl implements ResultCollector {
 
 	public void addViolation(final MavenProject mavenProject, final Rule rule, final String message, final InputLocation inputLocation) {
 		Violation violation = new Violation(mavenProject, rule, message, inputLocation);
-		if (!violationSupressor.isSuppressed(violation)) {
+		if (!violationSuppressor.isSuppressed(violation)) {
 			violations.add(violation);
 		}
 	}

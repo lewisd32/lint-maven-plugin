@@ -7,7 +7,7 @@ import java.io.IOException;
 
 import org.apache.maven.model.InputLocation;
 
-public class ViolationSupressorImpl implements ViolationSupressor {
+public class ViolationSuppressorImpl implements ViolationSuppressor {
 
 	private static enum ParserState {
 		UNKNOWN, STARTING_TAG, STARTING_COMMENT, IN_COMMENT, IN_END_TAG;
@@ -31,11 +31,11 @@ public class ViolationSupressorImpl implements ViolationSupressor {
 			}
 			if (line != null) {
 				if (inputLocation.getColumnNumber() < 1 && inputLocation.getColumnNumber() > line.length()) {
-					System.err.println("Column number (" + inputLocation.getColumnNumber() + ") out of range. Looking for supression in: " + line);
+					System.err.println("Column number (" + inputLocation.getColumnNumber() + ") out of range. Looking for suppression in: " + line);
 					return containsSuppression(rule, line, reader);
 				} else {
 					final String lineAfterViolation = line.substring(inputLocation.getColumnNumber() - 1);
-					System.err.println("Looking for supression in: " + lineAfterViolation);
+					System.err.println("Looking for suppression in: " + lineAfterViolation);
 					return containsSuppression(rule, lineAfterViolation, reader);
 				}
 			}
@@ -88,7 +88,7 @@ public class ViolationSupressorImpl implements ViolationSupressor {
 			} else if (state == ParserState.IN_COMMENT) {
 				if (c == '>') {
 					state = ParserState.UNKNOWN;
-					if (containsSupression(rule, comment)) {
+					if (containsSuppression(rule, comment)) {
 						return true;
 					}
 				} else {
@@ -108,7 +108,7 @@ public class ViolationSupressorImpl implements ViolationSupressor {
 		}
 	}
 
-	private boolean containsSupression(Rule rule, String comment) {
+	private boolean containsSuppression(Rule rule, String comment) {
 		return comment.contains("NOLINT:" + rule.getIdentifier());
 	}
 
