@@ -29,16 +29,13 @@ import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.project.MavenProject;
-import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.core.io.ClassPathResource;
 
 import com.lewisd.maven.lint.ModelBuilder;
 import com.lewisd.maven.lint.ResultCollector;
-import com.lewisd.maven.lint.ResultCollectorImpl;
 import com.lewisd.maven.lint.Rule;
 import com.lewisd.maven.lint.RuleInvoker;
 import com.lewisd.maven.lint.RuleModelProvider;
@@ -79,6 +76,7 @@ public class CheckMojo extends AbstractMojo {
 	
 	private void initializeConfig() throws DependencyResolutionRequiredException, IOException {
 		
+		@SuppressWarnings("rawtypes")
 		List testClasspathElements = project.getTestClasspathElements();
 		URL[] testUrls = new URL[testClasspathElements.size()];
 		for (int i = 0; i < testClasspathElements.size(); i++) {
