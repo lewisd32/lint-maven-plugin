@@ -11,6 +11,4 @@ public interface ResultCollector {
 
 	boolean hasViolations();
 
-	boolean isSuppressed(Rule rule, InputLocation inputLocation);
-
 }

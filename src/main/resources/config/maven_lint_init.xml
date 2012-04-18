@@ -12,5 +12,8 @@
   <bean id="ReflectionUtil" class="com.lewisd.maven.lint.util.ReflectionUtil" />
   <bean id="ModelUtil" class="com.lewisd.maven.lint.util.ModelUtil" />
   <bean id="ExpressionEvaluator" class="com.lewisd.maven.lint.util.ExpressionEvaluator" />
+  
+  <bean id="ResultCollector" class="com.lewisd.maven.lint.ResultCollectorImpl" />
+  <bean id="ViolationSupressor" class="com.lewisd.maven.lint.ViolationSupressorImpl" />
 
 </beans>

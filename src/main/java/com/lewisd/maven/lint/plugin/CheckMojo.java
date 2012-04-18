@@ -29,7 +29,9 @@ import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.project.MavenProject;
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.core.io.ClassPathResource;
@@ -90,6 +92,13 @@ public class CheckMojo extends AbstractMojo {
 		XmlBeanDefinitionReader xmlBeanDefinitionReader = new XmlBeanDefinitionReader(applicationContext);
 		xmlBeanDefinitionReader.loadBeanDefinitions(classPathResource);
 		
+//		applicationContext.getAutowireCapableBeanFactory().autowireBeanProperties(
+//				    getLog(), AutowireCapableBeanFactory.AUTOWIRE_AUTODETECT, true);
+//		
+//		applicationContext.getAutowireCapableBeanFactory().initializeBean(getLog(), "log");
+		
+		applicationContext.getBeanFactory().registerSingleton("log", getLog());
+		
 		applicationContext.refresh();
 
 		Map<String, ModelBuilder> modelBuildersByBeanName = applicationContext.getBeansOfType(ModelBuilder.class);
@@ -97,9 +106,15 @@ public class CheckMojo extends AbstractMojo {
 	}
 
 	public void execute() throws MojoExecutionException, MojoFailureException {
-		ResultCollector resultCollector = new ResultCollectorImpl(getLog());
 		try {
 			initializeConfig();
+		} catch (DependencyResolutionRequiredException e) {
+			throw new MojoExecutionException("Failed to initialize lint-maven-plugin", e);
+		} catch (IOException e) {
+			throw new MojoExecutionException("Failed to initialize lint-maven-plugin", e);
+		}
+		ResultCollector resultCollector = applicationContext.getBean(ResultCollector.class);
+		try {
 			
 			RuleModelProvider modelProvider = new RuleModelProviderImpl(project);
 			RuleInvoker ruleInvoker = new RuleInvoker(project, modelProvider);
@@ -115,9 +130,10 @@ public class CheckMojo extends AbstractMojo {
 			
 		} catch (Exception e) {
 			throw new MojoExecutionException("Error while performing check", e);
-		} finally {
-			resultCollector.writeSummary();
 		}
+		
+		resultCollector.writeSummary();
+
 		if (resultCollector.hasViolations()) {
 			throw new MojoFailureException( "[LINT] Violations found." );
 		}
