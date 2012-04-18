@@ -37,11 +37,9 @@ public class ViolationSuppressorImpl implements ViolationSuppressor {
 			}
 			if (line != null) {
 				if (inputLocation.getColumnNumber() < 1 && inputLocation.getColumnNumber() > line.length()) {
-					System.err.println("Column number (" + inputLocation.getColumnNumber() + ") out of range. Looking for suppression in: " + line);
 					return findSuppressionComment(rule, line, reader);
 				} else {
 					final String lineAfterViolation = line.substring(inputLocation.getColumnNumber() - 1);
-					System.err.println("Looking for suppression in: " + lineAfterViolation);
 					return findSuppressionComment(rule, lineAfterViolation, reader);
 				}
 			}
