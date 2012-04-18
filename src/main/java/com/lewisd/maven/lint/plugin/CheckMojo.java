@@ -92,11 +92,6 @@ public class CheckMojo extends AbstractMojo {
 		XmlBeanDefinitionReader xmlBeanDefinitionReader = new XmlBeanDefinitionReader(applicationContext);
 		xmlBeanDefinitionReader.loadBeanDefinitions(classPathResource);
 		
-//		applicationContext.getAutowireCapableBeanFactory().autowireBeanProperties(
-//				    getLog(), AutowireCapableBeanFactory.AUTOWIRE_AUTODETECT, true);
-//		
-//		applicationContext.getAutowireCapableBeanFactory().initializeBean(getLog(), "log");
-		
 		applicationContext.getBeanFactory().registerSingleton("log", getLog());
 		
 		applicationContext.refresh();
