@@ -9,7 +9,16 @@ import org.apache.maven.model.InputLocation;
 
 public class ViolationSupressorImpl implements ViolationSupressor {
 
-	public boolean isSuppressed(final Rule rule, final InputLocation inputLocation) {
+	private static enum ParserState {
+		UNKNOWN, STARTING_TAG, STARTING_COMMENT, IN_COMMENT, IN_END_TAG;
+	}
+
+	@Override
+	public boolean isSuppressed(Violation violation) {
+		return isSuppressed(violation.getRule(), violation.getInputLocation());
+	}
+
+	private boolean isSuppressed(final Rule rule, final InputLocation inputLocation) {
 		File file = new File(inputLocation.getSource().getLocation());
 		BufferedReader reader = null;
 		try {
@@ -44,10 +53,6 @@ public class ViolationSupressorImpl implements ViolationSupressor {
 		return false;
 	}
 	
-	private static enum ParserState {
-		UNKNOWN, STARTING_TAG, STARTING_COMMENT, IN_COMMENT, IN_END_TAG;
-	}
-
 	private boolean containsSuppression(final Rule rule, final String originalLine, final BufferedReader reader) throws IOException {
 		String line = originalLine;
 		int index = 0;
@@ -101,13 +106,10 @@ public class ViolationSupressorImpl implements ViolationSupressor {
 			
 			++index;
 		}
-		
-		
 	}
 
 	private boolean containsSupression(Rule rule, String comment) {
 		return comment.contains("NOLINT:" + rule.getIdentifier());
 	}
-
 
 }

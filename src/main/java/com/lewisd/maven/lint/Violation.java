@@ -23,4 +23,21 @@ public class Violation {
 		return rule.getIdentifier() + ": " + message + " : " + inputLocation.getLineNumber() + ":" + inputLocation.getColumnNumber() + " : " + inputLocation.getSource().getLocation();
 	}
 
+	public MavenProject getMavenProject() {
+		return mavenProject;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public InputLocation getInputLocation() {
+		return inputLocation;
+	}
+
+	public Rule getRule() {
+		return rule;
+	}
+
+	
 }

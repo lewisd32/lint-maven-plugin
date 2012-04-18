@@ -32,8 +32,9 @@ public class ResultCollectorImpl implements ResultCollector {
 	}
 
 	public void addViolation(final MavenProject mavenProject, final Rule rule, final String message, final InputLocation inputLocation) {
-		if (!violationSupressor.isSuppressed(rule, inputLocation)) {
-			violations.add(new Violation(mavenProject, rule, message, inputLocation));
+		Violation violation = new Violation(mavenProject, rule, message, inputLocation);
+		if (!violationSupressor.isSuppressed(violation)) {
+			violations.add(violation);
 		}
 	}
 

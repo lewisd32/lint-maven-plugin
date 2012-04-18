@@ -4,6 +4,6 @@ import org.apache.maven.model.InputLocation;
 
 public interface ViolationSupressor {
 
-	boolean isSuppressed(Rule rule, InputLocation inputLocation);
+	boolean isSuppressed(Violation violation);
 
 }
