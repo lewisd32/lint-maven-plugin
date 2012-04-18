@@ -14,11 +14,17 @@ public class ViolationSuppressorImpl implements ViolationSuppressor {
 	}
 
 	@Override
-	public boolean isSuppressed(Violation violation) {
-		return isSuppressed(violation.getRule(), violation.getInputLocation());
+	public boolean isSuppressed(final Violation violation) {
+		return findSuppressionComment(violation) != null;
 	}
 
-	private boolean isSuppressed(final Rule rule, final InputLocation inputLocation) {
+	public String findSuppressionComment(final Violation violation) {
+		final Rule rule = violation.getRule();
+		final InputLocation inputLocation = violation.getInputLocation();
+		return findSuppressionComment(rule, inputLocation);
+	}
+
+	private String findSuppressionComment(final Rule rule, final InputLocation inputLocation) {
 		File file = new File(inputLocation.getSource().getLocation());
 		BufferedReader reader = null;
 		try {
@@ -32,11 +38,11 @@ public class ViolationSuppressorImpl implements ViolationSuppressor {
 			if (line != null) {
 				if (inputLocation.getColumnNumber() < 1 && inputLocation.getColumnNumber() > line.length()) {
 					System.err.println("Column number (" + inputLocation.getColumnNumber() + ") out of range. Looking for suppression in: " + line);
-					return containsSuppression(rule, line, reader);
+					return findSuppressionComment(rule, line, reader);
 				} else {
 					final String lineAfterViolation = line.substring(inputLocation.getColumnNumber() - 1);
 					System.err.println("Looking for suppression in: " + lineAfterViolation);
-					return containsSuppression(rule, lineAfterViolation, reader);
+					return findSuppressionComment(rule, lineAfterViolation, reader);
 				}
 			}
 		} catch (IOException e) {
@@ -50,10 +56,10 @@ public class ViolationSuppressorImpl implements ViolationSuppressor {
 			// TODO: need a better exception type here
 			throw new RuntimeException("Error while checking for suppression in " + file, e);
 		}
-		return false;
+		return null;
 	}
 	
-	private boolean containsSuppression(final Rule rule, final String originalLine, final BufferedReader reader) throws IOException {
+	private String findSuppressionComment(final Rule rule, final String originalLine, final BufferedReader reader) throws IOException {
 		String line = originalLine;
 		int index = 0;
 		String comment = "";
@@ -63,36 +69,37 @@ public class ViolationSuppressorImpl implements ViolationSuppressor {
 			while (index >= line.length()) {
 				index = 0;
 				line = reader.readLine();
+				comment += "\n";
 				if (line == null)
-					return false;
+					return null;
 			}
 			char c = line.charAt(index);
 			if (state == ParserState.STARTING_TAG) {
 				if (c == '!') {
+					comment = comment + c;
 					state = ParserState.STARTING_COMMENT;
 				} else if (c == '/') {
 					if (tagClosed) {
 						// any comments outside of more than one end tag are not considered.
-						return false;
+						return null;
 					}
 					state = ParserState.IN_END_TAG;
 					tagClosed = true;
 				} else {
-					return false;
+					return null;
 				}
 			} else if (state == ParserState.STARTING_COMMENT) {
+				comment = comment + c;
 				if (c != '-') {
 					state = ParserState.IN_COMMENT;
-					comment = comment + c;
 				}
 			} else if (state == ParserState.IN_COMMENT) {
+				comment = comment + c;
 				if (c == '>') {
 					state = ParserState.UNKNOWN;
 					if (containsSuppression(rule, comment)) {
-						return true;
+						return comment;
 					}
-				} else {
-					comment = comment + c;
 				}
 			} else if (state == ParserState.IN_END_TAG) {
 				if (c == '>') {
@@ -101,6 +108,7 @@ public class ViolationSuppressorImpl implements ViolationSuppressor {
 			} else {
 				if (c == '<') {
 					state = ParserState.STARTING_TAG;
+					comment = "<";
 				}
 			}
 			

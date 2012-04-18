@@ -34,7 +34,7 @@
       <version>${dummy-version}</version> <!-- NOLINT:ID1 NOLINT:ID2 shouldFindMultipleSuppressionsInSingleComment -->
     </dependency>
     <dependency>
-      <groupId>localhost</groupId> <!-- NOLINT:ID1 
+      <groupId>localhost</groupId> <!-- NOLINT:ID1
       NOLINT:ID2
       shouldFindMultipleSuppressionsInMultiLineComment -->
       <artifactId>dummy-c</artifactId> <!-- NOLINT:ID1 --> <!-- NOLINT:ID2 shouldFindMultipleSuppressionsInMultipleComments -->

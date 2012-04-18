@@ -1,13 +1,10 @@
 package com.lewisd.maven.lint;
 
-import static org.junit.Assert.fail;
-
 import org.apache.maven.model.InputLocation;
 import org.apache.maven.model.InputSource;
 import org.apache.maven.project.MavenProject;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class ViolationSuppressorImplTest {
@@ -28,60 +25,66 @@ public class ViolationSuppressorImplTest {
 
 	@Test
 	public void shouldFindSuppressionImmediatelyAfterClosingTag() {
-		Assert.assertTrue(violationSuppressor.isSuppressed(new Violation(DUMMY_MAVEN_PROJECT, RULE, DUMMY_MESSAGE, new InputLocation(17, 16, source))));
+		Assert.assertEquals("<!-- NOLINT:IDENTIFIER shouldFindSuppressionImmediatelyAfterClosingTag -->",
+				violationSuppressor.findSuppressionComment(new Violation(DUMMY_MAVEN_PROJECT, RULE, DUMMY_MESSAGE, new InputLocation(17, 16, source))));
 	}
 
 	@Test
 	public void shouldFindSuppressionOnNextLine() {
-		Assert.assertTrue(violationSuppressor.isSuppressed(new Violation(DUMMY_MAVEN_PROJECT, RULE, DUMMY_MESSAGE, new InputLocation(18, 19, source))));
+		Assert.assertEquals("<!-- NOLINT:IDENTIFIER shouldFindSuppressionOnNextLine -->",
+				violationSuppressor.findSuppressionComment(new Violation(DUMMY_MAVEN_PROJECT, RULE, DUMMY_MESSAGE, new InputLocation(18, 19, source))));
 	}
 	
-	@Ignore
 	@Test
 	public void shouldFindSuppressionAfterBlankLine() {
-		fail("Not yet implemented");
+		Assert.assertEquals("<!-- NOLINT:IDENTIFIER shouldFindSuppressionAfterBlankLine -->",
+				violationSuppressor.findSuppressionComment(new Violation(DUMMY_MAVEN_PROJECT, RULE, DUMMY_MESSAGE, new InputLocation(20, 16, source))));
 	}
 	
-	@Ignore
 	@Test
 	public void shouldFindSuppressionInMultiLineComment() {
-		fail("Not yet implemented");
+		Assert.assertEquals("<!-- foo\n      NOLINT:IDENTIFIER\n      shouldFindSuppressionInMultiLineComment\n      bar -->",
+				violationSuppressor.findSuppressionComment(new Violation(DUMMY_MAVEN_PROJECT, RULE, DUMMY_MESSAGE, new InputLocation(25, 16, source))));
 	}
 	
-	@Ignore
 	@Test
 	public void shouldFindSuppressionInMultiLineCommentStartingOnNextLine() {
-		fail("Not yet implemented");
+		Assert.assertEquals("<!-- foo\n      NOLINT:IDENTIFIER\n      shouldFindSuppressionInMultiLineCommentStartingOnNextLine\n      bar -->",
+				violationSuppressor.findSuppressionComment(new Violation(DUMMY_MAVEN_PROJECT, RULE, DUMMY_MESSAGE, new InputLocation(29, 19, source))));
 	}
 	
-	@Ignore
 	@Test
 	public void shouldFindMultipleSuppressionsInSingleComment() {
-		fail("Not yet implemented");
+		Assert.assertEquals("<!-- NOLINT:ID1 NOLINT:ID2 shouldFindMultipleSuppressionsInSingleComment -->",
+				violationSuppressor.findSuppressionComment(new Violation(DUMMY_MAVEN_PROJECT, RULE1, DUMMY_MESSAGE, new InputLocation(34, 16, source))));
+		Assert.assertEquals("<!-- NOLINT:ID1 NOLINT:ID2 shouldFindMultipleSuppressionsInSingleComment -->",
+				violationSuppressor.findSuppressionComment(new Violation(DUMMY_MAVEN_PROJECT, RULE2, DUMMY_MESSAGE, new InputLocation(34, 16, source))));
 	}
 	
-	@Ignore
 	@Test
 	public void shouldFindMultipleSuppressionsInMultiLineComment() {
-		fail("Not yet implemented");
+		Assert.assertEquals("<!-- NOLINT:ID1\n      NOLINT:ID2\n      shouldFindMultipleSuppressionsInMultiLineComment -->",
+				violationSuppressor.findSuppressionComment(new Violation(DUMMY_MAVEN_PROJECT, RULE1, DUMMY_MESSAGE, new InputLocation(37, 16, source))));
+		Assert.assertEquals("<!-- NOLINT:ID1\n      NOLINT:ID2\n      shouldFindMultipleSuppressionsInMultiLineComment -->",
+				violationSuppressor.findSuppressionComment(new Violation(DUMMY_MAVEN_PROJECT, RULE2, DUMMY_MESSAGE, new InputLocation(37, 16, source))));
 	}
 	
-	@Ignore
 	@Test
 	public void shouldFindMultipleSuppressionsInMultipleComments() {
-		fail("Not yet implemented");
+		Assert.assertEquals("<!-- NOLINT:ID1 -->",
+				violationSuppressor.findSuppressionComment(new Violation(DUMMY_MAVEN_PROJECT, RULE1, DUMMY_MESSAGE, new InputLocation(40, 19, source))));
+		Assert.assertEquals("<!-- NOLINT:ID2 shouldFindMultipleSuppressionsInMultipleComments -->",
+				violationSuppressor.findSuppressionComment(new Violation(DUMMY_MAVEN_PROJECT, RULE2, DUMMY_MESSAGE, new InputLocation(40, 19, source))));
 	}
 	
-	@Ignore
 	@Test
 	public void shouldNotFindSuppressionAfterTooManyClosingTags() {
-		fail("Not yet implemented");
-	}
+		Assert.assertNull(violationSuppressor.findSuppressionComment(new Violation(DUMMY_MAVEN_PROJECT, RULE, DUMMY_MESSAGE, new InputLocation(44, 16, source))));
+	}	
 	
-	@Ignore
 	@Test
 	public void shouldNotFindSuppressionBeforeViolation() {
-		fail("Not yet implemented");
+		Assert.assertNull(violationSuppressor.findSuppressionComment(new Violation(DUMMY_MAVEN_PROJECT, RULE, DUMMY_MESSAGE, new InputLocation(50, 19, source))));
 	}
 	
 }
