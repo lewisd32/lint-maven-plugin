@@ -1,0 +1,56 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>localhost</groupId>
+    <artifactId>dummy-parent</artifactId>
+    <version>1.0</version>
+  </parent>
+
+  <groupId>localhost</groupId>
+  <artifactId>it-fail-when-redundant-dependency-version</artifactId>
+  <version>1.0.1</version>
+  <packaging>jar</packaging>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>localhost</groupId>
+          <artifactId>dummy-maven-plugin-a</artifactId>
+          <version>1.0</version>
+        </plugin>
+        <plugin>
+          <groupId>localhost</groupId>
+          <artifactId>dummy-maven-plugin-d</artifactId>
+          <version>1.0</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+    
+    <plugins>
+      <plugin>
+        <groupId>localhost</groupId>
+        <artifactId>dummy-maven-plugin-a</artifactId>
+        <version>1.0</version>
+      </plugin>
+      <plugin>
+        <groupId>localhost</groupId>
+        <artifactId>dummy-maven-plugin-b</artifactId>
+        <version>1.0</version>
+      </plugin>
+      <plugin>
+        <groupId>localhost</groupId>
+        <artifactId>dummy-maven-plugin-c</artifactId>
+        <version>1.0</version>
+      </plugin>
+      <plugin>
+        <groupId>localhost</groupId>
+        <artifactId>dummy-maven-plugin-e</artifactId>
+        <version>1.0</version>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>

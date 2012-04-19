@@ -6,6 +6,31 @@
   <artifactId>dummy-parent</artifactId>
   <version>1.0</version>
   <packaging>pom</packaging>
+  
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>localhost</groupId>
+        <artifactId>dummy-maven-plugin-b</artifactId>
+        <version>1.0</version>
+      </plugin>
+    </plugins>
+  
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>localhost</groupId>
+          <artifactId>dummy-maven-plugin-c</artifactId>
+          <version>1.0</version>
+        </plugin>
+        <plugin>
+          <groupId>localhost</groupId>
+          <artifactId>dummy-maven-plugin-d</artifactId>
+          <version>1.0</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
 
   <dependencies>
     <dependency>

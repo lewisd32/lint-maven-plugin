@@ -12,5 +12,6 @@
   <bean id="GroupArtifactVersionMustBeInCorrectOrderRule" class="com.lewisd.maven.lint.rules.basic.GroupArtifactVersionMustBeInCorrectOrderRule" />
 
   <bean id="RedundantDependencyVersionsRule" class="com.lewisd.maven.lint.rules.basic.RedundantDependencyVersionsRule" />
+  <bean id="RedundantPluginVersionsRule" class="com.lewisd.maven.lint.rules.basic.RedundantPluginVersionsRule" />
 
 </beans>

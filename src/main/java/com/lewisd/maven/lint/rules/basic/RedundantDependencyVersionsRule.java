@@ -5,18 +5,17 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.maven.model.Dependency;
-import org.apache.maven.model.InputLocation;
 import org.apache.maven.model.Model;
 import org.apache.maven.project.MavenProject;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.lewisd.maven.lint.ResultCollector;
 import com.lewisd.maven.lint.model.ExtDependency;
-import com.lewisd.maven.lint.rules.AbstractRule;
+import com.lewisd.maven.lint.rules.AbstractReduntantVersionRule;
 import com.lewisd.maven.lint.util.ExpressionEvaluator;
 import com.lewisd.maven.lint.util.ModelUtil;
 
-public class RedundantDependencyVersionsRule extends AbstractRule {
+public class RedundantDependencyVersionsRule extends AbstractReduntantVersionRule {
 
 	@Autowired
 	public RedundantDependencyVersionsRule(ExpressionEvaluator expressionEvaluator, ModelUtil modelUtil) {
@@ -60,17 +59,5 @@ public class RedundantDependencyVersionsRule extends AbstractRule {
 
 	}
 
-	private void checkForRedundantVersions(final MavenProject mavenProject,
-			final ResultCollector resultCollector, final Dependency dependency,
-			final Dependency inheritedDependency, final String dependencyDescription, final String inheritedDescription) {
-		final String version = dependency.getVersion();
-		final String inheritedVersion = inheritedDependency.getVersion();
-		// both have a version, but if they're different, that might be ok.
-		// But if they're the same, then one is redundant.
-		if (version != null && inheritedVersion != null && inheritedVersion.equals(version)) {
-			final InputLocation location = dependency.getLocation("version");
-			resultCollector.addViolation(mavenProject, this, dependencyDescription + " '" + dependency.getManagementKey() + "' has same version (" + version + ") as " + inheritedDescription, location);
-		}
-	}
 	
 }

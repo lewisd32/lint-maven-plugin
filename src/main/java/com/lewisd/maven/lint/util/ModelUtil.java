@@ -17,9 +17,13 @@ import org.apache.maven.project.MavenProject;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.lewisd.maven.lint.model.ExtDependency;
+import com.lewisd.maven.lint.model.ExtPlugin;
 
 public class ModelUtil {
 
+	private static final Object[] EMPTY_OBJECT_ARRAY = new Object[] {};
+	@SuppressWarnings("rawtypes")
+	private static final Class[] EMPTY_CLASS_ARRAY = new Class[] {};
 	private final ReflectionUtil reflectionUtil;
 	private final ExpressionEvaluator expressionEvaluator;
 
@@ -28,6 +32,11 @@ public class ModelUtil {
 		this.reflectionUtil = reflectionUtil;
 		this.expressionEvaluator = expressionEvaluator;
 	}
+	
+	/*
+	 * TODO: This reflection nonsense is all a bit rubish.  Let's add useful interfaces to the ExtPlugin, ExtDependency, etc
+	 * classes, and create instances of those instead.
+	 */
 
 	public InputLocation getLocation(Object modelObject, Object key) {
 		String methodName = "getLocation";
@@ -36,27 +45,38 @@ public class ModelUtil {
 	
 	public String getVersion(Object modelObject) {
 		String methodName = "getVersion";
-		return (String) reflectionUtil.callMethod(modelObject, methodName, new Class[] {}, new Object[] {});
+		return (String) reflectionUtil.callMethod(modelObject, methodName, EMPTY_CLASS_ARRAY, EMPTY_OBJECT_ARRAY);
 	}
 	
 	public String getArtifactId(Object modelObject) {
 		String methodName = "getArtifactId";
-		return (String) reflectionUtil.callMethod(modelObject, methodName, new Class[] {}, new Object[] {});
+		return (String) reflectionUtil.callMethod(modelObject, methodName, EMPTY_CLASS_ARRAY, EMPTY_OBJECT_ARRAY);
 	}
 	
 	public String getGroupId(Object modelObject) {
 		String methodName = "getGroupId";
-		return (String) reflectionUtil.callMethod(modelObject, methodName, new Class[] {}, new Object[] {});
+		return (String) reflectionUtil.callMethod(modelObject, methodName, EMPTY_CLASS_ARRAY, EMPTY_OBJECT_ARRAY);
 	}
 
 	public String getType(Object modelObject) {
 		String methodName = "getType";
-		return (String) reflectionUtil.callMethod(modelObject, methodName, new Class[] {}, new Object[] {});
+		return (String) reflectionUtil.callMethod(modelObject, methodName, EMPTY_CLASS_ARRAY, EMPTY_OBJECT_ARRAY);
 	}
 	
 	public String getClassifier(Object modelObject) {
 		String methodName = "getClassifier";
-		return (String) reflectionUtil.callMethod(modelObject, methodName, new Class[] {}, new Object[] {});
+		return (String) reflectionUtil.callMethod(modelObject, methodName, EMPTY_CLASS_ARRAY, EMPTY_OBJECT_ARRAY);
+	}
+
+	public String getKey(Object modelObject) {
+		
+		if (modelObject instanceof Dependency) {
+			return ((Dependency)modelObject).getManagementKey();
+		} else if (modelObject instanceof Plugin) {
+			return ((Plugin)modelObject).getKey();
+		} else {
+			throw new IllegalArgumentException("Unknown object type: " + modelObject.getClass());
+		}
 	}
 	
 	@SuppressWarnings("rawtypes")
@@ -133,6 +153,16 @@ public class ModelUtil {
 		return map;
 	}
 
+	public Map<String, Plugin> mapById(Collection<Plugin> dependencies) {
+		Map<String, Plugin> map = new HashMap<String, Plugin>();
+		
+		for (final Plugin Plugin : dependencies) {
+			map.put(Plugin.getId(), Plugin);
+		}
+		
+		return map;
+	}
+
 	public ExtDependency findInheritedDependency(final MavenProject mavenProject, final Dependency dependency) {
 		final MavenProject parent = mavenProject.getParent();
 		
@@ -154,6 +184,35 @@ public class ModelUtil {
 		}
 		
 		return null;
+	}
+
+	public List<ExtPlugin> findInheritedPlugins(final MavenProject mavenProject,
+			final Plugin plugin) {
+		final List<ExtPlugin> inheritedPlugins = new LinkedList<ExtPlugin>();
+		findInheritedPlugins(inheritedPlugins, mavenProject, plugin);
+		return inheritedPlugins;
+	}
+	
+	private void findInheritedPlugins(final List<ExtPlugin> inheritedPlugins, final MavenProject mavenProject,
+			final Plugin plugin) {
+		final MavenProject parent = mavenProject.getParent();
+		
+		if (parent != null) {
+			final Map<String, Plugin> dependencies = mapById(expressionEvaluator.<Plugin>getPath(parent.getOriginalModel(), "build/plugins"));
+			final Map<String, Plugin> managedDependencies = mapById(expressionEvaluator.<Plugin>getPath(parent.getOriginalModel(), "build/pluginManagement/plugins"));
+
+			Plugin parentDependency = dependencies.get(plugin.getId());
+			if (parentDependency != null) {
+				inheritedPlugins.add(new ExtPlugin(parent, parentDependency));
+			}
+			
+			Plugin parentManagedDependency = managedDependencies.get(plugin.getId());
+			if (parentManagedDependency != null) {
+				inheritedPlugins.add(new ExtPlugin(parent, parentManagedDependency));
+			}
+			
+			findInheritedPlugins(inheritedPlugins, parent, plugin);
+		}
 	}
 	
 

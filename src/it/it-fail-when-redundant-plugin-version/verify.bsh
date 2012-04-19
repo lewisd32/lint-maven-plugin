@@ -1,0 +1,33 @@
+import java.io.*;
+import org.codehaus.plexus.util.FileUtils;
+
+try
+{
+    File file = new File( basedir, "build.log" );
+    String buf = FileUtils.fileRead( file, "UTF-8" );
+
+	String[] expectedErrors = new String[] {
+		"[LINT] Completed with 4 violations",
+		"[LINT] REDUNDANTPLUGINVERSION: Plugin 'localhost:dummy-maven-plugin-a' has same version (1.0) as in pluginManagement : 36:",
+		"[LINT] REDUNDANTPLUGINVERSION: Plugin 'localhost:dummy-maven-plugin-b' has same version (1.0) as is inherited from localhost:dummy-parent:pom:1.0 : 41:",
+		"[LINT] REDUNDANTPLUGINVERSION: Plugin 'localhost:dummy-maven-plugin-c' has same version (1.0) as is inherited from localhost:dummy-parent:pom:1.0 : 46:", 
+		"[LINT] REDUNDANTPLUGINVERSION: Managed plugin 'localhost:dummy-maven-plugin-d' has same version (1.0) as is inherited from localhost:dummy-parent:pom:1.0 : 27:" };
+
+	boolean passed = true;		
+	for (String expectedError : expectedErrors) {
+	    if ( buf.indexOf( expectedError ) < 0 )
+	    {
+	        System.err.println( "Did not find expected violation: " + expectedError );
+	        passed = false;
+	    }
+    }
+    return passed;
+    
+}
+catch( Throwable t )
+{
+    t.printStackTrace();
+    return false;
+}
+
+return true;
