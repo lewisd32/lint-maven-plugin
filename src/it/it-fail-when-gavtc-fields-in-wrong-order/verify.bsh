@@ -8,15 +8,15 @@ try
 
 	String[] expectedErrors = new String[] {
 		"[LINT] Completed with 9 violations",
-		"[LINT] GAVORDER: Found 'artifactId' but was expecting 'groupId' : 5:",
-		"[LINT] GAVORDER: Found 'configuration' but was expecting 'version' : 17:",
-		"[LINT] GAVORDER: Found 'artifactId' but was expecting 'groupId' : 22:",
-		"[LINT] GAVORDER: Found 'execution' but was expecting 'artifactId' : 34:",
-		"[LINT] GAVORDER: Found 'artifactId' but was expecting 'groupId' : 39:",
-		"[LINT] GAVORDER: Found 'version' but was expecting 'artifactId' : 52:",
-		"[LINT] GAVORDER: Found 'version' but was expecting 'classifier' : 58:",
-		"[LINT] GAVORDER: Found 'exclusion' but was expecting 'version' : 75:",
-		"[LINT] GAVORDER: Found 'type' but was expecting 'groupId' : 66:" };
+		"[LINT] GAVOrder: Found 'artifactId' but was expecting 'groupId' : 5:",
+		"[LINT] GAVOrder: Found 'configuration' but was expecting 'version' : 17:",
+		"[LINT] GAVOrder: Found 'artifactId' but was expecting 'groupId' : 22:",
+		"[LINT] GAVOrder: Found 'execution' but was expecting 'artifactId' : 34:",
+		"[LINT] GAVOrder: Found 'artifactId' but was expecting 'groupId' : 39:",
+		"[LINT] GAVOrder: Found 'version' but was expecting 'artifactId' : 52:",
+		"[LINT] GAVOrder: Found 'version' but was expecting 'classifier' : 58:",
+		"[LINT] GAVOrder: Found 'exclusion' but was expecting 'version' : 75:",
+		"[LINT] GAVOrder: Found 'type' but was expecting 'groupId' : 66:" };
 
 	boolean passed = true;		
 	for (String expectedError : expectedErrors) {

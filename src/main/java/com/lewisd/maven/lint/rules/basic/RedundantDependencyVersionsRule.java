@@ -28,7 +28,7 @@ public class RedundantDependencyVersionsRule extends AbstractReduntantVersionRul
 	
 	@Override
 	public String getIdentifier() {
-		return "REDUNDANTDEPVERSION";
+		return "RedundantDepVersion";
 	}
 
 	public void invoke(MavenProject mavenProject, final Map<String, Object> models, final ResultCollector resultCollector) {

@@ -12,8 +12,8 @@ public class ViolationSuppressorImplTest {
 	private static final MavenProject DUMMY_MAVEN_PROJECT = new MavenProject();;
 	private static final String DUMMY_MESSAGE = "dummy message";
 	private static final Rule RULE = new DummyRule("IDENTIFIER");
-	private static final Rule RULE1 = new DummyRule("ID1");
-	private static final Rule RULE2 = new DummyRule("ID2");
+	private static final Rule RULE1 = new DummyRule("RuleID1");
+	private static final Rule RULE2 = new DummyRule("RuleID2");
 	private final ViolationSuppressorImpl violationSuppressor = new ViolationSuppressorImpl();
 	private InputSource source;
 	
@@ -25,7 +25,7 @@ public class ViolationSuppressorImplTest {
 
 	@Test
 	public void shouldFindSuppressionImmediatelyAfterClosingTag() {
-		Assert.assertEquals("<!-- NOLINT:IDENTIFIER shouldFindSuppressionImmediatelyAfterClosingTag -->",
+		Assert.assertEquals("<!-- NoLint:Identifier shouldFindSuppressionImmediatelyAfterClosingTag -->",
 				violationSuppressor.findSuppressionComment(new Violation(DUMMY_MAVEN_PROJECT, RULE, DUMMY_MESSAGE, new InputLocation(17, 16, source))));
 	}
 
@@ -55,25 +55,25 @@ public class ViolationSuppressorImplTest {
 	
 	@Test
 	public void shouldFindMultipleSuppressionsInSingleComment() {
-		Assert.assertEquals("<!-- NOLINT:ID1 NOLINT:ID2 shouldFindMultipleSuppressionsInSingleComment -->",
+		Assert.assertEquals("<!-- NOLINT:RULEID1 NOLINT:RULEID2 shouldFindMultipleSuppressionsInSingleComment -->",
 				violationSuppressor.findSuppressionComment(new Violation(DUMMY_MAVEN_PROJECT, RULE1, DUMMY_MESSAGE, new InputLocation(34, 16, source))));
-		Assert.assertEquals("<!-- NOLINT:ID1 NOLINT:ID2 shouldFindMultipleSuppressionsInSingleComment -->",
+		Assert.assertEquals("<!-- NOLINT:RULEID1 NOLINT:RULEID2 shouldFindMultipleSuppressionsInSingleComment -->",
 				violationSuppressor.findSuppressionComment(new Violation(DUMMY_MAVEN_PROJECT, RULE2, DUMMY_MESSAGE, new InputLocation(34, 16, source))));
 	}
 	
 	@Test
 	public void shouldFindMultipleSuppressionsInMultiLineComment() {
-		Assert.assertEquals("<!-- NOLINT:ID1\n      NOLINT:ID2\n      shouldFindMultipleSuppressionsInMultiLineComment -->",
+		Assert.assertEquals("<!-- NOLINT:RuleID1\n      NOLINT:RuleID2\n      shouldFindMultipleSuppressionsInMultiLineComment -->",
 				violationSuppressor.findSuppressionComment(new Violation(DUMMY_MAVEN_PROJECT, RULE1, DUMMY_MESSAGE, new InputLocation(37, 16, source))));
-		Assert.assertEquals("<!-- NOLINT:ID1\n      NOLINT:ID2\n      shouldFindMultipleSuppressionsInMultiLineComment -->",
+		Assert.assertEquals("<!-- NOLINT:RuleID1\n      NOLINT:RuleID2\n      shouldFindMultipleSuppressionsInMultiLineComment -->",
 				violationSuppressor.findSuppressionComment(new Violation(DUMMY_MAVEN_PROJECT, RULE2, DUMMY_MESSAGE, new InputLocation(37, 16, source))));
 	}
 	
 	@Test
 	public void shouldFindMultipleSuppressionsInMultipleComments() {
-		Assert.assertEquals("<!-- NOLINT:ID1 -->",
+		Assert.assertEquals("<!-- NOLINT:RuleId1 -->",
 				violationSuppressor.findSuppressionComment(new Violation(DUMMY_MAVEN_PROJECT, RULE1, DUMMY_MESSAGE, new InputLocation(40, 19, source))));
-		Assert.assertEquals("<!-- NOLINT:ID2 shouldFindMultipleSuppressionsInMultipleComments -->",
+		Assert.assertEquals("<!-- NOLINT:RuleId2 shouldFindMultipleSuppressionsInMultipleComments -->",
 				violationSuppressor.findSuppressionComment(new Violation(DUMMY_MAVEN_PROJECT, RULE2, DUMMY_MESSAGE, new InputLocation(40, 19, source))));
 	}
 	

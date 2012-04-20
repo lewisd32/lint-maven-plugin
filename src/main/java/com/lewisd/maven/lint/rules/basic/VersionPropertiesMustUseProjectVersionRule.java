@@ -27,7 +27,7 @@ public class VersionPropertiesMustUseProjectVersionRule extends AbstractRule {
 	
 	@Override
 	public String getIdentifier() {
-		return "VERSIONPROP";
+		return "VersionProp";
 	}
 
 	public void invoke(final MavenProject mavenProject, final Map<String, Object> models, final ResultCollector resultCollector) {

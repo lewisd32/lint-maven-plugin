@@ -14,7 +14,7 @@
 
   <dependencies>
     <dependency>
-      <groupId>localhost</groupId> <!-- NOLINT:IDENTIFIER shouldFindSuppressionImmediatelyAfterClosingTag -->
+      <groupId>localhost</groupId> <!-- NoLint:Identifier shouldFindSuppressionImmediatelyAfterClosingTag -->
       <artifactId>dummy-a</artifactId>
       <!-- NOLINT:IDENTIFIER shouldFindSuppressionOnNextLine -->
       <version>${dummy-version}</version>
@@ -31,13 +31,13 @@
       NOLINT:IDENTIFIER
       shouldFindSuppressionInMultiLineCommentStartingOnNextLine
       bar -->
-      <version>${dummy-version}</version> <!-- NOLINT:ID1 NOLINT:ID2 shouldFindMultipleSuppressionsInSingleComment -->
+      <version>${dummy-version}</version> <!-- NOLINT:RULEID1 NOLINT:RULEID2 shouldFindMultipleSuppressionsInSingleComment -->
     </dependency>
     <dependency>
-      <groupId>localhost</groupId> <!-- NOLINT:ID1
-      NOLINT:ID2
+      <groupId>localhost</groupId> <!-- NOLINT:RuleID1
+      NOLINT:RuleID2
       shouldFindMultipleSuppressionsInMultiLineComment -->
-      <artifactId>dummy-c</artifactId> <!-- NOLINT:ID1 --> <!-- NOLINT:ID2 shouldFindMultipleSuppressionsInMultipleComments -->
+      <artifactId>dummy-c</artifactId> <!-- NOLINT:RuleId1 --> <!-- NOLINT:RuleId2 shouldFindMultipleSuppressionsInMultipleComments -->
       <version>${dummy-version}</version>
     </dependency>
     <dependency>

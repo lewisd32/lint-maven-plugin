@@ -49,7 +49,7 @@ public class GroupArtifactVersionMustBeInCorrectOrderRule extends AbstractRule {
 
 	@Override
 	public String getIdentifier() {
-		return "GAVORDER";
+		return "GAVOrder";
 	}
 
 	public void invoke(final MavenProject mavenProject, final Map<String, Object> models, final ResultCollector resultCollector) {

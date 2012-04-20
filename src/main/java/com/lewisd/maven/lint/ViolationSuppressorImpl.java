@@ -115,7 +115,7 @@ public class ViolationSuppressorImpl implements ViolationSuppressor {
 	}
 
 	private boolean containsSuppression(Rule rule, String comment) {
-		return comment.contains("NOLINT:" + rule.getIdentifier());
+		return comment.toUpperCase().contains(("NOLINT:" + rule.getIdentifier()).toUpperCase());
 	}
 
 }

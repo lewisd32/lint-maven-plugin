@@ -8,8 +8,8 @@ try
 
 	String[] expectedErrors = new String[] {
 		"[LINT] Completed with 2 violations",
-		"[LINT] VERSIONPROPHYPHEN: Version property names must not contain a hyphen: 'dummy-impl-version' : 50:",
-		"[LINT] GAVORDER: Found 'version' but was expecting 'type' : 50:" };
+		"[LINT] VersionPropHyphen: Version property names must not contain a hyphen: 'dummy-impl-version' : 50:",
+		"[LINT] GAVOrder: Found 'version' but was expecting 'type' : 50:" };
 
 	boolean passed = true;		
 	for (String expectedError : expectedErrors) {

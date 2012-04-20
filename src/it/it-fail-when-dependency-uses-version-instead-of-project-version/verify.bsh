@@ -8,7 +8,7 @@ try
 
 	String[] expectedErrors = new String[] {
 		"[LINT] Completed with 1 violation",
-		"[LINT] VERSIONPROP: Use '${project.version}' instead of '${version}' : 21:" };
+		"[LINT] VersionProp: Use '${project.version}' instead of '${version}' : 21:" };
 
 	boolean passed = true;		
 	for (String expectedError : expectedErrors) {

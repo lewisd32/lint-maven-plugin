@@ -1,0 +1,18 @@
+** 0.0.3-SNAPSHOT
+- Ability to suppress violations with NOLINT:ID XML comments
+- Redundant dependency version rule
+- Redundant plugin version rule
+- Adding failOnViolation configuration parameter
+- Making suppression comments case insensitive, and changing rule IDs to camel-case
+
+
+** 0.0.2
+- Report ID of violation rule (for suppressions)
+- More concise violation location reporting
+- Line numbers of violation in output
+- Include default config file
+- GAVC order checking rule IT
+- Fix GAV order checking rule to handle configuration/executions/exclusions elements interleaved with GAV elements
+
+** 0.0.1
+- GAVC order checking rule

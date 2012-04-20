@@ -1,0 +1,97 @@
+make version-property-hyphen rule suppressable from the property itself.
+generate output report file
+figure out what to do about multi-module projects
+revisit rule configuration (spring vs not-spring)
+mojo help
+
+
+Rules:
+
+
+Profiles named "with-*" should only ever add modules.(Company specific best-practice)
+- should make it easy for users of the plugin to create a rule like this
+
+The string "target" should never be in poms.
+- Suggest project.output.directory, or for target/classes, project.build.outputDirectory.
+
+No duplicate dependencies.
+
+No dependencies being version-managed by Maven.
+
+No more than X children of a parent declaring a dependency with the same version.
+
+MNG-1577?
+- are there other bugs with Maven or plugins that lint could help avoid?
+- some we’ve run into:
+- [JA] MRELEASE-274
+- MINVOKER-118
+- MSITE-604
+- MSITE-501
+- MRELEASE-715
+- MCOMPILER-130 (fixed in 2.4, but not released yet)
+
+[JA] when a plugin is pinned to a specific version due to a bug (with particularly formatted
+comment), checking Jira to see if there’s a newer version of that plugin with the bug fixed
+would be neat.
+- [DL] mvn lint:checkJIRA, or something like that
+
+[JA] I don’t like version ranges. Something to check for them and complain if they a) exist, b)
+are too wide.
+
+http://mail-archives.apache.org/mod_mbox/maven-dev/200703.mbox/%3CC5E09204-8AF0-48BD-9FAC-5F1F4D259BCF@maven.org%3E
+
+Repositories in the pom
+
+distributionManagement overridden in child pom?
+
+Timestamped-snapshot dependency
+
+If the plugin block is not defining an execution (and thus binding maven to do something in the lifecycle), put that block in pluginManagment
+
+Grouping dependencies with the same groupId together in the pom
+
+Blacklist certain dependencies, like the big-spring artifact.
+
+Filtered resources not in src/xyz/filtered-resources (Company specific best-practice)
+- should make it easy for users of the plugin to create a rule like this
+
+http://www.slideshare.net/brettporter/more-apache-maven-best-practices-presentation
+
+Repetition instead of properties (for dependency versions, and other things)
+
+Ban "LATEST" and "RELEASE" version dependencies/plugins
+
+What about scopes? Overriding scope of parent's dependency in a child?
+
+[JA] nested empty stanzas. eg. “<build><pluginManagement></pluginManagement><plugins></plugins></build>” should say “Delete <build>.”
+
+[JA] If an artifact has <scope>compile</scope>, ensure its overriding a non-compile scope (and recommend a comment about it).
+
+[JA] Certain artifacts are really just interfaces and have an associated -impl package;
+ensuring the scope of those packages is correct. (probably should be ‘provided’)
+
+Archetypes: need to check src/main/resources/archetype-resources/pom.xml has @project.version@ not a hardcoded version?
+
+[JA] Sometimes a set of artifacts are related to each other (foo and foo-impl) and are best to share the same version number. Warning if version differs/specified multiple times and optionally suggest to push into property?
+
+[JA] Standardizing on how to specify version number properties for particular packages (spring.version vs com.springsource.version/etc).
+
+[JA] Look for bad advice on Stack Overflow.
+
+[JA] Best practices around enabling/disabling pmd/checkstyle/findbugs/cpd plugins on command line builds vs CI builds vs Eclipse.
+
+[JA] Are you using the deploy plugin to deploy a file when it would be better to just attach it to the reactor via build-helper plugin?
+
+[JA] Are there “bad” ways to detect M2E? (recommended right now is <property><name>m2e.version).
+
+Anything around site?
+
+Plugin executions bound to lifecycles that execute in different order than defined in the pom as read top-to-bottom
+
+ArtifactItems (ie. in dependency plugin) that aren't listed as dependencies.
+
+
+Look for empty list elements:
+<exclusions></exclusions>
+<executions></executions>
+Also see “nested empty stanzas” above.

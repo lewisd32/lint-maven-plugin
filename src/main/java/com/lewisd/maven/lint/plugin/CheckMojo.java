@@ -68,6 +68,13 @@ public class CheckMojo extends AbstractMojo {
 	 */
 	private String configLocation;
 	
+    /**
+     * Fail the build when there are violations
+     *
+     * @parameter expression="${lint.failOnViolation}" default-value="true"
+     */
+    private boolean failOnViolation;
+
 	private GenericApplicationContext applicationContext;
 
 	private Collection<ModelBuilder> modelBuilders;
@@ -127,7 +134,7 @@ public class CheckMojo extends AbstractMojo {
 		
 		resultCollector.writeSummary();
 
-		if (resultCollector.hasViolations()) {
+		if (failOnViolation && resultCollector.hasViolations()) {
 			throw new MojoFailureException( "[LINT] Violations found." );
 		}
 	}

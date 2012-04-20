@@ -29,7 +29,7 @@ public class RedundantPluginVersionsRule extends AbstractReduntantVersionRule {
 	
 	@Override
 	public String getIdentifier() {
-		return "REDUNDANTPLUGINVERSION";
+		return "RedundantPluginVersion";
 	}
 
 	public void invoke(MavenProject mavenProject, final Map<String, Object> models, final ResultCollector resultCollector) {
