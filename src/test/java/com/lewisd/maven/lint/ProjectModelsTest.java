@@ -1,6 +1,7 @@
 package com.lewisd.maven.lint;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -18,7 +19,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(JMock.class)
-public class RuleModelProviderImplTest {
+public class ProjectModelsTest {
 	
 	private static final String MAVEN_PROJECT = "mavenProject";
 	private static final String SIMPLE_MODEL = "simpleModel";
@@ -27,7 +28,8 @@ public class RuleModelProviderImplTest {
 	private final Mockery mockery = new Mockery();
 	
 	private final MavenProject mavenProject = new MavenProject();
-	private final RuleModelProviderImpl provider = new RuleModelProviderImpl(mavenProject);
+	private final Map<String, ModelBuilder> modelBuilders = new HashMap<String, ModelBuilder>();
+	private final ProjectModels projectModels = new ProjectModels(mavenProject, modelBuilders);
 	
 	@Before
 	public void before() {
@@ -39,7 +41,7 @@ public class RuleModelProviderImplTest {
 		Set<String> requiredModels = new HashSet<String>();
 		requiredModels.add(MAVEN_PROJECT);
 
-		Map<String,Object> models = provider.getModels(requiredModels);
+		Map<String,Object> models = projectModels.getModels(requiredModels);
 		
 		Assert.assertEquals(mavenProject, models.get(MAVEN_PROJECT));
 	}
@@ -51,9 +53,6 @@ public class RuleModelProviderImplTest {
 		
 		mockery.checking(new Expectations()
 		{{
-			allowing(simpleModelBuilder).getModelId();
-			will(returnValue(SIMPLE_MODEL));
-			
 			allowing(simpleModelBuilder).getRequiredModels();
 			will(returnValue(Collections.singleton(MAVEN_PROJECT)));
 			
@@ -61,12 +60,12 @@ public class RuleModelProviderImplTest {
 			will(returnValue(simpleModel));
 		}});
 		
-		provider.addModelBuilder(simpleModelBuilder);
+		modelBuilders.put(SIMPLE_MODEL, simpleModelBuilder);
 		
 		Set<String> requiredModels = new HashSet<String>();
 		requiredModels.add(SIMPLE_MODEL);
 
-		Map<String,Object> models = provider.getModels(requiredModels);
+		Map<String,Object> models = projectModels.getModels(requiredModels);
 		
 		Assert.assertEquals(simpleModel, models.get(SIMPLE_MODEL));
 	}
@@ -78,9 +77,6 @@ public class RuleModelProviderImplTest {
 		
 		mockery.checking(new Expectations()
 		{{
-			allowing(simpleModelBuilder).getModelId();
-			will(returnValue(SIMPLE_MODEL));
-			
 			allowing(simpleModelBuilder).getRequiredModels();
 			will(returnValue(Collections.singleton(MAVEN_PROJECT)));
 
@@ -88,16 +84,16 @@ public class RuleModelProviderImplTest {
 			will(returnValue(simpleModel));
 		}});
 		
-		provider.addModelBuilder(simpleModelBuilder);
+		modelBuilders.put(SIMPLE_MODEL, simpleModelBuilder);
 		
 		Set<String> requiredModels = new HashSet<String>();
 		requiredModels.add(SIMPLE_MODEL);
 
 		// get models once, creating them
-		provider.getModels(requiredModels);
+		projectModels.getModels(requiredModels);
 		
 		// get models again
-		Map<String,Object> models = provider.getModels(requiredModels);
+		Map<String,Object> models = projectModels.getModels(requiredModels);
 		
 		Assert.assertEquals(simpleModel, models.get(SIMPLE_MODEL));
 	}
@@ -111,12 +107,6 @@ public class RuleModelProviderImplTest {
 		
 		mockery.checking(new Expectations()
 		{{
-			allowing(simpleModelBuilder).getModelId();
-			will(returnValue(SIMPLE_MODEL));
-			
-			allowing(dependentModelBuilder).getModelId();
-			will(returnValue(DEPENDENT_MODEL));
-			
 			allowing(simpleModelBuilder).getRequiredModels();
 			will(returnValue(Collections.singleton(MAVEN_PROJECT)));
 			
@@ -130,13 +120,13 @@ public class RuleModelProviderImplTest {
 			will(returnValue(dependentModel));
 		}});
 		
-		provider.addModelBuilder(simpleModelBuilder);
-		provider.addModelBuilder(dependentModelBuilder);
+		modelBuilders.put(SIMPLE_MODEL, simpleModelBuilder);
+		modelBuilders.put(DEPENDENT_MODEL, dependentModelBuilder);
 		
 		Set<String> requiredModels = new HashSet<String>();
 		requiredModels.add(DEPENDENT_MODEL);
 
-		Map<String,Object> models = provider.getModels(requiredModels);
+		Map<String,Object> models = projectModels.getModels(requiredModels);
 		
 		Assert.assertEquals(dependentModel, models.get(DEPENDENT_MODEL));
 	}
@@ -147,6 +137,7 @@ public class RuleModelProviderImplTest {
 	class DependentModel {
 	}
 	
+	@SuppressWarnings("rawtypes")
 	class ModelMapMatcher extends BaseMatcher<Map<String,Object>> {
 		
 		private final String key;
@@ -157,6 +148,7 @@ public class RuleModelProviderImplTest {
 			this.klass = klass;
 		}
 
+		@SuppressWarnings("unchecked")
 		public boolean matches(Object arg) {
 			Map<String,Object> map = (Map<String, Object>) arg;
 			Object object = map.get(key);

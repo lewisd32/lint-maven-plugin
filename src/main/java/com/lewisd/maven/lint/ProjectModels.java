@@ -6,14 +6,14 @@ import java.util.Set;
 
 import org.apache.maven.project.MavenProject;
 
-public class RuleModelProviderImpl implements RuleModelProvider {
+public class ProjectModels {
+	
+	private final Map<String, Object> models = new HashMap<String, Object>();
+	private final Map<String, ModelBuilder> modelBuilders;
 
-	private final HashMap<String, Object> models = new HashMap<String, Object>();
-	private final HashMap<String, ModelBuilder> modelBuilders = new HashMap<String, ModelBuilder>();
-
-	public RuleModelProviderImpl(MavenProject mavenProject) {
-		
+	public ProjectModels(MavenProject mavenProject, Map<String, ModelBuilder> modelBuilders) {
 		models.put("mavenProject", mavenProject);
+		this.modelBuilders = modelBuilders;
 	}
 
 	public Map<String, Object> getModels(final Set<String> requiredModels) {
@@ -35,10 +35,6 @@ public class RuleModelProviderImpl implements RuleModelProvider {
 			ruleModels.put(modelId, model);
 		}
 		return ruleModels;
-	}
-
-	public void addModelBuilder(final ModelBuilder modelBuilder) {
-		modelBuilders.put(modelBuilder.getModelId(), modelBuilder);
 	}
 
 }

@@ -13,6 +13,8 @@
   <bean id="ModelUtil" class="com.lewisd.maven.lint.util.ModelUtil" />
   <bean id="ExpressionEvaluator" class="com.lewisd.maven.lint.util.ExpressionEvaluator" />
   
+  <bean id="ModelFactory" class="com.lewisd.maven.lint.CachingModelFactory" />
+  
   <bean id="ResultCollector" class="com.lewisd.maven.lint.ResultCollectorImpl" />
   <bean id="ViolationSuppressor" class="com.lewisd.maven.lint.ViolationSuppressorImpl" />
 

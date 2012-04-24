@@ -9,20 +9,21 @@ import java.util.Set;
 import org.apache.maven.project.MavenProject;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.lewisd.maven.lint.ModelBuilder;
+import com.lewisd.maven.lint.ModelFactory;
 import com.lewisd.maven.lint.util.ModelUtil;
 
-public class VersionPropertiesModelBuilder implements ModelBuilder {
+public class VersionPropertiesModelBuilder extends AbstractModelBuilder {
 
 	private static final String MAVEN_PROJECT = "mavenProject";
 	
 	private final ModelUtil modelUtil;
 
 	@Autowired
-	public VersionPropertiesModelBuilder(final ModelUtil modelUtil) {
+	public VersionPropertiesModelBuilder(final ModelUtil modelUtil, final ModelFactory modelFactory) {
+		super(modelFactory);
 		this.modelUtil = modelUtil;
 	}
-
+	
 	public Set<String> getRequiredModels() {
 		return Collections.singleton(MAVEN_PROJECT);
 	}

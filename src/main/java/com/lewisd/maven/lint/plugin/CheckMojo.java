@@ -34,12 +34,10 @@ import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.core.io.ClassPathResource;
 
-import com.lewisd.maven.lint.ModelBuilder;
+import com.lewisd.maven.lint.ModelFactory;
 import com.lewisd.maven.lint.ResultCollector;
 import com.lewisd.maven.lint.Rule;
 import com.lewisd.maven.lint.RuleInvoker;
-import com.lewisd.maven.lint.RuleModelProvider;
-import com.lewisd.maven.lint.RuleModelProviderImpl;
 
 /**
  * Perform checks on the POM, and fail the build if violations are found.
@@ -77,8 +75,6 @@ public class CheckMojo extends AbstractMojo {
 
 	private GenericApplicationContext applicationContext;
 
-	private Collection<ModelBuilder> modelBuilders;
-
 	private URLClassLoader classLoader;
 	
 	private void initializeConfig() throws DependencyResolutionRequiredException, IOException {
@@ -100,9 +96,6 @@ public class CheckMojo extends AbstractMojo {
 		applicationContext.getBeanFactory().registerSingleton("log", getLog());
 		
 		applicationContext.refresh();
-
-		Map<String, ModelBuilder> modelBuildersByBeanName = applicationContext.getBeansOfType(ModelBuilder.class);
-		modelBuilders = modelBuildersByBeanName.values();
 	}
 
 	public void execute() throws MojoExecutionException, MojoFailureException {
@@ -114,15 +107,11 @@ public class CheckMojo extends AbstractMojo {
 			throw new MojoExecutionException("Failed to initialize lint-maven-plugin", e);
 		}
 		ResultCollector resultCollector = applicationContext.getBean(ResultCollector.class);
+		ModelFactory modelFactory = applicationContext.getBean(ModelFactory.class);
 		try {
 			
-			RuleModelProvider modelProvider = new RuleModelProviderImpl(project);
-			RuleInvoker ruleInvoker = new RuleInvoker(project, modelProvider);
+			RuleInvoker ruleInvoker = new RuleInvoker(project, modelFactory);
 			Collection<Rule> rules = getRules();
-			
-			for (ModelBuilder modelBuilder : modelBuilders) {
-				modelProvider.addModelBuilder(modelBuilder);
-			}
 			
 			for (Rule rule : rules) {
 				ruleInvoker.invokeRule(rule, resultCollector);

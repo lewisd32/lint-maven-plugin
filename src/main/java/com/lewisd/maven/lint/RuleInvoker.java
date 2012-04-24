@@ -7,17 +7,17 @@ import org.apache.maven.project.MavenProject;
 
 public class RuleInvoker {
 	
-	private final RuleModelProvider modelProvider;
+	private final ModelFactory modelFactory;
 	private final MavenProject mavenProject;
 
-	public RuleInvoker(final MavenProject mavenProject, final RuleModelProvider modelProvider) {
+	public RuleInvoker(final MavenProject mavenProject, final ModelFactory modelFactory) {
 		this.mavenProject = mavenProject;
-		this.modelProvider = modelProvider;
+		this.modelFactory = modelFactory;
 	}
 
 	public void invokeRule(final Rule rule, final ResultCollector resultCollector) {
 		final Set<String> requiredModels = rule.getRequiredModels();
-		final Map<String, Object> models = modelProvider.getModels(requiredModels);
+		final Map<String, Object> models = modelFactory.getModels(mavenProject, requiredModels);
 		rule.invoke(mavenProject, models, resultCollector);
 	}
 	

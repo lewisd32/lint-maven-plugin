@@ -20,21 +20,21 @@ public class RuleInvokerTest {
 	@Test
 	public void shouldInvokeRuleWithRequiredModels() {
 		final MavenProject mavenProject = new MavenProject();
-		final RuleModelProvider modelProvider = mockery.mock(RuleModelProvider.class);
+		final ModelFactory modelFactory = mockery.mock(ModelFactory.class);
 		final ResultCollector resultCollector = mockery.mock(ResultCollector.class);
 		final Rule rule = mockery.mock(Rule.class);
 		
 		final Set<String> requiredModels = new HashSet<String>();
 		final Map<String,Object> models = new HashMap<String,Object>();
 		
-		RuleInvoker ruleInvoker = new RuleInvoker(mavenProject, modelProvider);
+		RuleInvoker ruleInvoker = new RuleInvoker(mavenProject, modelFactory);
 		
 		mockery.checking(new Expectations()
 		{{
 			one(rule).getRequiredModels();
 			will(returnValue(requiredModels));
 			
-			one(modelProvider).getModels(requiredModels);
+			one(modelFactory).getModels(mavenProject, requiredModels);
 			will(returnValue(models));
 			
 			one(rule).invoke(mavenProject, models, resultCollector);
