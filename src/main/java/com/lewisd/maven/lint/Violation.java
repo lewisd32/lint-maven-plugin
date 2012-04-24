@@ -5,7 +5,6 @@ import org.apache.maven.project.MavenProject;
 
 public class Violation {
 
-	@SuppressWarnings("unused")
 	private final MavenProject mavenProject;
 	private final String message;
 	private final InputLocation inputLocation;

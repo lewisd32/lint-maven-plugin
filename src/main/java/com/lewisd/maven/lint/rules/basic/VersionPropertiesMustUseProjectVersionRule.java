@@ -31,6 +31,7 @@ public class VersionPropertiesMustUseProjectVersionRule extends AbstractRule {
 	}
 
 	public void invoke(final MavenProject mavenProject, final Map<String, Object> models, final ResultCollector resultCollector) {
+		@SuppressWarnings("unchecked")
 		final Map<Object, VersionProperty> versionPropertyByObject = (Map<Object, VersionProperty>) models.get(VERSION_PROPERTIES);
 		
 		for (final Map.Entry<Object,VersionProperty> entry : versionPropertyByObject.entrySet()) {

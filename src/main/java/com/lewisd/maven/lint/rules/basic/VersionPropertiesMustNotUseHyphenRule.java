@@ -31,6 +31,7 @@ public class VersionPropertiesMustNotUseHyphenRule extends AbstractRule {
 	}
 
 	public void invoke(MavenProject mavenProject, final Map<String, Object> models, final ResultCollector resultCollector) {
+		@SuppressWarnings("unchecked")
 		final Map<Object, VersionProperty> versionPropertyByObject = (Map<Object, VersionProperty>) models.get(VERSION_PROPERTIES);
 		
 		for (Map.Entry<Object,VersionProperty> entry : versionPropertyByObject.entrySet()) {
