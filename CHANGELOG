@@ -4,6 +4,7 @@
 - Redundant plugin version rule
 - Adding failOnViolation configuration parameter
 - Making suppression comments case insensitive, and changing rule IDs to camel-case
+- Refactoring model building to cache models between projects.
 
 
 ** 0.0.2

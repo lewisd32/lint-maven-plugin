@@ -7,6 +7,8 @@ import com.lewisd.maven.lint.ModelFactory;
 
 public abstract class AbstractModelBuilder implements ModelBuilder {
 	
+	protected static final String MAVEN_PROJECT = "mavenProject";
+	
 	private ModelFactory modelFactory;
 
 	public AbstractModelBuilder(final ModelFactory modelFactory) {

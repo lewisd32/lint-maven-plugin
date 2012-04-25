@@ -1,3 +1,4 @@
+fix misleading error messages from GAVOrder rule
 make version-property-hyphen rule suppressable from the property itself.
 generate output report file
 figure out what to do about multi-module projects

@@ -14,8 +14,6 @@ import com.lewisd.maven.lint.util.ModelUtil;
 
 public class VersionPropertiesModelBuilder extends AbstractModelBuilder {
 
-	private static final String MAVEN_PROJECT = "mavenProject";
-	
 	private final ModelUtil modelUtil;
 
 	@Autowired
