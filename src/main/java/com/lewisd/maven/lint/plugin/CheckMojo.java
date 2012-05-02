@@ -61,17 +61,31 @@ public class CheckMojo extends AbstractMojo {
 	/**
 	 * The root spring config location.
 	 * 
-	 * @parameter expression="${maven.lint.config.location}" default-value="config/maven_lint.xml"
+	 * @parameter expression="${maven-lint.config.location}" default-value="config/maven_lint.xml"
 	 * @required
 	 */
 	private String configLocation;
 	
     /**
-     * Fail the build when there are violations
+     * Fail the build when there are violations.
      *
-     * @parameter expression="${lint.failOnViolation}" default-value="true"
+     * @parameter expression="${maven-lint.failOnViolation}" default-value="true"
      */
     private boolean failOnViolation;
+    
+    /**
+     * Specifies the path and filename to save the report.
+     *
+     * @parameter expression="${maven-lint.output.file}" default-value="${project.build.directory}/maven-lint-result.xml"
+     */
+    private File outputFile;
+
+    /**
+     * Output a violation summary to standard out.
+     *
+     * @parameter expression="${maven-lint.outputSummary}" default-value="true"
+     */
+    private boolean outputSummary;
 
 	private GenericApplicationContext applicationContext;
 
@@ -121,7 +135,10 @@ public class CheckMojo extends AbstractMojo {
 			throw new MojoExecutionException("Error while performing check", e);
 		}
 		
-		resultCollector.writeSummary();
+		if (outputSummary) {
+			resultCollector.writeSummary();
+		}
+		resultCollector.writeResults(outputFile, project);
 
 		if (failOnViolation && resultCollector.hasViolations()) {
 			throw new MojoFailureException( "[LINT] Violations found." );

@@ -16,6 +16,7 @@
   <bean id="ModelFactory" class="com.lewisd.maven.lint.CachingModelFactory" />
   
   <bean id="ResultCollector" class="com.lewisd.maven.lint.ResultCollectorImpl" />
+  <bean id="ResultWriter" class="com.lewisd.maven.lint.xstream.XStreamResultWriter" />
   <bean id="ViolationSuppressor" class="com.lewisd.maven.lint.ViolationSuppressorImpl" />
 
 </beans>
