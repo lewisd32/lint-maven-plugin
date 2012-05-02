@@ -11,8 +11,6 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import javax.sound.sampled.Port;
-
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.InputLocation;
 import org.apache.maven.model.Model;
@@ -28,23 +26,8 @@ import com.lewisd.maven.lint.util.ModelUtil;
 
 public class GroupArtifactVersionMustBeInCorrectOrderRule extends AbstractRule {
 	
-//	private static final List<Object> sortOrder = new LinkedList<Object>();
+	@SuppressWarnings("rawtypes")
 	private final Map<Class, List<String>> expectedOrderByClass = new HashMap<Class, List<String>>();
-	
-//	static {
-//		sortOrder.add("");
-//		sortOrder.add("modelVersion"); // for <project>
-//		sortOrder.add("extensions"); // for <plugin>
-//		sortOrder.add("groupId");
-//		sortOrder.add("artifactId");
-//		sortOrder.add("classifier");
-//		sortOrder.add("type"); // for <dependencies>
-//		sortOrder.add("version");
-//		sortOrder.add("scope"); // for <dependencies>
-//		
-//		// We don't enforce the order of <configuration>, <exclusions>, <executions>, <dependencies>, and any other
-//		// unlisted elements, other than they must be after the ones we do enforce.
-//	}
 	
 	@Autowired
 	public GroupArtifactVersionMustBeInCorrectOrderRule(final ExpressionEvaluator expressionEvaluator, final ModelUtil modelUtil) {
@@ -61,17 +44,17 @@ public class GroupArtifactVersionMustBeInCorrectOrderRule extends AbstractRule {
 	}
 	
 	@Required
-	public void setOrderForProject(List<String> expectedOrder) {
+	public void setProjectElementOrder(List<String> expectedOrder) {
 		expectedOrderByClass.put(Model.class, expectedOrder);
 	}
 
 	@Required
-	public void setOrderForDependency(List<String> expectedOrder) {
+	public void setDependencyElementOrder(List<String> expectedOrder) {
 		expectedOrderByClass.put(Dependency.class, expectedOrder);
 	}
 	
 	@Required
-	public void setOrderForPlugin(List<String> expectedOrder) {
+	public void setPluginElementOrder(List<String> expectedOrder) {
 		expectedOrderByClass.put(Plugin.class, expectedOrder);
 	}
 	
@@ -82,6 +65,9 @@ public class GroupArtifactVersionMustBeInCorrectOrderRule extends AbstractRule {
 		for (final Object object: objectsToCheck) {
 			final List<String> sortOrder = findSortOrder(object.getClass()); 
 			final Map<Object, InputLocation> locations = modelUtil.getLocations(object);
+			
+			// We don't need the location of the outer element for this rule
+			locations.remove("");
 
 			// Sort the locations by their location in the file
 			final SortedMap<InputLocation, Object> actualOrderedElements = new TreeMap<InputLocation, Object>(new InputLocationMapValueComparator());
@@ -120,7 +106,6 @@ public class GroupArtifactVersionMustBeInCorrectOrderRule extends AbstractRule {
 					break;
 				}
 			}
-			
 			
 		}
 	}
