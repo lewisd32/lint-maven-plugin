@@ -94,8 +94,8 @@
       <dependency>
         <groupId>localhost</groupId>
         <artifactId>dummy-d</artifactId>
-        <classifier></classifier>
         <version>1.0</version>
+        <classifier></classifier>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -104,8 +104,8 @@
     <dependency>
       <groupId>localhost</groupId>
       <artifactId>dummy-a</artifactId>
-      <type>jar</type>
       <version>1.0</version>
+      <type>jar</type>
     </dependency>
     <dependency>
       <groupId>localhost</groupId>

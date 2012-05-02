@@ -55,8 +55,8 @@
       <dependency>
         <groupId>localhost</groupId>
         <artifactId>dummy-d</artifactId>
-        <version>1.0</version>
         <classifier></classifier>
+        <version>1.0</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

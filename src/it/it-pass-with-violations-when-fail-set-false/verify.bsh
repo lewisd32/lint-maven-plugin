@@ -8,9 +8,9 @@ try
 
 	String[] expectedErrors = new String[] {
 		"[LINT] Completed with 3 violations",
-		"[LINT] VersionPropHyphen: Version property names must not contain a hyphen: 'dummy-plugin-version' : 22:",
-		"[LINT] VersionPropHyphen: Version property names must not contain a hyphen: 'dummy-impl-version' : 38:",
-		"[LINT] VersionPropHyphen: Version property names must not contain a hyphen: 'dummy-api-version' : 27:" };
+		"[LINT] VersionPropHyphen: Version property names must use '.version', not '-version': 'dummy-plugin-version' : 22:",
+		"[LINT] VersionPropHyphen: Version property names must use '.version', not '-version': 'dummy-impl-version' : 38:",
+		"[LINT] VersionPropHyphen: Version property names must use '.version', not '-version': 'dummy-api-version' : 27:" };
 
 	boolean passed = true;		
 	for (String expectedError : expectedErrors) {

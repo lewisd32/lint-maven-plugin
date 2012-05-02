@@ -47,8 +47,9 @@
     <dependency>
       <groupId>localhost</groupId>
       <artifactId>dummy-c</artifactId>
-      <version>${dummy-impl-version}</version>
-      <type>jar</type> <!-- NOLINT:GAVORDER --> <!-- NOLINT:VERSIONPROPHYPHEN --> <!-- should suppress neither violation -->
+      <type>jar</type> <!-- NOLINT:VERSIONPROPHYPHEN -->
+      <version>${dummy-impl-version}</version> <!-- NOLINT:GAVORDER -->
+       <!-- should suppress neither violation -->
     </dependency>
   </dependencies>
 

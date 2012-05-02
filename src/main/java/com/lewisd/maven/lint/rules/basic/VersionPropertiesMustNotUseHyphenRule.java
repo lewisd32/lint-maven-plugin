@@ -37,9 +37,9 @@ public class VersionPropertiesMustNotUseHyphenRule extends AbstractRule {
 		for (Map.Entry<Object,VersionProperty> entry : versionPropertyByObject.entrySet()) {
 			final VersionProperty versionProperty = entry.getValue();
 			for (String propertyName : versionProperty.getPropertyNames()) {
-				if (propertyName.contains("-")) {
+				if (propertyName.contains("-version")) {
 					InputLocation location = modelUtil.getLocation(entry.getKey(), "version");
-					resultCollector.addViolation(mavenProject, this, "Version property names must not contain a hyphen: '" + propertyName + "'", location);
+					resultCollector.addViolation(mavenProject, this, "Version property names must use '.version', not '-version': '" + propertyName + "'", location);
 				}
 			}
 		}

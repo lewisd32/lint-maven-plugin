@@ -21,14 +21,16 @@
     <value>groupId</value>
     <value>artifactId</value>
     <value>version</value>
+    <value>packaging</value>
+    <value>name</value>
   </util:list>
   
   <util:list id="GroupArtifactVersionMustBeInCorrectOrderRule-dependencyElementOrder">
     <value>groupId</value>
     <value>artifactId</value>
+    <value>version</value>
     <value>classifier</value>
     <value>type</value>
-    <value>version</value>
     <value>scope</value>
   </util:list>
   
