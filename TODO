@@ -1,6 +1,9 @@
+quiet down overly verbose spring startup logging
+deploy site (with goals)
+make properties for configuration consistent
 fix misleading error messages from GAVOrder rule
 make version-property-hyphen rule suppressable from the property itself.
-generate output report file
+generate (better?) output report file
 figure out what to do about multi-module projects
 revisit rule configuration (spring vs not-spring)
 mojo help
