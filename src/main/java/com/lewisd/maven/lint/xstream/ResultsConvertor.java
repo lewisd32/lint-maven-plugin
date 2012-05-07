@@ -1,7 +1,5 @@
 package com.lewisd.maven.lint.xstream;
 
-import java.util.List;
-
 import com.lewisd.maven.lint.Violation;
 import com.thoughtworks.xstream.converters.Converter;
 import com.thoughtworks.xstream.converters.MarshallingContext;
@@ -11,6 +9,7 @@ import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 
 public class ResultsConvertor implements Converter {
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public boolean canConvert(Class type) {
 		return type.equals(Results.class);

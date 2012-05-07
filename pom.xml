@@ -29,7 +29,15 @@
     <url>https://github.com/lewisd32/lint-maven-plugin</url>
     <connection>scm:git:git@github.com:lewisd32/lint-maven-plugin.git</connection>
     <developerConnection>scm:git:git@github.com:lewisd32/lint-maven-plugin.git</developerConnection>
-  </scm>  
+  </scm>
+  
+  <distributionManagement>
+    <site>
+      <id>lint-maven-plugin-site</id>
+      <name>lint-maven-plugin site on lewisd.com</name>
+      <url>scp://lewisd.com:/home/lewisd/public_html/lewisd.com/docs/projects/lint-maven-plugin</url>
+    </site>
+  </distributionManagement>  
   
   <inceptionYear>2012</inceptionYear>
   
@@ -151,10 +159,48 @@
           <artifactId>maven-invoker-plugin</artifactId>
           <version>1.5</version>
         </plugin>
+        <plugin>
+          <artifactId>maven-site-plugin</artifactId>
+          <version>3.1</version>
+          <configuration>
+            <reportPlugins>
+              <plugin>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <version>2.2</version>
+                <configuration>
+                  <dependencyLocationsEnabled>false</dependencyLocationsEnabled>
+                  <dependencyDetailsEnabled>false</dependencyDetailsEnabled>
+                </configuration>
+              </plugin>
+              <plugin>
+                <artifactId>maven-surefire-report-plugin</artifactId>
+              </plugin>
+              <plugin>
+                <artifactId>maven-plugin-plugin</artifactId>
+              </plugin>
+            </reportPlugins>
+          </configuration>
+          <dependencies>
+            <dependency>
+              <groupId>org.apache.maven.wagon</groupId>
+              <artifactId>wagon-ssh</artifactId>
+              <version>1.0-beta-7</version>
+            </dependency>
+          </dependencies>
+        </plugin>
       </plugins>
     </pluginManagement>
   
     <plugins>
+      <plugin>
+        <artifactId>lint-maven-plugin</artifactId>
+        <groupId>com.lewisd</groupId>
+        <executions>
+          <execution>
+            <goals><goal>check</goal></goals>
+          </execution>
+        </executions>
+      </plugin>
     <!-- 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

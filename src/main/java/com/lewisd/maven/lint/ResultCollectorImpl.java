@@ -1,8 +1,6 @@
 package com.lewisd.maven.lint;
 
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -10,8 +8,6 @@ import org.apache.maven.model.InputLocation;
 import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.project.MavenProject;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import com.thoughtworks.xstream.XStream;
 
 public class ResultCollectorImpl implements ResultCollector {
 
@@ -53,14 +49,4 @@ public class ResultCollectorImpl implements ResultCollector {
 		return !violations.isEmpty();
 	}
 
-	
-	private static class Results {
-
-		private final List<Violation> violations;
-
-		public Results(final List<Violation> violations) {
-			this.violations = violations;
-		}
-		
-	}
 }

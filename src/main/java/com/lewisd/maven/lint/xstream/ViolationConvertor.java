@@ -11,6 +11,7 @@ import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 
 public class ViolationConvertor implements Converter {
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public boolean canConvert(Class type) {
 		return type.equals(Violation.class);
