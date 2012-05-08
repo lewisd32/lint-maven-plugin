@@ -1,5 +1,7 @@
 quiet down overly verbose spring startup logging
 deploy site (with goals)
+add multiple output formats (xml,text,html) and allow writing multiple output formats at once.
+add description to rules, to explain in results why it's a good idea to fix.
 make properties for configuration consistent
 fix misleading error messages from GAVOrder rule
 make version-property-hyphen rule suppressable from the property itself.
