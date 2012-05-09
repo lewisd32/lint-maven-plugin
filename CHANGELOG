@@ -1,4 +1,13 @@
-** 0.0.3-SNAPSHOT
+** 0.0.5
+quiet down overly verbose spring startup logging
+deploy site (with goals)
+
+
+** 0.0.4
+- XML result file
+- Making GAVOrder rule configurable
+
+** 0.0.3
 - Ability to suppress violations with NOLINT:ID XML comments
 - Redundant dependency version rule
 - Redundant plugin version rule

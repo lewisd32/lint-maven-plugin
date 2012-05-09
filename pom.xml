@@ -93,6 +93,13 @@
       <version>${spring.version}</version>
     </dependency>
 
+    <!-- Something (not spring-core) seems to be depending on specifically
+    1.0.4, but Eclipse keeps loading the code for 1.1.1 when debugging. -->
+    <dependency>
+      <artifactId>commons-logging</artifactId>
+      <groupId>commons-logging</groupId>
+      <version>1.0.4</version>
+    </dependency>
     
     <dependency>
       <groupId>junit</groupId>
@@ -136,6 +143,11 @@
       <groupId>org.jdom</groupId>
       <artifactId>saxpath</artifactId>
       <version>1.0-FCS</version>
+    </dependency>
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>1.2.14</version>
     </dependency>
   </dependencies>
   
@@ -192,15 +204,6 @@
     </pluginManagement>
   
     <plugins>
-      <plugin>
-        <artifactId>lint-maven-plugin</artifactId>
-        <groupId>com.lewisd</groupId>
-        <executions>
-          <execution>
-            <goals><goal>check</goal></goals>
-          </execution>
-        </executions>
-      </plugin>
     <!-- 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
