@@ -1,3 +1,4 @@
+Improve main failure message to indicate where (console, some file(s), etc) to find the violations
 add multiple output formats (xml,text,html) and allow writing multiple output formats at once.
 add description to rules, to explain in results why it's a good idea to fix.
 make properties for configuration consistent
