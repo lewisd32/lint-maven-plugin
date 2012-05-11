@@ -1,5 +1,6 @@
-package com.lewisd.maven.lint.xstream;
+package com.lewisd.maven.lint.report.xml;
 
+import com.lewisd.maven.lint.Results;
 import com.lewisd.maven.lint.Violation;
 import com.thoughtworks.xstream.converters.Converter;
 import com.thoughtworks.xstream.converters.MarshallingContext;

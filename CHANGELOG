@@ -1,7 +1,8 @@
 ** 0.0.5
-quiet down overly verbose spring startup logging
-deploy site (with goals)
-
+- quiet down overly verbose spring startup logging
+- deploy site (with goals)
+- Improve main failure message to indicate where (console, some file(s), etc) to find the violations
+- allow writing multiple output formats at once.
 
 ** 0.0.4
 - XML result file

@@ -1,4 +1,4 @@
-package com.lewisd.maven.lint.xstream;
+package com.lewisd.maven.lint.report.xml;
 
 import org.apache.maven.model.InputLocation;
 

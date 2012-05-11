@@ -21,7 +21,9 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -38,6 +40,7 @@ import com.lewisd.maven.lint.ModelFactory;
 import com.lewisd.maven.lint.ResultCollector;
 import com.lewisd.maven.lint.Rule;
 import com.lewisd.maven.lint.RuleInvoker;
+import com.lewisd.maven.lint.report.ReportWriter;
 
 /**
  * Perform checks on the POM, and fail the build if violations are found.
@@ -74,18 +77,37 @@ public class CheckMojo extends AbstractMojo {
     private boolean failOnViolation;
     
     /**
-     * Specifies the path and filename to save the report.
+     * Specifies the path and filename to save the summary report to. A value of '-' (the default) will write the report to standard out.
      *
-     * @parameter expression="${maven-lint.output.file}" default-value="${project.build.directory}/maven-lint-result.xml"
+     * @parameter expression="${maven-lint.output.file.summary}" default-value="-"
+	 * @readonly
      */
-    private File outputFile;
+    private File summaryOutputFile;
+    
+    /**
+     * Specifies the path and filename to save the XML report to.
+     *
+     * @parameter expression="${maven-lint.output.file.xml}" default-value="${project.build.directory}/maven-lint-result.xml"
+     */
+    private File xmlOutputFile;
 
     /**
-     * Output a violation summary to standard out.
+     * Specifies the path and filename to save the HTML report to.
      *
-     * @parameter expression="${maven-lint.outputSummary}" default-value="true"
+     * @parameter expression="${maven-lint.output.file.html}" default-value="${project.build.directory}/maven-lint-result.html"
      */
-    private boolean outputSummary;
+    private File htmlOutputFile;
+
+    /**
+     * Comma-separates list of output reports to generate.<br/>
+     * Supported reports are:<br/>
+     * 	summary (written to standard out, or file specified by summaryOutputFile)<br/>
+     *  xml (written to file specified by xmlOutputFile)<br/>
+     *  html (written to file specified by xmlOutputFile) (NOT YET IMPLEMENTED)
+     *
+     * @parameter expression="${maven-lint.output.reports}" default-value="summary,xml"
+     */
+    private String outputReports;
 
 	private GenericApplicationContext applicationContext;
 
@@ -128,6 +150,7 @@ public class CheckMojo extends AbstractMojo {
 			Collection<Rule> rules = getRules();
 			
 			for (Rule rule : rules) {
+				getLog().debug("Running rule " + rule.getIdentifier());
 				ruleInvoker.invokeRule(rule, resultCollector);
 			}
 			
@@ -135,14 +158,86 @@ public class CheckMojo extends AbstractMojo {
 			throw new MojoExecutionException("Error while performing check", e);
 		}
 		
-		if (outputSummary) {
-			resultCollector.writeSummary();
+		List<String> outputReportList = new LinkedList<String>();
+		if (!outputReports.trim().isEmpty()) {
+			for (String report : outputReports.trim().split(",")) {
+				outputReportList.add(report);
+				getLog().info("Writing " + report + " report");
+				ReportWriter reportWriter = applicationContext.getBean(report + "ResultWriter", ReportWriter.class);
+				final File outputFile = getOutputFileForReport(report);
+				getLog().debug("Writing to " + outputFile.getPath());
+				try {
+					reportWriter.writeResults(project, resultCollector.getViolations(), outputFile);
+				} catch (IOException e) {
+					throw new MojoExecutionException("Error while writing " + report + " report", e);
+				}
+			}
 		}
-		resultCollector.writeResults(outputFile, project);
 
 		if (failOnViolation && resultCollector.hasViolations()) {
-			throw new MojoFailureException( "[LINT] Violations found." );
+			final String message = generateErrorMessage(outputReportList);
+			throw new MojoFailureException( message );
 		}
+	}
+
+	protected String generateErrorMessage(List<String> outputReportList)
+			throws MojoExecutionException {
+		final StringBuffer message = new StringBuffer("[LINT] Violations found. ");
+		if (outputReportList.isEmpty()) {
+			message.append("No output reports have been configured.  Please see documentation regarding the outputReports configuration parameter.");
+		} else {
+			final boolean wroteSummary;
+			if (outputReportList.contains("summary")) {
+				wroteSummary = true;
+				message.append("For more details, see error messages above");
+			} else {
+				wroteSummary = false;
+				message.append("For more details");
+			}
+			final ArrayList<String> remainingReports = new ArrayList<String>(outputReportList);
+			remainingReports.remove("summary");
+			if (remainingReports.isEmpty() ) {
+				message.append(".");
+			} else {
+				if (wroteSummary) {
+					message.append(", or ");
+				} else {
+					message.append(" see ");
+				}
+				message.append("results in ");
+				if (remainingReports.size() == 1) {
+					final File outputFile = getOutputFileForReport(remainingReports.get(0));
+					message.append(outputFile.getAbsolutePath());
+				} else {
+					message.append("one of the following files: ");
+					boolean first = true;
+					for (final String report : remainingReports) {
+						if (!first) {
+							message.append(", ");
+						}
+						final File outputFile = getOutputFileForReport(report);
+						message.append(outputFile.getAbsolutePath());
+						first = false;
+					}
+				}
+			}
+		}
+		return message.toString();
+	}
+
+	private File getOutputFileForReport(String report)
+			throws MojoExecutionException {
+		final File outputFile;
+		if ("summary".equals(report)) {
+			outputFile = summaryOutputFile;
+		} else if ("xml".equals(report)) {
+			outputFile = xmlOutputFile;
+		} else if ("html".equals(report)) {
+			outputFile = htmlOutputFile;
+		} else {
+			throw new MojoExecutionException("Unsupported report: '" + report + "'");
+		}
+		return outputFile;
 	}
 
 	private Collection<Rule> getRules() {

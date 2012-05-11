@@ -1,4 +1,4 @@
-package com.lewisd.maven.lint.xstream;
+package com.lewisd.maven.lint.report.xml;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -7,11 +7,12 @@ import java.util.List;
 
 import org.apache.maven.project.MavenProject;
 
-import com.lewisd.maven.lint.ResultWriter;
+import com.lewisd.maven.lint.Results;
 import com.lewisd.maven.lint.Violation;
+import com.lewisd.maven.lint.report.AbstractReportWriter;
 import com.thoughtworks.xstream.XStream;
 
-public class XStreamResultWriter implements ResultWriter {
+public class XmlResultWriter extends AbstractReportWriter {
 
 	public void writeResults(final MavenProject mavenProject, final List<Violation> violations, final File outputFile) {
 		XStream xstream = new XStream();
@@ -21,11 +22,7 @@ public class XStreamResultWriter implements ResultWriter {
 		Results results = new Results(violations);
 		FileWriter writer = null;
 		try {
-	        File parentFile = outputFile.getAbsoluteFile().getParentFile();
-	        if (!parentFile.exists()) {
-	            parentFile.mkdirs();
-	        }
-			writer = new FileWriter(outputFile);
+			writer = createOutputFileWriter(outputFile);
 			xstream.toXML(results, writer);
 		} catch (IOException e) {
 			throw new RuntimeException("Error while writing results to "+ outputFile, e);

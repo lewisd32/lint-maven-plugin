@@ -1,8 +1,7 @@
-package com.lewisd.maven.lint.xstream;
+package com.lewisd.maven.lint;
 
 import java.util.List;
 
-import com.lewisd.maven.lint.Violation;
 
 public class Results {
 
