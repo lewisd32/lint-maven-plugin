@@ -4,6 +4,7 @@
 - Improve main failure message to indicate where (console, some file(s), etc) to find the violations
 - allow writing multiple output formats at once.
 - add rudimentary html output report format.
+- add description to rules, to explain in results why it's a good idea to fix.
 
 ** 0.0.4
 - XML result file
