@@ -1,4 +1,3 @@
-add html output report format
 add description to rules, to explain in results why it's a good idea to fix.
 make properties for configuration consistent
 fix misleading error messages from GAVOrder rule

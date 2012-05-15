@@ -1,0 +1,36 @@
+<html>
+<head>
+<title>Maven Lint Violation report for $project</title>
+<style type="text/css">
+
+.pageTitle {
+	font-size: 150%;
+}
+
+.location {
+	display: block;
+}
+
+.violation {
+	padding: 1em;
+}
+
+</style>
+</head>
+<body>
+
+<div class="pageTitle">Maven Lint Violation report for $project</div>
+
+#foreach ($violation in $violations)
+
+#set ($location = $violation.inputLocation)
+
+<div class="violation">
+<span class="ruleId">$violation.rule.identifier</span>
+<span class="message">$violation.message</span>
+<span class="location"><a href="file://$location.source.location">$location.source.location</a> $location.lineNumber:$location.columnNumber</span>
+</div>
+
+#end
+</body>
+</html>
