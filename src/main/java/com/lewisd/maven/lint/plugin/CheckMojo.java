@@ -41,6 +41,7 @@ import com.lewisd.maven.lint.ResultCollector;
 import com.lewisd.maven.lint.Rule;
 import com.lewisd.maven.lint.RuleInvoker;
 import com.lewisd.maven.lint.report.ReportWriter;
+import com.lewisd.maven.lint.report.summary.SummaryReportWriter;
 
 /**
  * Perform checks on the POM, and fail the build if violations are found.
@@ -183,23 +184,25 @@ public class CheckMojo extends AbstractMojo {
 	protected String generateErrorMessage(List<String> outputReportList)
 			throws MojoExecutionException {
 		final StringBuffer message = new StringBuffer("[LINT] Violations found. ");
+		
+		
 		if (outputReportList.isEmpty()) {
 			message.append("No output reports have been configured.  Please see documentation regarding the outputReports configuration parameter.");
 		} else {
-			final boolean wroteSummary;
-			if (outputReportList.contains("summary")) {
-				wroteSummary = true;
+			final boolean wroteSummaryToConsole;
+			final ArrayList<String> remainingReports = new ArrayList<String>(outputReportList);
+			if (outputReportList.contains("summary") && SummaryReportWriter.isConsole(summaryOutputFile) ) {
+				wroteSummaryToConsole = true;
 				message.append("For more details, see error messages above");
+				remainingReports.remove("summary");
 			} else {
-				wroteSummary = false;
+				wroteSummaryToConsole = false;
 				message.append("For more details");
 			}
-			final ArrayList<String> remainingReports = new ArrayList<String>(outputReportList);
-			remainingReports.remove("summary");
 			if (remainingReports.isEmpty() ) {
 				message.append(".");
 			} else {
-				if (wroteSummary) {
+				if (wroteSummaryToConsole) {
 					message.append(", or ");
 				} else {
 					message.append(" see ");

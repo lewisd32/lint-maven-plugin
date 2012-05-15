@@ -25,7 +25,7 @@ public class SummaryReportWriter extends AbstractReportWriter {
 	@Override
 	public void writeResults(MavenProject mavenProject, List<Violation> violations, File outputFile) throws IOException {
 		final Outputter out;
-		if ("-".equals(outputFile.getName())) {
+		if (isConsole(outputFile)) {
 			out = new MavenLogOutputter();
 		} else {
 			out = new FileOutputter(outputFile);
@@ -41,6 +41,10 @@ public class SummaryReportWriter extends AbstractReportWriter {
 		}
 		
 		out.close();
+	}
+
+	public static boolean isConsole(File outputFile) {
+		return "-".equals(outputFile.getName());
 	}
 	
 	private interface Outputter {

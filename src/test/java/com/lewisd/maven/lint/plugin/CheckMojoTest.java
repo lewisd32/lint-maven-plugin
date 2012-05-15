@@ -78,5 +78,15 @@ public class CheckMojoTest {
 		Assert.assertEquals(expected, actual);
 	}
 	
+	@Test
+	public void testErrorMessageForSummaryFileAndTwoReports() throws Exception {
+		final File summaryFile = new File("summary.txt");
+		final String summaryFilePath = summaryFile.getAbsolutePath();
+		setField(checkMojo, "summaryOutputFile", summaryFile);
+		final String expected = "[LINT] Violations found. For more details see results in one of the following files: " + summaryFilePath + ", " + xmlFilePath;
+		final String actual = checkMojo.generateErrorMessage(Lists.newArrayList("summary", "xml"));
+		Assert.assertEquals(expected, actual);
+	}
+	
 	
 }
