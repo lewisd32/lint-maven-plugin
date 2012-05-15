@@ -12,4 +12,6 @@ public interface Rule {
 	void invoke(MavenProject mavenProject, Map<String,Object> models, ResultCollector resultCollector);
 	
 	String getIdentifier();
+	
+	String getDescription();
 }

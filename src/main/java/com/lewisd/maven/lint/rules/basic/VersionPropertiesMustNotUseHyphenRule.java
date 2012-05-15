@@ -30,6 +30,12 @@ public class VersionPropertiesMustNotUseHyphenRule extends AbstractRule {
 		return "VersionPropHyphen";
 	}
 
+	@Override
+	public String getDescription() {
+		return "The convention is to specify properties used to hold versions as \"some.library.version\", or some-library.version, " +
+				"but never some-library-version or some.library-version.";
+	}
+
 	public void invoke(MavenProject mavenProject, final Map<String, Object> models, final ResultCollector resultCollector) {
 		@SuppressWarnings("unchecked")
 		final Map<Object, VersionProperty> versionPropertyByObject = (Map<Object, VersionProperty>) models.get(VERSION_PROPERTIES);

@@ -30,6 +30,10 @@ public class ViolationConvertor implements Converter {
 		writer.setValue(violation.getMessage());
 		writer.endNode();
 		
+		writer.startNode("description");
+		writer.setValue(violation.getRule().getDescription());
+		writer.endNode();
+		
 		final InputLocation location = violation.getInputLocation();
 		
 		writer.startNode("location");

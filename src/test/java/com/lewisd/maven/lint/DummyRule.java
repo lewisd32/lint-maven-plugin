@@ -9,9 +9,11 @@ import org.apache.maven.project.MavenProject;
 public class DummyRule implements Rule {
 	
 	private final String identifier;
+	private final String description;
 	
-	public DummyRule(final String identifier) {
+	public DummyRule(final String identifier, final String description) {
 		this.identifier = identifier;
+		this.description = description;
 	}
 
 	@Override
@@ -29,6 +31,12 @@ public class DummyRule implements Rule {
 	public String getIdentifier() {
 		return identifier;
 	}
+
+	@Override
+	public String getDescription() {
+		return description;
+	}
+	
 
 }
 

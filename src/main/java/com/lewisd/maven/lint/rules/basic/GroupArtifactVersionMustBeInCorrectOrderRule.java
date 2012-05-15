@@ -43,6 +43,14 @@ public class GroupArtifactVersionMustBeInCorrectOrderRule extends AbstractRule {
 		return "GAVOrder";
 	}
 	
+	@Override
+	public String getDescription() {
+		return "Maven convention is that the groupId, artifactId, and version elements be listed in that order.  " +
+				"Other elements with short, simple content, such as type, scope, classifier, etc, should be before elements " +
+				"with longer content, such as configuration, executions, and exclusions, otherwise they can be easily missed, " +
+				"leading to confusion";
+	}
+
 	@Required
 	public void setProjectElementOrder(List<String> expectedOrder) {
 		expectedOrderByClass.put(Model.class, expectedOrder);

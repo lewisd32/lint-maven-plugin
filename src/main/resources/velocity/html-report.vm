@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>Maven Lint Violation report for $project</title>
+<title>Maven Lint Violation report for $esc.html($project)</title>
 <style type="text/css">
 
 .pageTitle {
@@ -12,23 +12,35 @@
 }
 
 .violation {
-	padding: 1em;
+	padding-top: 1em;
+	padding-bottom: 1em;
+}
+
+.violation .ruleId {
+	width: 20em;
+	float: left;
+}
+
+.violation .description {
+	display: block;
+	padding-left: 2em;
 }
 
 </style>
 </head>
 <body>
 
-<div class="pageTitle">Maven Lint Violation report for $project</div>
+<div class="pageTitle">Maven Lint Violation report for $esc.html($project)</div>
 
 #foreach ($violation in $violations)
 
 #set ($location = $violation.inputLocation)
 
 <div class="violation">
-<span class="ruleId">$violation.rule.identifier</span>
-<span class="message">$violation.message</span>
-<span class="location"><a href="file://$location.source.location">$location.source.location</a> $location.lineNumber:$location.columnNumber</span>
+<span class="ruleId">$esc.html($violation.rule.identifier)</span>
+<span class="message">$esc.html($violation.message)</span>
+<span class="location"><a href="file://$esc.html($location.source.location)">$esc.html($location.source.location)</a> $location.lineNumber:$location.columnNumber</span>
+<span class="description">$esc.html($violation.rule.description)</span>
 </div>
 
 #end

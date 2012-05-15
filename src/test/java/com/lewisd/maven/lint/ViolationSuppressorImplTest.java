@@ -11,9 +11,9 @@ public class ViolationSuppressorImplTest {
 	
 	private static final MavenProject DUMMY_MAVEN_PROJECT = new MavenProject();;
 	private static final String DUMMY_MESSAGE = "dummy message";
-	private static final Rule RULE = new DummyRule("IDENTIFIER");
-	private static final Rule RULE1 = new DummyRule("RuleID1");
-	private static final Rule RULE2 = new DummyRule("RuleID2");
+	private static final Rule RULE = new DummyRule("IDENTIFIER", "DESCRIPTION");
+	private static final Rule RULE1 = new DummyRule("RuleID1", "DESCRIPTION1");
+	private static final Rule RULE2 = new DummyRule("RuleID2", "DESCRIPTION2");
 	private final ViolationSuppressorImpl violationSuppressor = new ViolationSuppressorImpl();
 	private InputSource source;
 	

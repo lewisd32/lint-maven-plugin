@@ -30,6 +30,11 @@ public class VersionPropertiesMustUseProjectVersionRule extends AbstractRule {
 		return "VersionProp";
 	}
 
+	@Override
+	public String getDescription() {
+		return "The ${version} property is deprecated.  Use ${project.version} instead.";
+	}
+
 	public void invoke(final MavenProject mavenProject, final Map<String, Object> models, final ResultCollector resultCollector) {
 		@SuppressWarnings("unchecked")
 		final Map<Object, VersionProperty> versionPropertyByObject = (Map<Object, VersionProperty>) models.get(VERSION_PROPERTIES);

@@ -1,4 +1,7 @@
 add description to rules, to explain in results why it's a good idea to fix.
+When inspecting artifactIds, groupIds, versions, etc, from the original model, it'll miss things.
+	- eg. version in depMgmt may be 1.3, and in deps it may be overridden as ${somever}, which *may* resolve to 1.3
+change VersionPropertiesMustNotUseHyphenRule to check that they end in .version instead of *not* ending in -version
 make properties for configuration consistent
 fix misleading error messages from GAVOrder rule
 make version-property-hyphen rule suppressable from the property itself.
@@ -12,6 +15,9 @@ What to do about profiles?
 
 Rules:
 
+In Maven 3.0, all pom.* properties are deprecated. Use project.* instead!
+
+Was there at one time a projectVersion property as well?
 
 Profiles named "with-*" should only ever add modules.(Company specific best-practice)
 - should make it easy for users of the plugin to create a rule like this

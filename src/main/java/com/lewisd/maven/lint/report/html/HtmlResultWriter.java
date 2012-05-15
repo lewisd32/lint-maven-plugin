@@ -10,6 +10,7 @@ import org.apache.maven.project.MavenProject;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
+import org.apache.velocity.tools.generic.EscapeTool;
 
 import com.lewisd.maven.lint.Violation;
 import com.lewisd.maven.lint.report.AbstractReportWriter;
@@ -59,6 +60,7 @@ public class HtmlResultWriter extends AbstractReportWriter {
 		VelocityContext context = new VelocityContext();
 		context.put("project", mavenProject);
 		context.put("violations", violations);
+		context.put("esc", new EscapeTool());
 		return context;
 	}
 

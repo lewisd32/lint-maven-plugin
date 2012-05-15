@@ -31,6 +31,13 @@ public class RedundantPluginVersionsRule extends AbstractReduntantVersionRule {
 	public String getIdentifier() {
 		return "RedundantPluginVersion";
 	}
+	
+	@Override
+	public String getDescription() {
+		return "Plugin versions should be set in one place, and not overridden without changing the version. " +
+				"If, for example, <pluginManagement> sets a version, and <plugins> somewhere overrides it, " +
+				"but with the same version, this can make version upgrades more difficult, due to the repetition.";
+	}
 
 	public void invoke(MavenProject mavenProject, final Map<String, Object> models, final ResultCollector resultCollector) {
 		Model originalModel = mavenProject.getOriginalModel();
