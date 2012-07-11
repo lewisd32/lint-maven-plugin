@@ -13,10 +13,10 @@ import com.lewisd.maven.lint.rules.AbstractRule;
 import com.lewisd.maven.lint.util.ExpressionEvaluator;
 import com.lewisd.maven.lint.util.ModelUtil;
 
-public class VersionPropertiesMustNotUseHyphenRule extends AbstractRule {
+public class VersionPropertiesMustUseDotVersionRule extends AbstractRule {
 
 	@Autowired
-	public VersionPropertiesMustNotUseHyphenRule(ExpressionEvaluator expressionEvaluator, ModelUtil modelUtil) {
+	public VersionPropertiesMustUseDotVersionRule(ExpressionEvaluator expressionEvaluator, ModelUtil modelUtil) {
 		super(expressionEvaluator, modelUtil);
 	}
 
@@ -27,7 +27,7 @@ public class VersionPropertiesMustNotUseHyphenRule extends AbstractRule {
 	
 	@Override
 	public String getIdentifier() {
-		return "VersionPropHyphen";
+		return "DotVersionProperty";
 	}
 
 	@Override
@@ -43,12 +43,20 @@ public class VersionPropertiesMustNotUseHyphenRule extends AbstractRule {
 		for (Map.Entry<Object,VersionProperty> entry : versionPropertyByObject.entrySet()) {
 			final VersionProperty versionProperty = entry.getValue();
 			for (String propertyName : versionProperty.getPropertyNames()) {
-				if (propertyName.contains("-version")) {
+				if (isVersionProperty(propertyName) && !isAcceptableVersionPropertyName(propertyName)) {
 					InputLocation location = modelUtil.getLocation(entry.getKey(), "version");
 					resultCollector.addViolation(mavenProject, this, "Version property names must use '.version', not '-version': '" + propertyName + "'", location);
 				}
 			}
 		}
+	}
+
+	protected boolean isVersionProperty(String propertyName) {
+		return propertyName.toLowerCase().endsWith("version");
+	}
+	
+	protected boolean isAcceptableVersionPropertyName(String propertyName) {
+		return propertyName.endsWith(".version") || propertyName.equals("version");
 	}
 	
 }

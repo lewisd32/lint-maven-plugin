@@ -19,13 +19,13 @@
       <plugin>
         <groupId>localhost</groupId>
         <artifactId>dummy-maven-plugin</artifactId>
-        <version>${dummy-plugin-version}</version> <!-- NOLINT:VERSIONPROPHYPHEN should work on same line -->
+        <version>${dummy-plugin-version}</version> <!-- NOLINT:DotVersionProperty should work on same line -->
         <dependencies>
           <dependency>
             <groupId>localhost</groupId>
             <artifactId>dummy-api</artifactId>
             <version>${dummy-api-version}</version>
-            <!-- NOLINT:VERSIONPROPHYPHEN should work on next line -->
+            <!-- NOLINT:DotVersionProperty should work on next line -->
           </dependency>
         </dependencies>
       </plugin>
@@ -36,18 +36,18 @@
     <dependency>
       <groupId>localhost</groupId>
       <artifactId>dummy-impl</artifactId>
-      <version>${dummy-impl-version}</version> <!-- NOLINT:VERSIONPROPHYPHEN --> <!-- should work without comment after -->
+      <version>${dummy-impl-version}</version> <!-- NOLINT:DotVersionProperty --> <!-- should work without comment after -->
     </dependency>
     <dependency>
       <groupId>localhost</groupId>
       <artifactId>dummy-b</artifactId>
-      <version>${dummy-impl-version}</version> <!-- NOLINT:GAVORDER --> <!-- NOLINT:VERSIONPROPHYPHEN --> <!-- should suppress both violations -->
+      <version>${dummy-impl-version}</version> <!-- NOLINT:GAVORDER --> <!-- NOLINT:DotVersionProperty --> <!-- should suppress both violations -->
       <type>jar</type> 
     </dependency>
     <dependency>
       <groupId>localhost</groupId>
       <artifactId>dummy-c</artifactId>
-      <type>jar</type> <!-- NOLINT:VERSIONPROPHYPHEN -->
+      <type>jar</type> <!-- NOLINT:DotVersionProperty -->
       <version>${dummy-impl-version}</version> <!-- NOLINT:GAVORDER -->
        <!-- should suppress neither violation -->
     </dependency>

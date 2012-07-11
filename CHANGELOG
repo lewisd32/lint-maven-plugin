@@ -5,6 +5,7 @@
 - allow writing multiple output formats at once.
 - add rudimentary html output report format.
 - add description to rules, to explain in results why it's a good idea to fix.
+- change VersionPropertiesMustNotUseHyphenRule to check that they end in .version instead of *not* ending in -version
 
 ** 0.0.4
 - XML result file

@@ -7,7 +7,7 @@
     http://www.springframework.org/schema/util
     http://www.springframework.org/schema/util/spring-util-2.5.xsd">
 
-  <bean id="VersionPropertiesMustNotUseHyphenRule" class="com.lewisd.maven.lint.rules.basic.VersionPropertiesMustNotUseHyphenRule" />
+  <bean id="VersionPropertiesMustNotUseHyphenRule" class="com.lewisd.maven.lint.rules.basic.VersionPropertiesMustUseDotVersionRule" />
   <bean id="VersionPropertiesMustUseProjectVersionRule" class="com.lewisd.maven.lint.rules.basic.VersionPropertiesMustUseProjectVersionRule" />
   <bean id="GroupArtifactVersionMustBeInCorrectOrderRule" class="com.lewisd.maven.lint.rules.basic.GroupArtifactVersionMustBeInCorrectOrderRule">
     <property name="projectElementOrder" ref="GroupArtifactVersionMustBeInCorrectOrderRule-projectElementOrder" />
