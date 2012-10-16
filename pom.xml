@@ -60,16 +60,6 @@
     <it.extra.maven.opts />
   </properties>
   
-  <dependencyManagement>
-    <dependencies>
-    <dependency>
-      <groupId>org.apache.maven</groupId>
-      <artifactId>maven-plugin-api</artifactId>
-      <version>${maven.version}</version>
-    </dependency>
-    </dependencies>
-  </dependencyManagement>
-  
   <dependencies>
     <dependency>
       <groupId>org.apache.maven</groupId>
@@ -106,8 +96,8 @@
     <!-- Something (not spring-core) seems to be depending on specifically
     1.0.4, but Eclipse keeps loading the code for 1.1.1 when debugging. -->
     <dependency>
-      <artifactId>commons-logging</artifactId>
       <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
       <version>1.0.4</version>
     </dependency>
     
