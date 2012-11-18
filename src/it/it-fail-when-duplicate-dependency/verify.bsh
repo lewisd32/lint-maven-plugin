@@ -1,0 +1,35 @@
+import java.io.*;
+import org.codehaus.plexus.util.FileUtils;
+
+try
+{
+    File file = new File( basedir, "build.log" );
+    String buf = FileUtils.fileRead( file, "UTF-8" );
+
+	String[] expectedErrors = new String[] {
+		"[LINT] Completed with 6 violations",
+		"[LINT] DuplicateDep: Dependency 'localhost:dummy-d:jar' is declared multiple times with the same version: 55:17 : 50:17",
+		"[LINT] DuplicateDep: Dependency 'localhost:dummy-e:jar' is declared multiple times with the same version: 64:17 : 60:17",
+		"[LINT] DuplicateDep: Dependency 'localhost:dummy-f:jar' is declared multiple times with different versions (1.0, 2.0) : 68:17",
+		"[LINT] DuplicateDep: Managed dependency 'localhost:dummy-a:jar' is declared multiple times with the same version: 23:19 : 18:19",
+		"[LINT] DuplicateDep: Managed dependency 'localhost:dummy-b:jar' is declared multiple times with the same version: 32:19 : 28:19",
+		"[LINT] DuplicateDep: Managed dependency 'localhost:dummy-c:jar' is declared multiple times with different versions (1.0, 2.0) : 36:19" };
+
+	boolean passed = true;		
+	for (String expectedError : expectedErrors) {
+	    if ( buf.indexOf( expectedError ) < 0 )
+	    {
+	        System.err.println( "Did not find expected violation: " + expectedError );
+	        passed = false;
+	    }
+    }
+    return passed;
+    
+}
+catch( Throwable t )
+{
+    t.printStackTrace();
+    return false;
+}
+
+return true;

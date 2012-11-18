@@ -15,48 +15,50 @@ import com.lewisd.maven.lint.util.ModelUtil;
 
 public class VersionPropertiesMustUseDotVersionRule extends AbstractRule {
 
-	@Autowired
-	public VersionPropertiesMustUseDotVersionRule(ExpressionEvaluator expressionEvaluator, ModelUtil modelUtil) {
-		super(expressionEvaluator, modelUtil);
-	}
+    @Autowired
+    public VersionPropertiesMustUseDotVersionRule(final ExpressionEvaluator expressionEvaluator, final ModelUtil modelUtil) {
+        super(expressionEvaluator, modelUtil);
+    }
 
-	@Override
-	protected void addRequiredModels(Set<String> requiredModels) {
-		requiredModels.add(VERSION_PROPERTIES);
-	}
-	
-	@Override
-	public String getIdentifier() {
-		return "DotVersionProperty";
-	}
+    @Override
+    protected void addRequiredModels(final Set<String> requiredModels) {
+        requiredModels.add(VERSION_PROPERTIES);
+    }
 
-	@Override
-	public String getDescription() {
-		return "The convention is to specify properties used to hold versions as \"some.library.version\", or some-library.version, " +
-				"but never some-library-version or some.library-version.";
-	}
+    @Override
+    public String getIdentifier() {
+        return "DotVersionProperty";
+    }
 
-	public void invoke(MavenProject mavenProject, final Map<String, Object> models, final ResultCollector resultCollector) {
-		@SuppressWarnings("unchecked")
-		final Map<Object, VersionProperty> versionPropertyByObject = (Map<Object, VersionProperty>) models.get(VERSION_PROPERTIES);
-		
-		for (Map.Entry<Object,VersionProperty> entry : versionPropertyByObject.entrySet()) {
-			final VersionProperty versionProperty = entry.getValue();
-			for (String propertyName : versionProperty.getPropertyNames()) {
-				if (isVersionProperty(propertyName) && !isAcceptableVersionPropertyName(propertyName)) {
-					InputLocation location = modelUtil.getLocation(entry.getKey(), "version");
-					resultCollector.addViolation(mavenProject, this, "Version property names must use '.version', not '-version': '" + propertyName + "'", location);
-				}
-			}
-		}
-	}
+    @Override
+    public String getDescription() {
+        return "The convention is to specify properties used to hold versions as \"some.library.version\", or some-library.version, " +
+               "but never some-library-version or some.library-version.";
+    }
 
-	protected boolean isVersionProperty(String propertyName) {
-		return propertyName.toLowerCase().endsWith("version");
-	}
-	
-	protected boolean isAcceptableVersionPropertyName(String propertyName) {
-		return propertyName.endsWith(".version") || propertyName.equals("version");
-	}
-	
+    @Override
+    public void invoke(final MavenProject mavenProject, final Map<String, Object> models, final ResultCollector resultCollector) {
+        @SuppressWarnings("unchecked")
+        final Map<Object, VersionProperty> versionPropertyByObject = (Map<Object, VersionProperty>) models.get(VERSION_PROPERTIES);
+
+        for (final Map.Entry<Object, VersionProperty> entry : versionPropertyByObject.entrySet()) {
+            final VersionProperty versionProperty = entry.getValue();
+            for (final String propertyName : versionProperty.getPropertyNames()) {
+                if (isVersionProperty(propertyName) && !isAcceptableVersionPropertyName(propertyName)) {
+                    final InputLocation location = modelUtil.getLocation(entry.getKey(), "version");
+                    resultCollector.addViolation(mavenProject, this, "Version property names must use '.version', not '-version': '" + propertyName + "'",
+                                                 location);
+                }
+            }
+        }
+    }
+
+    protected boolean isVersionProperty(final String propertyName) {
+        return propertyName.toLowerCase().endsWith("version");
+    }
+
+    protected boolean isAcceptableVersionPropertyName(final String propertyName) {
+        return propertyName.endsWith(".version") || propertyName.equals("version");
+    }
+
 }
