@@ -60,7 +60,7 @@ public class RedundantDependencyVersionsRule extends AbstractReduntantVersionRul
             if (inheritedDependency != null) {
                 checkForRedundantVersions(mavenProject, resultCollector,
                                           new ObjectWithPath<Object>(dependency, mavenProject, "dependencies"),
-                                          new ObjectWithPath<Object>(inheritedDependency, inheritedDependency.getMavenProject(), "??"),
+                                          new ObjectWithPath<Object>(inheritedDependency, inheritedDependency.getMavenProject(), null),
                                           "Dependency", "is inherited from " + inheritedDependency.getMavenProject().getId());
             }
         }
@@ -70,7 +70,7 @@ public class RedundantDependencyVersionsRule extends AbstractReduntantVersionRul
             if (inheritedDependency != null) {
                 checkForRedundantVersions(mavenProject, resultCollector,
                                           new ObjectWithPath<Object>(managedDependency, mavenProject, "dependencyManagement/dependencies"),
-                                          new ObjectWithPath<Object>(inheritedDependency, inheritedDependency.getMavenProject(), "??"),
+                                          new ObjectWithPath<Object>(inheritedDependency, inheritedDependency.getMavenProject(), null),
                                           "Managed dependency", "is inherited from " + inheritedDependency.getMavenProject().getId());
             }
         }

@@ -63,7 +63,7 @@ public class RedundantPluginVersionsRule extends AbstractReduntantVersionRule {
                 if (inheritedPlugin.getVersion() != null) {
                     checkForRedundantVersions(mavenProject, resultCollector,
                                               new ObjectWithPath<Object>(plugin, mavenProject, "build/plugins"),
-                                              new ObjectWithPath<Object>(inheritedPlugin, mavenProject, "??"),
+                                              new ObjectWithPath<Object>(inheritedPlugin, mavenProject, null),
                                               "Plugin", "is inherited from " + inheritedPlugin.getMavenProject().getId());
                     break;
                 }
@@ -77,7 +77,7 @@ public class RedundantPluginVersionsRule extends AbstractReduntantVersionRule {
                 if (inheritedPlugin.getVersion() != null) {
                     checkForRedundantVersions(mavenProject, resultCollector,
                                               new ObjectWithPath<Object>(plugin, mavenProject, "build/plugins"),
-                                              new ObjectWithPath<Object>(inheritedPlugin, mavenProject, "??"),
+                                              new ObjectWithPath<Object>(inheritedPlugin, mavenProject, null),
                                               "Managed plugin", "is inherited from " + inheritedPlugin.getMavenProject().getId());
                     break;
                 }

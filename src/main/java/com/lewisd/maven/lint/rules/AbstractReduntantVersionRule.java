@@ -38,7 +38,7 @@ public abstract class AbstractReduntantVersionRule extends AbstractRule {
     private String resolveVersion(final ObjectWithPath<Object> objectWithPath) {
         final Object object = objectWithPath.getObject();
         final String version = modelUtil.getVersion(object);
-        if (version != null && version.contains("${")) {
+        if (version != null && version.contains("${") && objectWithPath.getPath() != null) {
             final StringBuilder path = new StringBuilder();
             path.append(objectWithPath.getPath());
             path.append("[");
