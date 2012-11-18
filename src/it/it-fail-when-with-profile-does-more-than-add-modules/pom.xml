@@ -1,0 +1,62 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>localhost</groupId>
+  <artifactId>it-fail-when-with-profile-does-more-than-add-modules</artifactId>
+  <version>1.0.1</version>
+  <packaging>pom</packaging>
+
+
+  <profiles>
+    <profile>
+      <id>with-a-spoon</id>
+      <modules>
+        <module>submodule</module>
+      </modules>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <dependencyManagement>
+        <dependencies>
+          <dependency>
+            <groupId>localhost</groupId>
+            <artifactId>dummy-a</artifactId>
+            <version>1.0</version>
+          </dependency>
+        </dependencies>
+      </dependencyManagement>
+      <dependencies>
+        <dependency>
+          <groupId>localhost</groupId>
+          <artifactId>dummy-a</artifactId>
+        </dependency>
+      </dependencies>
+      <distributionManagement>
+        <repository>
+          <id>foo</id>
+          <url>url</url>
+        </repository>
+      </distributionManagement>
+      <repositories>
+        <repository>
+          <id>foo</id>
+          <url>url</url>
+        </repository>
+      </repositories>
+      <pluginRepositories>
+        <pluginRepository>
+          <id>foo</id>
+          <url>url</url>
+        </pluginRepository>
+      </pluginRepositories>
+      <properties>
+        <sample>foo</sample>
+      </properties>
+      <build>
+        <finalName>foo</finalName>
+      </build>
+    </profile>
+  </profiles>
+
+</project>

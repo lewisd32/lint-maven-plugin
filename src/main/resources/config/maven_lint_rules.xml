@@ -44,5 +44,6 @@
 
   <bean id="RedundantDependencyVersionsRule" class="com.lewisd.maven.lint.rules.basic.RedundantDependencyVersionsRule" />
   <bean id="RedundantPluginVersionsRule" class="com.lewisd.maven.lint.rules.basic.RedundantPluginVersionsRule" />
+  <bean id="ProfileMustOnlyAddModulesRule" class="com.lewisd.maven.lint.rules.basic.ProfileMustOnlyAddModulesRule" />
 
 </beans>
