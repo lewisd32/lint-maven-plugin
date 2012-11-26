@@ -41,9 +41,22 @@
     <value>version</value>
   </util:list>
   
+  <bean id="RedundantDependencyVersionsRule" class="com.lewisd.maven.lint.rules.basic.RedundantDependencyVersionsRule">
+    <property name="excludedCoordinates" ref="RedundantDependencyVersionsRule-excludedCoordinates"/>
+  </bean>
+  
+  <util:list id="RedundantDependencyVersionsRule-excludedCoordinates">
+  </util:list>
 
-  <bean id="RedundantDependencyVersionsRule" class="com.lewisd.maven.lint.rules.basic.RedundantDependencyVersionsRule" />
-  <bean id="RedundantPluginVersionsRule" class="com.lewisd.maven.lint.rules.basic.RedundantPluginVersionsRule" />
+  <bean id="RedundantPluginVersionsRule" class="com.lewisd.maven.lint.rules.basic.RedundantPluginVersionsRule">
+    <property name="excludedCoordinates" ref="RedundantPluginVersionsRule-excludedCoordinates"/>
+  </bean>
+  
+  <util:list id="RedundantPluginVersionsRule-excludedCoordinates">
+    <value>org.eclipse.m2e:lifecycle-mapping</value> <!-- Leaving off the version on this out causes NPEs in Eclipse -->
+  </util:list>
+  
+
   <bean id="ProfileMustOnlyAddModulesRule" class="com.lewisd.maven.lint.rules.basic.ProfileMustOnlyAddModulesRule" />
 
   <bean id="DuplicateDependenciesRule" class="com.lewisd.maven.lint.rules.basic.DuplicateDependenciesRule" />

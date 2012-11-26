@@ -16,6 +16,7 @@ import org.apache.maven.model.PluginExecution;
 import org.apache.maven.project.MavenProject;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.lewisd.maven.lint.model.Coordinates;
 import com.lewisd.maven.lint.model.ExtDependency;
 import com.lewisd.maven.lint.model.ExtPlugin;
 
@@ -67,9 +68,25 @@ public class ModelUtil {
         return (String) reflectionUtil.callMethod(modelObject, methodName, EMPTY_CLASS_ARRAY, EMPTY_OBJECT_ARRAY);
     }
 
+    public String tryGetType(final Object modelObject) {
+        try {
+            return getType(modelObject);
+        } catch (final IllegalArgumentException e) {
+            return null;
+        }
+    }
+
     public String getClassifier(final Object modelObject) {
         final String methodName = "getClassifier";
         return (String) reflectionUtil.callMethod(modelObject, methodName, EMPTY_CLASS_ARRAY, EMPTY_OBJECT_ARRAY);
+    }
+
+    public String tryGetClassifier(final Object modelObject) {
+        try {
+            return getClassifier(modelObject);
+        } catch (final IllegalArgumentException e) {
+            return null;
+        }
     }
 
     public String getKey(final Object modelObject) {
@@ -218,6 +235,15 @@ public class ModelUtil {
 
             findInheritedPlugins(inheritedPlugins, parent, plugin);
         }
+    }
+
+    public Coordinates getCoordinates(final Object modelObject) {
+        final String groupId = getGroupId(modelObject);
+        final String artifactId = getArtifactId(modelObject);
+        final String type = tryGetType(modelObject);
+        final String version = getVersion(modelObject);
+
+        return new Coordinates(groupId, artifactId, type, version);
     }
 
 }
