@@ -57,7 +57,6 @@ public class ProfileMustOnlyAddModulesRule extends AbstractRule {
     public void invoke(final MavenProject mavenProject, final Map<String, Object> models, final ResultCollector resultCollector) {
         final Model originalModel = mavenProject.getOriginalModel();
         final Collection<Profile> profiles = expressionEvaluator.getPath(originalModel, "/profiles");
-        System.err.println("PROFILES: " + profiles);
         for (final Profile profile : profiles) {
             if (profile.getId() != null && pattern.matcher(profile.getId()).matches()) {
                 final JXPathBeanInfo profileBeanInfo = JXPathIntrospector.getBeanInfo(Profile.class);

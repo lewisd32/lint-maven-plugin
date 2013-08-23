@@ -31,7 +31,7 @@
       <plugin>
         <groupId>localhost</groupId>
         <executions>
-          <execution></execution>
+          <execution><id>test</id></execution>
         </executions>
         <artifactId>dummy-maven-plugin</artifactId>
         <dependencies>

@@ -61,4 +61,6 @@
 
   <bean id="DuplicateDependenciesRule" class="com.lewisd.maven.lint.rules.basic.DuplicateDependenciesRule" />
   
+  <bean id="ExecutionIdRule" class="com.lewisd.maven.lint.rules.basic.ExecutionIdRule" />
+  
 </beans>

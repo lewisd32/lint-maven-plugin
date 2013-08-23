@@ -71,7 +71,7 @@
         <groupId>localhost</groupId>
         <artifactId>dummy-maven-plugin</artifactId>
         <executions>
-          <execution></execution>
+          <execution><id>test</id></execution>
         </executions>
         <dependencies>
           <dependency>
