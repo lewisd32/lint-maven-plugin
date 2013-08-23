@@ -2,16 +2,17 @@ One-Time Usage Instructions
 ===========================
 If you want to try out lint, or run it one time with minimal hassle and no config changes, follow these simple steps:
 
-# Run "mvn install" in the lint-maven-plugin folder to install the plugin into your local Maven repository.
-# Change your current folder to one containing a Maven project that you want to lint.
-# Run "mvn com.lewisd:lint-maven-plugin:check".
+1. Run "mvn install" in the lint-maven-plugin folder to install the plugin into your local Maven repository.
+2. Change your current folder to one containing a Maven project that you want to lint.
+3. Run "mvn com.lewisd:lint-maven-plugin:check".
 
 Add Lint to your Build
 ===========================
-# Run "mvn install" in the lint-maven-plugin folder to install the plugin into your local Maven repository.
-# Add a plugin declaration to your project's pom file as follows:
-	
+1. Run "mvn install" in the lint-maven-plugin folder to install the plugin into your local Maven repository.
+2. Add a plugin declaration to your project's pom file as follows:
+
 ```xml	
+	[...]
 	<build>
 		<plugins>
 			<plugin>
@@ -29,5 +30,7 @@ Add Lint to your Build
 			</plugin>
 		</plugins>
 	</build>
+	[...]
 ```
-# Build your project as usual (usually "mvn install"). The build will fail if lint finds a problem.
+
+3\. Build your project as usual (usually "mvn install"). The build will fail if lint finds a problem.
