@@ -1,19 +1,18 @@
 package com.lewisd.maven.lint.rules;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-
-import org.apache.log4j.Logger;
-import org.apache.maven.model.InputLocation;
-import org.apache.maven.model.Model;
-import org.apache.maven.project.MavenProject;
-
 import com.lewisd.maven.lint.ResultCollector;
 import com.lewisd.maven.lint.model.Coordinates;
 import com.lewisd.maven.lint.model.ObjectWithPath;
 import com.lewisd.maven.lint.util.ExpressionEvaluator;
 import com.lewisd.maven.lint.util.ModelUtil;
+import org.apache.log4j.Logger;
+import org.apache.maven.model.InputLocation;
+import org.apache.maven.model.Model;
+import org.apache.maven.project.MavenProject;
+
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 public abstract class AbstractReduntantVersionRule extends AbstractRule {
 
@@ -38,20 +37,20 @@ public abstract class AbstractReduntantVersionRule extends AbstractRule {
         }
 
         final String version = resolveVersion(modelObject, resolvedModelObject);
-        final String inheritedVersion = modelUtil.getVersion(tryResolveObject(inheritedObject));
+        final String inheritedVersion = getModelUtil().getVersion(tryResolveObject(inheritedObject));
         // both have a version, but if they're different, that might be ok.
         // But if they're the same, then one is redundant.
         if (version != null && inheritedVersion != null && inheritedVersion.equals(version)) {
-            final InputLocation location = modelUtil.getLocation(modelObject, "version");
-            resultCollector.addViolation(mavenProject, this, dependencyDescription + " '" + modelUtil.getKey(modelObject) +
+            final InputLocation location = getModelUtil().getLocation(modelObject, "version");
+            resultCollector.addViolation(mavenProject, this, dependencyDescription + " '" + getModelUtil().getKey(modelObject) +
                                                              "' has same version (" + version + ") as " + inheritedDescription, location);
         }
     }
 
     private String resolveVersion(final Object modelObject, final Object resolvedModelObject) {
-        final String version = modelUtil.getVersion(modelObject);
+        final String version = getModelUtil().getVersion(modelObject);
         if (version != null && version.contains("${")) {
-            return modelUtil.getVersion(resolvedModelObject);
+            return getModelUtil().getVersion(resolvedModelObject);
         }
         return version;
     }
@@ -64,7 +63,7 @@ public abstract class AbstractReduntantVersionRule extends AbstractRule {
     }
 
     private boolean isExcluded(final Object modelObject) {
-        final Coordinates coords = modelUtil.getCoordinates(modelObject);
+        final Coordinates coords = getModelUtil().getCoordinates(modelObject);
         for (final Coordinates excludedCoordinate : excludedCoordinates) {
             if (excludedCoordinate.matches(coords)) {
                 return true;
@@ -87,20 +86,20 @@ public abstract class AbstractReduntantVersionRule extends AbstractRule {
         final StringBuilder path = new StringBuilder();
         path.append(objectWithPath.getPath());
         path.append("[");
-        path.append("groupId='" + modelUtil.getGroupId(object) + "'");
-        path.append(" and artifactId='" + modelUtil.getArtifactId(object) + "'");
-        final String type = modelUtil.tryGetType(object);
+        path.append("groupId='" + getModelUtil().getGroupId(object) + "'");
+        path.append(" and artifactId='" + getModelUtil().getArtifactId(object) + "'");
+        final String type = getModelUtil().tryGetType(object);
         if (type != null) {
             path.append(" and type='" + type + "'");
         }
-        final String classifier = modelUtil.tryGetClassifier(object);
+        final String classifier = getModelUtil().tryGetClassifier(object);
         if (classifier != null) {
             path.append(" and classifier='" + classifier + "']");
         }
         path.append("]");
 
         final Model model = objectWithPath.getProject().getModel();
-        final Collection<Object> objects = expressionEvaluator.getPath(model, path.toString());
+        final Collection<Object> objects = getExpressionEvaluator().getPath(model, path.toString());
         if (objects.isEmpty()) {
             throw new IllegalStateException("Could not resolve " + object + " using path " + path);
         } else if (objects.size() > 1) {
