@@ -35,7 +35,7 @@
     <site>
       <id>lint-maven-plugin-site</id>
       <name>lint-maven-plugin site on lewisd.com</name>
-      <url>scp://lewisd.com:/home/lewisd/public_html/lewisd.com/docs/projects/lint-maven-plugin</url>
+      <url>scp://lewisd@lewisd.com:/home/lewisd/public_html/lewisd.com/docs/projects/lint-maven-plugin</url>
     </site>
   </distributionManagement>  
   
