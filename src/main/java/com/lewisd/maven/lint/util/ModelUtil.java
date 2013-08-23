@@ -1,24 +1,14 @@
 package com.lewisd.maven.lint.util;
 
-import java.lang.reflect.Field;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.maven.model.Dependency;
-import org.apache.maven.model.Exclusion;
-import org.apache.maven.model.InputLocation;
-import org.apache.maven.model.Model;
-import org.apache.maven.model.Plugin;
-import org.apache.maven.model.PluginExecution;
-import org.apache.maven.project.MavenProject;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.lewisd.maven.lint.model.Coordinates;
 import com.lewisd.maven.lint.model.ExtDependency;
 import com.lewisd.maven.lint.model.ExtPlugin;
+import org.apache.maven.model.*;
+import org.apache.maven.project.MavenProject;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.lang.reflect.Field;
+import java.util.*;
 
 public class ModelUtil {
 
@@ -176,8 +166,8 @@ public class ModelUtil {
     public Map<String, Plugin> mapById(final Collection<Plugin> dependencies) {
         final Map<String, Plugin> map = new HashMap<String, Plugin>();
 
-        for (final Plugin Plugin : dependencies) {
-            map.put(Plugin.getId(), Plugin);
+        for (final Plugin plugin : dependencies) {
+            map.put(plugin.getId(), plugin);
         }
 
         return map;
