@@ -268,6 +268,7 @@
             <artifactId>mrm-maven-plugin</artifactId>
             <executions>
               <execution>
+                <id>mock-repos</id>
                 <goals>
                   <goal>start</goal>
                   <goal>stop</goal>
