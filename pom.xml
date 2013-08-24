@@ -316,6 +316,7 @@
                 <repository.proxy.url>${repository.proxy.url}</repository.proxy.url>
               </filterProperties>
               <mavenOpts>-Xmx256m ${it.extra.maven.opts}</mavenOpts>
+              <parallelThreads>2</parallelThreads>
             </configuration>
           </plugin>
         </plugins>
