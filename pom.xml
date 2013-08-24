@@ -55,7 +55,7 @@
   
   <properties>
     <maven.version>3.0</maven.version>
-    <spring.version>3.1.1.RELEASE</spring.version>
+    <spring.version>3.2.4.RELEASE</spring.version>
     
     <it.extra.maven.opts />
   </properties>
@@ -96,30 +96,30 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.10</version>
+      <version>4.11</version>
       <scope>test</scope>
     </dependency>
     <dependency>
     	<groupId>org.jmock</groupId>
     	<artifactId>jmock</artifactId>
-    	<version>2.5.1</version>
+    	<version>2.6.0</version>
     	<scope>test</scope>
     </dependency>
     <dependency>
     	<groupId>org.jmock</groupId>
     	<artifactId>jmock-junit4</artifactId>
-    	<version>2.5.1</version>
+    	<version>2.6.0</version>
     </dependency>
 
     <dependency>
       <groupId>com.thoughtworks.xstream</groupId>
       <artifactId>xstream</artifactId>
-      <version>1.4.2</version>
+      <version>1.4.4</version>
     </dependency>
     <dependency>
       <groupId>org.jdom</groupId>
       <artifactId>jdom</artifactId>
-      <version>2.0.0</version>
+      <version>2.0.2</version>
     </dependency>
     <dependency>
       <groupId>org.jdom</groupId>
@@ -139,7 +139,7 @@
     <dependency>
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>
-      <version>1.2.14</version>
+      <version>1.2.17</version>
     </dependency>
     <dependency>
       <groupId>com.google.collections</groupId>
@@ -165,7 +165,7 @@
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
-      <version>12.0</version>
+      <version>14.0.1</version>
     </dependency>
   </dependencies>
   
@@ -221,7 +221,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-release-plugin</artifactId>
-          <version>2.2.1</version>
+          <version>2.4.1</version>
         </plugin>
       </plugins>
     </pluginManagement>
