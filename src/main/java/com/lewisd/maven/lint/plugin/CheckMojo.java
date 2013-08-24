@@ -17,16 +17,12 @@ package com.lewisd.maven.lint.plugin;
  */
 
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
+import com.lewisd.maven.lint.ModelFactory;
+import com.lewisd.maven.lint.ResultCollector;
+import com.lewisd.maven.lint.Rule;
+import com.lewisd.maven.lint.RuleInvoker;
+import com.lewisd.maven.lint.report.ReportWriter;
+import com.lewisd.maven.lint.report.summary.SummaryReportWriter;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -36,16 +32,19 @@ import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.core.io.ClassPathResource;
 
-import com.lewisd.maven.lint.ModelFactory;
-import com.lewisd.maven.lint.ResultCollector;
-import com.lewisd.maven.lint.Rule;
-import com.lewisd.maven.lint.RuleInvoker;
-import com.lewisd.maven.lint.report.ReportWriter;
-import com.lewisd.maven.lint.report.summary.SummaryReportWriter;
+import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Perform checks on the POM, and fail the build if violations are found.
- * 
+ *
  * @goal check
  * @phase verify
  * @requiresDependencyResolution test
@@ -55,28 +54,28 @@ public class CheckMojo extends AbstractMojo {
 
 	/**
 	 * The Maven Project.
-	 * 
+	 *
 	 * @parameter expression="${project}"
 	 * @required
 	 * @readonly
 	 */
 	private MavenProject project;
-	
+
 	/**
 	 * The root spring config location.
-	 * 
+	 *
 	 * @parameter expression="${maven-lint.config.location}" default-value="config/maven_lint.xml"
 	 * @required
 	 */
 	private String configLocation;
-	
+
     /**
      * Fail the build when there are violations.
      *
      * @parameter expression="${maven-lint.failOnViolation}" default-value="true"
      */
     private boolean failOnViolation;
-    
+
     /**
      * Specifies the path and filename to save the summary report to. A value of '-' (the default) will write the report to standard out.
      *
@@ -84,7 +83,7 @@ public class CheckMojo extends AbstractMojo {
 	 * @readonly
      */
     private File summaryOutputFile;
-    
+
     /**
      * Specifies the path and filename to save the XML report to.
      *
@@ -113,79 +112,91 @@ public class CheckMojo extends AbstractMojo {
 	private GenericApplicationContext applicationContext;
 
 	private URLClassLoader classLoader;
-	
-	private void initializeConfig() throws DependencyResolutionRequiredException, IOException {
-		
-		@SuppressWarnings("rawtypes")
-		List testClasspathElements = project.getTestClasspathElements();
-		URL[] testUrls = new URL[testClasspathElements.size()];
-		for (int i = 0; i < testClasspathElements.size(); i++) {
-		  String element = (String) testClasspathElements.get(i);
-		  testUrls[i] = new File(element).toURI().toURL();
-		}
-		classLoader = new URLClassLoader(testUrls, Thread.currentThread().getContextClassLoader());
-	
-		applicationContext = new GenericApplicationContext();
-		ClassPathResource classPathResource = new ClassPathResource(configLocation, classLoader);
-		XmlBeanDefinitionReader xmlBeanDefinitionReader = new XmlBeanDefinitionReader(applicationContext);
-		xmlBeanDefinitionReader.loadBeanDefinitions(classPathResource);
-		
-		applicationContext.getBeanFactory().registerSingleton("log", getLog());
-		
-		applicationContext.refresh();
-	}
 
-	public void execute() throws MojoExecutionException, MojoFailureException {
-		try {
-			initializeConfig();
-		} catch (DependencyResolutionRequiredException e) {
-			throw new MojoExecutionException("Failed to initialize lint-maven-plugin", e);
-		} catch (IOException e) {
-			throw new MojoExecutionException("Failed to initialize lint-maven-plugin", e);
-		}
-		ResultCollector resultCollector = applicationContext.getBean(ResultCollector.class);
-		ModelFactory modelFactory = applicationContext.getBean(ModelFactory.class);
-		try {
-			
-			RuleInvoker ruleInvoker = new RuleInvoker(project, modelFactory);
-			Collection<Rule> rules = getRules();
-			
-			for (Rule rule : rules) {
-				getLog().debug("Running rule " + rule.getIdentifier());
-				ruleInvoker.invokeRule(rule, resultCollector);
-			}
-			
-		} catch (Exception e) {
-			throw new MojoExecutionException("Error while performing check", e);
-		}
-		
-		List<String> outputReportList = new LinkedList<String>();
-		if (!outputReports.trim().isEmpty()) {
-			for (String report : outputReports.trim().split(",")) {
-				outputReportList.add(report);
-				getLog().info("Writing " + report + " report");
-				ReportWriter reportWriter = applicationContext.getBean(report + "ResultWriter", ReportWriter.class);
-				final File outputFile = getOutputFileForReport(report);
-				getLog().debug("Writing to " + outputFile.getPath());
-				try {
-					reportWriter.writeResults(project, resultCollector.getViolations(), outputFile);
-				} catch (IOException e) {
-					throw new MojoExecutionException("Error while writing " + report + " report", e);
-				}
-			}
-		}
-
+    public void execute() throws MojoExecutionException, MojoFailureException {
+        initConfig();
+        ResultCollector resultCollector = executeRules();
+        List<String> outputReportList = generateReports(resultCollector);
 		if (failOnViolation && resultCollector.hasViolations()) {
-			final String message = generateErrorMessage(outputReportList);
-			throw new MojoFailureException( message );
+            throw new MojoFailureException(generateErrorMessage(outputReportList));
 		}
 	}
 
-	protected String generateErrorMessage(List<String> outputReportList)
+    private List<String> generateReports(ResultCollector resultCollector) throws MojoExecutionException {
+        List<String> outputReportList = new LinkedList<String>();
+        if (!outputReports.trim().isEmpty()) {
+            for (String report : outputReports.trim().split(",")) {
+                outputReportList.add(report);
+                getLog().info("Writing " + report + " report");
+                ReportWriter reportWriter = applicationContext.getBean(report + "ResultWriter", ReportWriter.class);
+                final File outputFile = getOutputFileForReport(report);
+                getLog().debug("Writing to " + outputFile.getPath());
+                try {
+                    reportWriter.writeResults(project, resultCollector.getViolations(), outputFile);
+                } catch (IOException e) {
+                    throw new MojoExecutionException("Error while writing " + report + " report", e);
+                }
+            }
+        }
+        return outputReportList;
+    }
+
+    private ResultCollector executeRules() throws MojoExecutionException {
+        ResultCollector resultCollector = applicationContext.getBean(ResultCollector.class);
+        ModelFactory modelFactory = applicationContext.getBean(ModelFactory.class);
+        try {
+
+            RuleInvoker ruleInvoker = new RuleInvoker(project, modelFactory);
+            Collection<Rule> rules = getRules();
+
+            for (Rule rule : rules) {
+                getLog().debug("Running rule " + rule.getIdentifier());
+                ruleInvoker.invokeRule(rule, resultCollector);
+            }
+
+        } catch (Exception e) {
+            throw new MojoExecutionException("Error while performing check", e);
+        }
+        return resultCollector;
+    }
+
+    private URLClassLoader createNewClassloaderWithTestClasspaths() throws DependencyResolutionRequiredException, MalformedURLException {
+        List<String> testClasspathElements = project.getTestClasspathElements();
+        URL[] testUrls = new URL[testClasspathElements.size()];
+        for (int i = 0; i < testClasspathElements.size(); i++) {
+            String element = testClasspathElements.get(i);
+            testUrls[i] = new File(element).toURI().toURL();
+        }
+        return  new URLClassLoader(testUrls, Thread.currentThread().getContextClassLoader());
+    }
+
+    private void initConfig() throws MojoExecutionException {
+        try {
+            classLoader = createNewClassloaderWithTestClasspaths();
+        } catch (DependencyResolutionRequiredException e) {
+            throw new MojoExecutionException("Failed to initialize lint-maven-plugin", e);
+        } catch (IOException e) {
+            throw new MojoExecutionException("Failed to initialize lint-maven-plugin", e);
+        }
+        initializeSpringContext();
+    }
+
+    private void initializeSpringContext() {
+        applicationContext = new GenericApplicationContext();
+        ClassPathResource classPathResource = new ClassPathResource(configLocation, classLoader);
+        XmlBeanDefinitionReader xmlBeanDefinitionReader = new XmlBeanDefinitionReader(applicationContext);
+        xmlBeanDefinitionReader.loadBeanDefinitions(classPathResource);
+
+        applicationContext.getBeanFactory().registerSingleton("log", getLog());
+
+        applicationContext.refresh();
+    }
+
+    protected String generateErrorMessage(List<String> outputReportList)
 			throws MojoExecutionException {
-		final StringBuffer message = new StringBuffer("[LINT] Violations found. ");
-		
-		
+		final StringBuilder message = new StringBuilder("[LINT] Violations found. ");
+
+
 		if (outputReportList.isEmpty()) {
 			message.append("No output reports have been configured.  Please see documentation regarding the outputReports configuration parameter.");
 		} else {
@@ -244,8 +255,7 @@ public class CheckMojo extends AbstractMojo {
 	}
 
 	private Collection<Rule> getRules() {
-		Map<String, Rule> rules = applicationContext.getBeansOfType(Rule.class);
-		return rules.values();
+        return applicationContext.getBeansOfType(Rule.class).values();
 	}
-	
+
 }
