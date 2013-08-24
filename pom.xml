@@ -1,6 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  
+
   <parent>
     <groupId>org.sonatype.oss</groupId>
     <artifactId>oss-parent</artifactId>
@@ -30,17 +30,17 @@
     <connection>scm:git:git@github.com:lewisd32/lint-maven-plugin.git</connection>
     <developerConnection>scm:git:git@github.com:lewisd32/lint-maven-plugin.git</developerConnection>
   </scm>
-  
+
   <distributionManagement>
     <site>
       <id>lint-maven-plugin-site</id>
       <name>lint-maven-plugin site on lewisd.com</name>
       <url>scp://lewisd@lewisd.com:/home/lewisd/public_html/lewisd.com/docs/projects/lint-maven-plugin</url>
     </site>
-  </distributionManagement>  
-  
+  </distributionManagement>
+
   <inceptionYear>2012</inceptionYear>
-  
+
   <developers>
     <developer>
       <id>lewisd32</id>
@@ -48,18 +48,18 @@
       <email>github@lewisd.com</email>
     </developer>
   </developers>
-  
+
   <prerequisites>
     <maven>3.0.0</maven>
   </prerequisites>
-  
+
   <properties>
     <maven.version>3.0</maven.version>
     <spring.version>3.1.1.RELEASE</spring.version>
-    
+
     <it.extra.maven.opts />
   </properties>
-  
+
   <dependencies>
     <dependency>
       <groupId>org.apache.maven</groupId>
@@ -81,7 +81,7 @@
       <artifactId>maven-compat</artifactId>
       <version>${maven.version}</version>
     </dependency>
-    
+
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-core</artifactId>
@@ -168,7 +168,7 @@
       <version>12.0</version>
     </dependency>
   </dependencies>
-  
+
   <build>
     <pluginManagement>
       <plugins>
@@ -225,9 +225,9 @@
         </plugin>
       </plugins>
     </pluginManagement>
-  
+
     <plugins>
-    <!-- 
+    <!--
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
@@ -254,9 +254,22 @@
             <arguments>-Psonatype-oss-release ${arguments}</arguments>
           </configuration>
         </plugin>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-plugin-plugin</artifactId>
+            <version>3.2</version>
+            <executions>
+                <execution>
+                    <id>generated-helpmojo</id>
+                    <goals>
+                        <goal>helpmojo</goal>
+                    </goals>
+                </execution>
+            </executions>
+        </plugin>
     </plugins>
   </build>
-  
+
   <profiles>
     <profile>
       <id>run-its</id>
@@ -354,5 +367,5 @@
       </build>
     </profile>
   </profiles>
-  
+
 </project>
