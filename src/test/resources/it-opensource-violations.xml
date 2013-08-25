@@ -53,4 +53,9 @@
         <system>Hudson</system>
         <url>https://sonarplugins.ci.cloudbees.com/job/maven-checks/</url>
     </ciManagement>
+
+    <issueManagement>
+        <system>JIRA</system>
+        <url>http://jira.codehaus.org/browse/SONARPLUGINS/component/15663</url>
+    </issueManagement>
 </project>

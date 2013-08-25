@@ -10,11 +10,11 @@ import static com.lewisd.maven.lint.rules.MavenProjectUtil.POM_XML_END;
 import static com.lewisd.maven.lint.rules.MavenProjectUtil.POM_XML_START;
 
 
-public class MissingCIManagementInformationRuleTest  extends AbstractRuleTest<MissingCIManagementInformationRule> {
+public class MissingIssueManagementInformationRuleTest extends AbstractRuleTest<MissingIssueManagementInformationRule> {
 
     @Override
-    public MissingCIManagementInformationRule getRule() {
-        return new MissingCIManagementInformationRule();
+    public MissingIssueManagementInformationRule getRule() {
+        return new MissingIssueManagementInformationRule();
     }
 
     @Test
@@ -23,18 +23,18 @@ public class MissingCIManagementInformationRuleTest  extends AbstractRuleTest<Mi
 
         invokeRuleWithPom(pomXML);
 
-        violationAssert().violates(MissingCIManagementInformationRule.class);
+        violationAssert().violates(MissingIssueManagementInformationRule.class);
     }
 
     @Test
     public void shouldFailOnMissingSystemAndUrl() throws IOException, XmlPullParserException {
         String pomXML = POM_XML_START +
-                "<ciManagement/>\n" +
+                "<issueManagement/>\n" +
                 POM_XML_END;
 
         invokeRuleWithPom(pomXML);
 
-        violationAssert().violates(MissingCIManagementInformationRule.class).withMessage("missing <system/> entry in <ciManagement/> section");
-        violationAssert().violates(MissingCIManagementInformationRule.class).withMessage("missing <url/> entry in <ciManagement/> section");
+        violationAssert().violates(MissingIssueManagementInformationRule.class).withMessage("missing <system/> entry in <issueManagement/> section");
+        violationAssert().violates(MissingIssueManagementInformationRule.class).withMessage("missing <url/> entry in <issueManagement/> section");
     }
 }
