@@ -1,7 +1,6 @@
-package com.lewisd.maven.lint.rules.basic;
+package com.lewisd.maven.lint.rules;
 
-import com.lewisd.maven.lint.rules.AbstractRule;
-import com.lewisd.maven.lint.rules.RuleInvokerWithPomRule;
+import com.lewisd.maven.lint.rules.basic.ViolationAssert;
 import org.apache.maven.monitor.logging.DefaultLog;
 import org.codehaus.plexus.logging.console.ConsoleLogger;
 import org.junit.BeforeClass;
@@ -11,14 +10,14 @@ import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.core.io.ClassPathResource;
 
 
-public abstract class AbstractRuleTest<T extends AbstractRule> {
+public abstract class AbstractRuleIT<T extends AbstractRule> {
     private final static DefaultLog LOG = new DefaultLog(new ConsoleLogger(1, "test"));
     private final static String CONFIG_LOCATION = "config/maven_lint.xml";
 
     private static GenericApplicationContext applicationContext;
 
     @Rule
-    public RuleInvokerWithPomRule invokerWithPom = new RuleInvokerWithPomRule();
+    public RuleInvokerWithPom invokerWithPom = new RuleInvokerWithPom();
 
     @BeforeClass
     public static void beforeEachTest() {

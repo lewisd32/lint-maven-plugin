@@ -13,7 +13,7 @@ import org.junit.runners.model.Statement;
 
 import java.io.IOException;
 
-public class RuleInvokerWithPomRule implements TestRule {
+public class RuleInvokerWithPom implements TestRule {
 
     private String filename;
     private RuleInvoker ruleInvoker;
