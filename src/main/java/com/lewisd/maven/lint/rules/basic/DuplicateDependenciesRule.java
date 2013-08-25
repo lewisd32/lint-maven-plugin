@@ -70,7 +70,7 @@ public class DuplicateDependenciesRule extends AbstractReduntantVersionRule {
                     final String otherVersion = modelUtil.getVersion(otherManagedDependency);
                     final InputLocation location = modelUtil.getLocation(dependency);
                     final InputLocation otherLocation = modelUtil.getLocation(otherManagedDependency);
-                    if (version != null && otherVersion != null && otherVersion.equals(version) || version == otherVersion) {
+                    if (version != null && otherVersion != null && otherVersion.equals(version) || version.equals(otherVersion)) {
                         resultCollector.addViolation(mavenProject, this, dependencyDescription + " '" + modelUtil.getKey(dependency) +
                                                                          "' is declared multiple times with the same version: " +
                                                                          otherLocation.getLineNumber() + ":" + otherLocation.getColumnNumber(), location);
