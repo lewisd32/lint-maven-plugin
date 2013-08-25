@@ -15,7 +15,7 @@ import java.util.Map;
 public class MissingDeveloperInformationRule extends AbstractRule {
     @Override
     public String getIdentifier() {
-        return "OSSIssueManagementSectionRule";
+        return "OSSDevelopersSectionRule";
     }
 
     @Override
