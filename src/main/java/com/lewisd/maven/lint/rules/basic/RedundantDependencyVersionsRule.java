@@ -56,22 +56,22 @@ public class RedundantDependencyVersionsRule extends AbstractReduntantVersionRul
                                           "Dependency", "in dependencyManagement");
             }
 
-            final ExtDependency inheritedDependency = modelUtil.findInheritedDependency(mavenProject, dependency);
+            final ObjectWithPath<ExtDependency> inheritedDependency = modelUtil.findInheritedDependency(mavenProject, dependency);
             if (inheritedDependency != null) {
                 checkForRedundantVersions(mavenProject, resultCollector,
                                           new ObjectWithPath<Object>(dependency, mavenProject, "dependencies"),
-                                          new ObjectWithPath<Object>(inheritedDependency, inheritedDependency.getMavenProject(), null),
-                                          "Dependency", "is inherited from " + inheritedDependency.getMavenProject().getId());
+                                          inheritedDependency,
+                                          "Dependency", "is inherited from " + inheritedDependency.getProject().getId());
             }
         }
 
         for (final Dependency managedDependency : managedDependencies) {
-            final ExtDependency inheritedDependency = modelUtil.findInheritedDependency(mavenProject, managedDependency);
+            final ObjectWithPath<ExtDependency> inheritedDependency = modelUtil.findInheritedDependency(mavenProject, managedDependency);
             if (inheritedDependency != null) {
                 checkForRedundantVersions(mavenProject, resultCollector,
                                           new ObjectWithPath<Object>(managedDependency, mavenProject, "dependencyManagement/dependencies"),
-                                          new ObjectWithPath<Object>(inheritedDependency, inheritedDependency.getMavenProject(), null),
-                                          "Managed dependency", "is inherited from " + inheritedDependency.getMavenProject().getId());
+                                          inheritedDependency,
+                                          "Managed dependency", "is inherited from " + inheritedDependency.getProject().getId());
             }
         }
 

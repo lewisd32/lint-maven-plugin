@@ -27,8 +27,9 @@ public abstract class AbstractReduntantVersionRule extends AbstractRule {
     }
 
     protected void checkForRedundantVersions(final MavenProject mavenProject,
-                                             final ResultCollector resultCollector, final ObjectWithPath<Object> object,
-                                             final ObjectWithPath<Object> inheritedObject, final String dependencyDescription, final String inheritedDescription) {
+                                             final ResultCollector resultCollector, final ObjectWithPath<? extends Object> object,
+                                             final ObjectWithPath<? extends Object> inheritedObject, final String dependencyDescription,
+                                             final String inheritedDescription) {
 
         final Object modelObject = object.getObject();
         final Object resolvedModelObject = tryResolveObject(object);
@@ -73,7 +74,7 @@ public abstract class AbstractReduntantVersionRule extends AbstractRule {
         return false;
     }
 
-    private Object tryResolveObject(final ObjectWithPath<Object> objectWithPath) {
+    private Object tryResolveObject(final ObjectWithPath<? extends Object> objectWithPath) {
         try {
             return resolveObject(objectWithPath);
         } catch (final IllegalStateException e) {
@@ -82,7 +83,12 @@ public abstract class AbstractReduntantVersionRule extends AbstractRule {
         }
     }
 
-    private Object resolveObject(final ObjectWithPath<Object> objectWithPath) {
+    /**
+     * This uses the path of an object that was found in the "original model", and tries to find
+     * the same object in the "model".  The "model" has had properties replaced with values, so
+     * this is how we find the resolved version of the object.
+     */
+    private Object resolveObject(final ObjectWithPath<? extends Object> objectWithPath) {
         final Object object = objectWithPath.getObject();
         final StringBuilder path = new StringBuilder();
         path.append(objectWithPath.getPath());

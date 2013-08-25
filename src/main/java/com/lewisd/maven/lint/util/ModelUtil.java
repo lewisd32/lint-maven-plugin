@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.lewisd.maven.lint.model.Coordinates;
 import com.lewisd.maven.lint.model.ExtDependency;
 import com.lewisd.maven.lint.model.ExtPlugin;
+import com.lewisd.maven.lint.model.ObjectWithPath;
 
 public class ModelUtil {
 
@@ -183,7 +184,7 @@ public class ModelUtil {
         return map;
     }
 
-    public ExtDependency findInheritedDependency(final MavenProject mavenProject, final Dependency dependency) {
+    public ObjectWithPath<ExtDependency> findInheritedDependency(final MavenProject mavenProject, final Dependency dependency) {
         final MavenProject parent = mavenProject.getParent();
 
         if (parent != null) {
@@ -193,12 +194,12 @@ public class ModelUtil {
 
             final Dependency parentDependency = dependencies.get(dependency.getManagementKey());
             if (parentDependency != null) {
-                return new ExtDependency(parent, parentDependency);
+                return new ObjectWithPath<ExtDependency>(new ExtDependency(parent, parentDependency), parent, "dependencies");
             }
 
             final Dependency parentManagedDependency = managedDependencies.get(dependency.getManagementKey());
             if (parentManagedDependency != null) {
-                return new ExtDependency(parent, parentManagedDependency);
+                return new ObjectWithPath<ExtDependency>(new ExtDependency(parent, parentManagedDependency), parent, "dependencyManagement/dependencies");
             }
 
             return findInheritedDependency(parent, dependency);
