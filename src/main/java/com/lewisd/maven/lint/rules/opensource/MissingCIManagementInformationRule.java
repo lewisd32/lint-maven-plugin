@@ -2,21 +2,19 @@ package com.lewisd.maven.lint.rules.opensource;
 
 import com.lewisd.maven.lint.ResultCollector;
 import com.lewisd.maven.lint.rules.AbstractRule;
-import com.lewisd.maven.lint.util.ModelUtil;
 import org.apache.commons.lang.StringUtils;
 import org.apache.maven.model.CiManagement;
 import org.apache.maven.model.InputLocation;
+import org.apache.maven.model.InputSource;
 import org.apache.maven.project.MavenProject;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Map;
 import java.util.Set;
 
 public class MissingCIManagementInformationRule extends AbstractRule {
 
-    @Autowired
-    public MissingCIManagementInformationRule(ModelUtil modelUtil) {
-        super(null, modelUtil);
+    public MissingCIManagementInformationRule() {
+        super(null, null);
     }
 
     @Override
@@ -38,11 +36,13 @@ public class MissingCIManagementInformationRule extends AbstractRule {
         CiManagement management = mavenProject.getCiManagement();
 
         if (null == management) {
-            InputLocation location = new InputLocation(0, 0);
+            final InputSource source = new InputSource();
+            source.setLocation(mavenProject.getOriginalModel().getPomFile() + "");
+            InputLocation location = new InputLocation(0, 0, source);
             resultCollector.addViolation(mavenProject, this, "missing <ciManagement/> section", location);
         } else if (StringUtils.isEmpty(management.getSystem())) {
             resultCollector.addViolation(mavenProject, this, "missing <system/> entry in <ciManagement/> section", management.getLocation(""));
-        }else if (StringUtils.isEmpty(management.getUrl())) {
+        } else if (StringUtils.isEmpty(management.getUrl())) {
             resultCollector.addViolation(mavenProject, this, "missing <url/> entry in <ciManagement/> section", management.getLocation(""));
         }
     }
