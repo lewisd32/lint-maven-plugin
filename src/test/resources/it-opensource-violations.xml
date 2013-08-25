@@ -1,0 +1,61 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.sonatype.oss</groupId>
+        <artifactId>oss-parent</artifactId>
+        <version>7</version>
+    </parent>
+
+    <groupId>com.lewisd</groupId>
+    <artifactId>lint-maven-plugin</artifactId>
+    <version>0.0.8-SNAPSHOT</version>
+    <packaging>maven-plugin</packaging>
+
+    <name>Maven POM lint plugin</name>
+    <description>Generates a report of suspicious/inconsistent POM elements, and optionally fails the build if violations are found.</description>
+
+    <url>https://github.com/lewisd32/lint-maven-plugin</url>
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <scm>
+        <url>https://github.com/lewisd32/lint-maven-plugin</url>
+        <connection>scm:git:git@github.com:lewisd32/lint-maven-plugin.git</connection>
+        <developerConnection>scm:git:git@github.com:lewisd32/lint-maven-plugin.git</developerConnection>
+    </scm>
+
+    <distributionManagement>
+        <site>
+            <id>lint-maven-plugin-site</id>
+            <name>lint-maven-plugin site on lewisd.com</name>
+            <url>scp://lewisd@lewisd.com:/home/lewisd/public_html/lewisd.com/docs/projects/lint-maven-plugin</url>
+        </site>
+    </distributionManagement>
+
+    <inceptionYear>2012</inceptionYear>
+
+    <developers>
+        <developer>
+            <id>lewisd32</id>
+            <name>Derek Lewis</name>
+            <email>github@lewisd.com</email>
+        </developer>
+    </developers>
+
+    <ciManagement>
+        <system>Hudson</system>
+        <url>https://sonarplugins.ci.cloudbees.com/job/maven-checks/</url>
+    </ciManagement>
+
+    <issueManagement>
+        <system>JIRA</system>
+        <url>http://jira.codehaus.org/browse/SONARPLUGINS/component/15663</url>
+    </issueManagement>
+</project>
