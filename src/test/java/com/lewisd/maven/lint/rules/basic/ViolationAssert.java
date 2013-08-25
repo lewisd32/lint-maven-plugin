@@ -21,14 +21,15 @@ public class ViolationAssert {
         this.resultCollector = resultCollector;
     }
 
-    public void violates(Class<? extends AbstractRule> rule) {
+    public MessageAssert violates(Class<? extends AbstractRule> rule) {
         final List<Violation> violations = resultCollector.getViolations();
         for(Violation violation : violations){
             if ( violation.getRule().getClass() == rule){
-                return;
+                return new MessageAssert(violation);
             }
         }
         fail("expected this rule " + rule + " violated");
+        return null;
     }
 
     public ColumnAssert line(int line) {

@@ -41,8 +41,9 @@ public class MissingCIManagementInformationRule extends AbstractRule {
             InputLocation location = new InputLocation(0, 0);
             resultCollector.addViolation(mavenProject, this, "missing <ciManagement/> section", location);
         } else if (StringUtils.isEmpty(management.getSystem())) {
-            resultCollector.addViolation(mavenProject, this, "mssing <ciManagement/> section", management.getLocation(""));
+            resultCollector.addViolation(mavenProject, this, "missing <system/> entry in <ciManagement/> section", management.getLocation(""));
+        }else if (StringUtils.isEmpty(management.getUrl())) {
+            resultCollector.addViolation(mavenProject, this, "missing <url/> entry in <ciManagement/> section", management.getLocation(""));
         }
-
     }
 }

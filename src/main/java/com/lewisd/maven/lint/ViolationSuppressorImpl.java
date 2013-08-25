@@ -29,7 +29,7 @@ public class ViolationSuppressorImpl implements ViolationSuppressor {
         InputSource source = inputLocation.getSource();
 
         // can be null in unit tests, file and filereader can not easily mocked
-        if (null == source) {
+        if (null == source || null == source.getLocation()) {
             return null;
         } else {
             File file = new File(source.getLocation());
