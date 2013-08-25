@@ -7,6 +7,7 @@ import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
@@ -36,6 +37,8 @@ public class MavenProjectUtil {
     private static Model getMavenModelFromPom(String filename) throws IOException, XmlPullParserException {
         InputSource inputSource = new InputSource();
         inputSource.setLocation(filename);
-        return new MavenXpp3ReaderEx().read(new FileInputStream(filename), true, inputSource);
+        final Model model = new MavenXpp3ReaderEx().read(new FileInputStream(filename), true, inputSource);
+        model.setPomFile(new File(filename));
+        return model;
     }
 }
