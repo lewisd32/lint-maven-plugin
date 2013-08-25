@@ -9,18 +9,8 @@ import org.apache.maven.model.InputSource;
 import org.apache.maven.project.MavenProject;
 
 import java.util.Map;
-import java.util.Set;
 
 public class MissingCIManagementInformationRule extends AbstractRule {
-
-    public MissingCIManagementInformationRule() {
-        super(null, null);
-    }
-
-    @Override
-    protected void addRequiredModels(Set<String> requiredModels) {
-    }
-
     @Override
     public String getIdentifier() {
         return "OSSContinuousIntegrationManagementSectionRule";

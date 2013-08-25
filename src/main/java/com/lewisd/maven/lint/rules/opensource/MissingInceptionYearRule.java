@@ -8,18 +8,8 @@ import org.apache.maven.model.InputSource;
 import org.apache.maven.project.MavenProject;
 
 import java.util.Map;
-import java.util.Set;
 
 public class MissingInceptionYearRule extends AbstractRule {
-
-    public MissingInceptionYearRule() {
-        super(null, null);
-    }
-
-    @Override
-    protected void addRequiredModels(Set<String> requiredModels) {
-    }
-
     @Override
     public String getIdentifier() {
         return "OSSInceptionYearRule";
