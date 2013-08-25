@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * describes the file which should be used in the test
+ * describes the file which should be used in the shouldFailOnMissingSection
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD})

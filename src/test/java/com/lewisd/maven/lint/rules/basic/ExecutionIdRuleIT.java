@@ -17,7 +17,7 @@ public class ExecutionIdRuleIT extends AbstractRuleTest<ExecutionIdRule> {
     @POM("src/it/it-fail-when-execution-without-id/pom.xml")
     public void test() throws IOException, XmlPullParserException {
 
-        invokerWithPom.invoke(getRule());
+        invokeRule();
 
         violationAssert().line(19).violates(ExecutionIdRule.class).withMessage("Executions must specify an id");
         violationAssert().line(32).violates(ExecutionIdRule.class);

@@ -5,7 +5,6 @@ import com.lewisd.maven.lint.ResultCollector;
 import com.lewisd.maven.lint.ResultCollectorImpl;
 import com.lewisd.maven.lint.RuleInvoker;
 import com.lewisd.maven.lint.ViolationSuppressorImpl;
-import com.lewisd.maven.lint.rules.basic.ExecutionIdRule;
 import org.apache.maven.model.InputSource;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3ReaderEx;
@@ -60,13 +59,13 @@ public class RuleInvokerWithPomRule implements TestRule {
     private void initFilename(Description description) {
         final POM pom = description.getAnnotation(POM.class);
         if (null == pom) {
-            throw new IllegalStateException("need to specify a pom to test on ( use " + POM.class + " annotation)");
+            throw new IllegalStateException("need to specify a pom to shouldFailOnMissingSection on ( use " + POM.class + " annotation)");
         } else {
             filename = pom.value();
         }
     }
 
-    public void invoke(ExecutionIdRule rule) {
-        ruleInvoker.invokeRule(rule,resultCollector);
+    public RuleInvoker getRuleInvoker() {
+        return ruleInvoker;
     }
 }

@@ -32,6 +32,10 @@ public abstract class AbstractRuleTest<T extends AbstractRule> {
         applicationContext.refresh();
     }
 
+    public void invokeRule() {
+        invokerWithPom.getRuleInvoker().invokeRule(getRule(), invokerWithPom.getResultCollector());
+    }
+
     protected final T getRule(Class<T> ruleClazz) {
         return (T) applicationContext.getBean(ruleClazz);
     }
