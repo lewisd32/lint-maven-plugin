@@ -1,7 +1,6 @@
 package com.lewisd.maven.lint;
 
 import org.apache.maven.model.InputLocation;
-import org.apache.maven.model.InputSource;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -26,43 +25,36 @@ public class ViolationSuppressorImpl implements ViolationSuppressor {
     }
 
     private String findSuppressionComment(final Rule rule, final InputLocation inputLocation) {
-        InputSource source = inputLocation.getSource();
+        File file = new File(inputLocation.getSource().getLocation());
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(new FileReader(file));
 
-        // can be null in unit tests, file and filereader can not easily mocked
-        if (null == source || null == source.getLocation()) {
-            return null;
-        } else {
-            File file = new File(source.getLocation());
-            BufferedReader reader = null;
-            try {
-                reader = new BufferedReader(new FileReader(file));
-
-                int lineNo = 1;
-                String line = null;
-                while ((line = reader.readLine()) != null && lineNo < inputLocation.getLineNumber()) {
-                    lineNo++;
-                }
-                if (line != null) {
-                    if (inputLocation.getColumnNumber() < 1 && inputLocation.getColumnNumber() > line.length()) {
-                        return findSuppressionComment(rule, line, reader);
-                    } else {
-                        final String lineAfterViolation = line.substring(inputLocation.getColumnNumber() - 1);
-                        return findSuppressionComment(rule, lineAfterViolation, reader);
-                    }
-                }
-            } catch (IOException e) {
-                if (reader != null) {
-                    try {
-                        reader.close();
-                    } catch (IOException e1) {
-                        // Do nothing here.  Nothing we can do.
-                    }
-                }
-                // TODO: need a better exception type here
-                throw new RuntimeException("Error while checking for suppression in " + file, e);
+            int lineNo = 1;
+            String line = null;
+            while ((line = reader.readLine()) != null && lineNo < inputLocation.getLineNumber()) {
+                lineNo++;
             }
-            return null;
+            if (line != null) {
+                if (inputLocation.getColumnNumber() < 1 && inputLocation.getColumnNumber() > line.length()) {
+                    return findSuppressionComment(rule, line, reader);
+                } else {
+                    final String lineAfterViolation = inputLocation.getColumnNumber() > 0 ? line.substring(inputLocation.getColumnNumber() - 1) : line;
+                    return findSuppressionComment(rule, lineAfterViolation, reader);
+                }
+            }
+        } catch (IOException e) {
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException e1) {
+                    // Do nothing here.  Nothing we can do.
+                }
+            }
+            // TODO: need a better exception type here
+            throw new RuntimeException("Error while checking for suppression in " + file, e);
         }
+        return null;
     }
 
     private String findSuppressionComment(final Rule rule, final String originalLine, final BufferedReader reader) throws IOException {
