@@ -1,5 +1,6 @@
 package com.lewisd.maven.lint.rules.basic;
 
+import com.google.common.collect.Lists;
 import com.lewisd.maven.lint.ResultCollector;
 import com.lewisd.maven.lint.Violation;
 import com.lewisd.maven.lint.rules.AbstractRule;
@@ -23,13 +24,16 @@ public class ViolationAssert {
 
     public MessageAssert violates(Class<? extends AbstractRule> rule) {
         final List<Violation> violations = resultCollector.getViolations();
+        List<Violation> matchedViolations = Lists.newArrayList();
         for(Violation violation : violations){
             if ( violation.getRule().getClass() == rule){
-                return new MessageAssert(violation);
+                matchedViolations.add(violation);
             }
         }
-        fail("expected this rule " + rule + " violated");
-        return null;
+
+        if ( matchedViolations.isEmpty()){
+        fail("expected this rule " + rule + " violated");return null;}else{return new MessageAssert(matchedViolations);}
+
     }
 
     public ColumnAssert line(int line) {
@@ -83,14 +87,26 @@ public class ViolationAssert {
 
     public static class MessageAssert {
 
-        private final Violation violation;
+        private final List<Violation> violations;
 
         public MessageAssert(Violation violation) {
-            this.violation = violation;
+            this.violations = Lists.newArrayList(violation);
+        }
+
+        public MessageAssert(List<Violation> violations) {
+            this.violations = violations;
         }
 
         public void withMessage(String message) {
-            assertThat(violation.getMessage()).describedAs("message should be different").isEqualTo(message);
+            List<String> messages = Lists.newArrayList();
+            for( Violation violation : violations){
+                if(message.equals(violation.getMessage())){
+                    return; // ok
+                }else{
+                    messages.add(violation.getMessage());
+                }
+            }
+            assertThat(messages).describedAs("message should be different").contains(message);
         }
     }
 }

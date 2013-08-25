@@ -50,7 +50,7 @@ public class OpensourceRulesIT {
     @POM("src/test/resources/it-opensource-violations.xml")
     public void test() throws IOException, XmlPullParserException {
 
-        List<? extends AbstractRule> rules = Lists.newArrayList(new MissingCIManagementInformationRule(), new MissingUrlRule(),new MissingInceptionYearRule());
+        List<? extends AbstractRule> rules = Lists.newArrayList(new MissingCIManagementInformationRule(), new MissingUrlRule(),new MissingInceptionYearRule(),new MissingLicenseRule());
 
         for (AbstractRule rule : rules) {
             invokeRule(rule);
