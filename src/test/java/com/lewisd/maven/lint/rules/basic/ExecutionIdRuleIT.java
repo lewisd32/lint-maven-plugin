@@ -14,14 +14,14 @@ public class ExecutionIdRuleIT extends AbstractRuleIT<ExecutionIdRule> {
         return getRule(ExecutionIdRule.class);
     }
     @Test
-    @POM("src/test/resources/it-fail-when-execution-without-id/pom.xml")
+    @POM("src/test/resources/it/it-fail-when-execution-without-id/pom.xml")
     public void test() throws IOException, XmlPullParserException {
 
         invokeRule();
 
-        violationAssert().line(19).violates(ExecutionIdRule.class).withMessage("Executions must specify an id");
-        violationAssert().line(32).violates(ExecutionIdRule.class);
-        violationAssert().line(51).violates(ExecutionIdRule.class);
-        violationAssert().line(64).violates(ExecutionIdRule.class);
+        violationAssert().line(19).violates(getRule().getClass()).withMessage("Executions must specify an id");
+        violationAssert().line(32).violates(getRule().getClass());
+        violationAssert().line(51).violates(getRule().getClass());
+        violationAssert().line(64).violates(getRule().getClass());
     }
 }
