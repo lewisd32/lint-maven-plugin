@@ -13,9 +13,8 @@ public class ExecutionIdRuleIT extends AbstractRuleIT<ExecutionIdRule> {
     public ExecutionIdRule getRule() {
         return getRule(ExecutionIdRule.class);
     }
-
     @Test
-    @POM("src/it/it-fail-when-execution-without-id/pom.xml")
+    @POM("src/test/resources/it-fail-when-execution-without-id/pom.xml")
     public void test() throws IOException, XmlPullParserException {
 
         invokeRule();
