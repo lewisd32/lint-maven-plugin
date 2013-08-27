@@ -63,10 +63,10 @@
 
   <bean id="ExecutionIdRule" class="com.lewisd.maven.lint.rules.basic.ExecutionIdRule" />
 
-  <!--<bean id="OSSDevelopersSectionRule" class="com.lewisd.maven.lint.rules.opensource.MissingDeveloperInformationRule" />-->
-  <!--<bean id="OSSContinuousIntegrationManagementSectionRule" class="com.lewisd.maven.lint.rules.opensource.MissingCIManagementInformationRule" />    <bean id="OSSInceptionYearRule" class="com.lewisd.maven.lint.rules.opensource.MissingInceptionYearRule" />-->
-  <!--<bean id="OSSIssueManagementSectionRule" class="com.lewisd.maven.lint.rules.opensource.MissingIssueManagementInformationRule" />-->
-  <!--<bean id="OSSLicenseSectionRule" class="com.lewisd.maven.lint.rules.opensource.MissingLicenseRule" />-->
-  <!--<bean id="OSSUrlSectionRule" class="com.lewisd.maven.lint.rules.opensource.MissingUrlRule" />-->
+  <bean id="OSSDevelopersSectionRule" class="com.lewisd.maven.lint.rules.opensource.MissingDeveloperInformationRule" />
+  <bean id="OSSContinuousIntegrationManagementSectionRule" class="com.lewisd.maven.lint.rules.opensource.MissingCIManagementInformationRule" />    <bean id="OSSInceptionYearRule" class="com.lewisd.maven.lint.rules.opensource.MissingInceptionYearRule" />
+  <bean id="OSSIssueManagementSectionRule" class="com.lewisd.maven.lint.rules.opensource.MissingIssueManagementInformationRule" />
+  <bean id="OSSLicenseSectionRule" class="com.lewisd.maven.lint.rules.opensource.MissingLicenseRule" />
+  <bean id="OSSUrlSectionRule" class="com.lewisd.maven.lint.rules.opensource.MissingUrlRule" />
 
 </beans>
