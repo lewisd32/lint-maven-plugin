@@ -18,6 +18,7 @@ package com.lewisd.maven.lint.plugin;
 
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.collect.Lists;
 import com.lewisd.maven.lint.ModelFactory;
 import com.lewisd.maven.lint.ResultCollector;
 import com.lewisd.maven.lint.Rule;
@@ -84,6 +85,11 @@ public class CheckMojo extends AbstractContextMojo {
      */
     private String outputReports;
 
+    /**
+     * @parameter expression="${maven-lint.rules}" default-value="all"
+     */
+    private String[] rules;
+
     public void execute() throws MojoExecutionException, MojoFailureException {
 
         init();
@@ -121,15 +127,18 @@ public class CheckMojo extends AbstractContextMojo {
 
     private void executeRules(ResultCollector resultCollector) throws MojoExecutionException {
         ModelFactory modelFactory = getContext().getBean(ModelFactory.class);
+        RuleInvoker ruleInvoker = new RuleInvoker(getProject(), modelFactory);
+        RulesSelector rulesSelector = new RulesSelector(getRules());
+
+        for (Rule rule : rulesSelector.selectRule(rules)) {
+            executeRule(resultCollector, ruleInvoker, rule);
+        }
+    }
+
+    private void executeRule(ResultCollector resultCollector, RuleInvoker ruleInvoker, Rule rule) throws MojoExecutionException {
+        getLog().debug("Running rule " + rule.getIdentifier());
         try {
-
-            RuleInvoker ruleInvoker = new RuleInvoker(getProject(), modelFactory);
-
-            for (Rule rule : getRules()) {
-                getLog().debug("Running rule " + rule.getIdentifier());
-                ruleInvoker.invokeRule(rule, resultCollector);
-            }
-
+            ruleInvoker.invokeRule(rule, resultCollector);
         } catch (Exception e) {
             throw new MojoExecutionException("Error while performing check", e);
         }
@@ -198,7 +207,8 @@ public class CheckMojo extends AbstractContextMojo {
         return outputFile;
     }
 
-    private Collection<Rule> getRules() {
-        return getContext().getBeansOfType(Rule.class).values();
+    private List<Rule> getRules() {
+        final Collection<Rule> ruleCollection = getContext().getBeansOfType(Rule.class).values();
+        return Lists.newArrayList(ruleCollection);
     }
 }
