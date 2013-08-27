@@ -35,29 +35,27 @@ public abstract class AbstractContextMojo extends AbstractMojo {
 
     private GenericApplicationContext applicationContext;
 
-    private URLClassLoader classLoader;
-
     protected void initializeConfig() throws DependencyResolutionRequiredException, IOException {
 
-        @SuppressWarnings("rawtypes")
-        List testClasspathElements = project.getTestClasspathElements();
+        List<String> testClasspathElements = project.getTestClasspathElements();
         URL[] testUrls = new URL[testClasspathElements.size()];
         for (int i = 0; i < testClasspathElements.size(); i++) {
-            String element = (String) testClasspathElements.get(i);
+            String element = testClasspathElements.get(i);
             testUrls[i] = new File(element).toURI().toURL();
         }
-        classLoader = new URLClassLoader(testUrls, Thread.currentThread().getContextClassLoader());
+
+        URLClassLoader classLoader = new URLClassLoader(testUrls, Thread.currentThread().getContextClassLoader());
+        ClassPathResource classPathResource = new ClassPathResource(configLocation, classLoader);
 
         applicationContext = new GenericApplicationContext();
-        ClassPathResource classPathResource = new ClassPathResource(configLocation, classLoader);
         XmlBeanDefinitionReader xmlBeanDefinitionReader = new XmlBeanDefinitionReader(applicationContext);
         xmlBeanDefinitionReader.loadBeanDefinitions(classPathResource);
 
         applicationContext.getBeanFactory().registerSingleton("log", getLog());
-
         applicationContext.refresh();
     }
-    public GenericApplicationContext getContext() {
+
+    protected GenericApplicationContext getContext() {
         return applicationContext;
     }
 
@@ -69,5 +67,9 @@ public abstract class AbstractContextMojo extends AbstractMojo {
         } catch (IOException e) {
             throw new MojoExecutionException("Failed to initialize lint-maven-plugin", e);
         }
+    }
+
+    protected MavenProject getProject() {
+        return project;
     }
 }

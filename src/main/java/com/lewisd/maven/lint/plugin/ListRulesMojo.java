@@ -35,7 +35,7 @@ public class ListRulesMojo extends AbstractContextMojo {
 
         init();
 
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder buffer = new StringBuilder();
 
         final Map<String, AbstractRule> beansOfType = getContext().getBeansOfType(AbstractRule.class);
 
