@@ -17,6 +17,16 @@ package com.lewisd.maven.lint.plugin;
  */
 
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
+
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.MojoFailureException;
+
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.Lists;
 import com.lewisd.maven.lint.ModelFactory;
@@ -25,15 +35,6 @@ import com.lewisd.maven.lint.Rule;
 import com.lewisd.maven.lint.RuleInvoker;
 import com.lewisd.maven.lint.report.ReportWriter;
 import com.lewisd.maven.lint.report.summary.SummaryReportWriter;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Perform checks on the POM, and fail the build if violations are found.
@@ -48,14 +49,14 @@ public class CheckMojo extends AbstractContextMojo {
     /**
      * Fail the build when there are violations.
      *
-     * @parameter property="maven-lint.failOnViolation" default-value="true"
+     * @parameter expression="${maven-lint.failOnViolation}" default-value="true"
      */
     private boolean failOnViolation;
 
     /**
      * Specifies the path and filename to save the summary report to. A value of '-' (the default) will write the report to standard out.
      *
-     * @parameter property="maven-lint.output.file.summary" default-value="-"
+     * @parameter expression="${maven-lint.output.file.summary}" default-value="-"
      * @readonly
      */
     private File summaryOutputFile;
@@ -63,14 +64,14 @@ public class CheckMojo extends AbstractContextMojo {
     /**
      * Specifies the path and filename to save the XML report to.
      *
-     * @parameter property="maven-lint.output.file.xml" default-value="${project.build.directory}/maven-lint-result.xml"
+     * @parameter expression="${maven-lint.output.file.xml}" default-value="${project.build.directory}/maven-lint-result.xml"
      */
     private File xmlOutputFile;
 
     /**
      * Specifies the path and filename to save the HTML report to.
      *
-     * @parameter property="maven-lint.output.file.html" default-value="${project.build.directory}/maven-lint-result.html"
+     * @parameter expression="${maven-lint.output.file.html}" default-value="${project.build.directory}/maven-lint-result.html"
      */
     private File htmlOutputFile;
 
@@ -81,7 +82,7 @@ public class CheckMojo extends AbstractContextMojo {
      * xml (written to file specified by xmlOutputFile)<br/>
      * html (written to file specified by xmlOutputFile) (NOT YET IMPLEMENTED)
      *
-     * @parameter property="maven-lint.output.reports" default-value="summary,xml"
+     * @parameter expression="${maven-lint.output.reports}" default-value="summary,xml"
      */
     private String outputReports;
 

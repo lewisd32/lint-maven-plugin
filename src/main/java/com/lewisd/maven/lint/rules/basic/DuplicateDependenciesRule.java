@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.ObjectUtils;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.InputLocation;
 import org.apache.maven.model.Model;
@@ -13,11 +14,11 @@ import org.apache.maven.project.MavenProject;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.lewisd.maven.lint.ResultCollector;
-import com.lewisd.maven.lint.rules.AbstractReduntantVersionRule;
+import com.lewisd.maven.lint.rules.AbstractRule;
 import com.lewisd.maven.lint.util.ExpressionEvaluator;
 import com.lewisd.maven.lint.util.ModelUtil;
 
-public class DuplicateDependenciesRule extends AbstractReduntantVersionRule {
+public class DuplicateDependenciesRule extends AbstractRule {
 
     @Autowired
     public DuplicateDependenciesRule(final ExpressionEvaluator expressionEvaluator, final ModelUtil modelUtil) {
@@ -70,7 +71,7 @@ public class DuplicateDependenciesRule extends AbstractReduntantVersionRule {
                     final String otherVersion = modelUtil.getVersion(otherManagedDependency);
                     final InputLocation location = modelUtil.getLocation(dependency);
                     final InputLocation otherLocation = modelUtil.getLocation(otherManagedDependency);
-                    if (version != null && otherVersion != null && otherVersion.equals(version) || version.equals(otherVersion)) {
+                    if (ObjectUtils.equals(version, otherVersion)) {
                         resultCollector.addViolation(mavenProject, this, dependencyDescription + " '" + modelUtil.getKey(dependency) +
                                                                          "' is declared multiple times with the same version: " +
                                                                          otherLocation.getLineNumber() + ":" + otherLocation.getColumnNumber(), location);
