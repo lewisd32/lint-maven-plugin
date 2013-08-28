@@ -15,6 +15,10 @@ public abstract class AbstractRule implements Rule {
 	protected final ExpressionEvaluator expressionEvaluator;
 	protected final ModelUtil modelUtil;
 	
+	protected AbstractRule() {
+		this(null, null);
+	}
+
 	protected AbstractRule(final ExpressionEvaluator expressionEvaluator, final ModelUtil modelUtil) {
 		this.expressionEvaluator = expressionEvaluator;
 		this.modelUtil = modelUtil;
@@ -26,8 +30,9 @@ public abstract class AbstractRule implements Rule {
 		return requiredModels;
 	}
 	
-	protected abstract void addRequiredModels(Set<String> requiredModels);
-	
+	protected void addRequiredModels(Set<String> requiredModels) {
+		// do nothing by default
+	}
 	
 
 }
