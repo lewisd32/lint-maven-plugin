@@ -17,18 +17,6 @@ package com.lewisd.maven.lint.plugin;
  */
 
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-
-import org.apache.maven.model.PatternSet;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
-
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.Lists;
 import com.lewisd.maven.lint.ModelFactory;
@@ -37,44 +25,51 @@ import com.lewisd.maven.lint.Rule;
 import com.lewisd.maven.lint.RuleInvoker;
 import com.lewisd.maven.lint.report.ReportWriter;
 import com.lewisd.maven.lint.report.summary.SummaryReportWriter;
+import org.apache.maven.model.PatternSet;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+
+import static org.apache.maven.plugins.annotations.LifecyclePhase.VERIFY;
+import static org.apache.maven.plugins.annotations.ResolutionScope.TEST;
 
 /**
  * Perform checks on the POM, and fail the build if violations are found.
- *
- * @goal check
- * @phase verify
- * @requiresDependencyResolution test
- * @threadSafe
  */
+@Mojo(name = "check", defaultPhase = VERIFY, requiresDependencyResolution = TEST, threadSafe = true, requiresProject = true)
 public class CheckMojo extends AbstractContextMojo {
 
     /**
      * Fail the build when there are violations.
-     *
-     * @parameter expression="${maven-lint.failOnViolation}" default-value="true"
      */
+    @Parameter(defaultValue = "true", property = "maven-lint.failOnViolation")
     private boolean failOnViolation;
 
     /**
      * Specifies the path and filename to save the summary report to. A value of '-' (the default) will write the report to standard out.
-     *
-     * @parameter expression="${maven-lint.output.file.summary}" default-value="-"
-     * @readonly
      */
+    @Parameter(defaultValue = "-", property = "maven-lint.output.file.summary", readonly = true)
     private File summaryOutputFile;
 
     /**
      * Specifies the path and filename to save the XML report to.
-     *
-     * @parameter expression="${maven-lint.output.file.xml}" default-value="${project.build.directory}/maven-lint-result.xml"
      */
+    @Parameter(property = "maven-lint.output.file.xml", defaultValue = "${project.build.directory}/maven-lint-result.xml")
     private File xmlOutputFile;
 
     /**
      * Specifies the path and filename to save the HTML report to.
-     *
-     * @parameter expression="${maven-lint.output.file.html}" default-value="${project.build.directory}/maven-lint-result.html"
      */
+    @Parameter(property = "maven-lint.output.file.html", defaultValue = "${project.build.directory}/maven-lint-result.html")
     private File htmlOutputFile;
 
     /**
@@ -83,21 +78,22 @@ public class CheckMojo extends AbstractContextMojo {
      * summary (written to standard out, or file specified by summaryOutputFile)<br/>
      * xml (written to file specified by xmlOutputFile)<br/>
      * html (written to file specified by xmlOutputFile) (NOT YET IMPLEMENTED)
-     *
-     * @parameter expression="${maven-lint.output.reports}" default-value="summary,xml"
      */
+    @Parameter(property = "maven-lint.output.reports", defaultValue = "summary,xml")
     private String outputReports;
 
     /**
      * @parameter
      */
+    @Parameter
     private PatternSet rules;
 
     /**
-     * @parameter expression="${maven-lint.rules}"
+     * describes a list of rules to be executed
      */
+    @Parameter(property = "maven-lint.rules", defaultValue = "all")
     private String[] onlyRunRules;
-    
+
     public void execute() throws MojoExecutionException, MojoFailureException {
 
         init();
@@ -146,7 +142,7 @@ public class CheckMojo extends AbstractContextMojo {
         } else {
             rulesToRun = rulesSelector.selectAllRules();
         }
-        
+
         for (Rule rule : rulesToRun) {
             executeRule(resultCollector, ruleInvoker, rule);
         }
