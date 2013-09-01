@@ -53,18 +53,18 @@ public class RulesSelectorTest {
 
     @Test
     public void testAll() {
-        assertThat(selector.selectRule("all")).contains(allRules);
+        assertThat(selector.selectRules("all")).contains(allRules);
     }
 
     @Test
     public void testAllAll() {
-        assertThat(selector.selectRule(new String[]{"all","all"})).contains(allRules);
+        assertThat(selector.selectRules(new String[]{"all","all"})).contains(allRules);
     }
 
     @Test
     public void testUnsupportedRule() {
         try {
-            selector.selectRule(new String[]{"x","A2"});
+            selector.selectRules(new String[]{"x","A2"});
         } catch (IllegalArgumentException e) {
             assertThat(e).hasMessage("unsupported rule(s) x");
         }
@@ -72,16 +72,16 @@ public class RulesSelectorTest {
 
     @Test
     public void testUnsupportedRuleWithAll() {
-        assertThat(selector.selectRule(new String[]{"x1","all"})).contains(allRules);
+        assertThat(selector.selectRules(new String[]{"x1","all"})).contains(allRules);
     }
 
     @Test
     public void testExplicitAll() {
-        assertThat(selector.selectRule(new String[]{"A1","A2"})).contains(allRules);
+        assertThat(selector.selectRules(new String[]{"A1","A2"})).contains(allRules);
     }
 
     @Test
     public void testExplicitA1() {
-        assertThat(selector.selectRule(new String[]{"A1"})).contains(allRules[0]);
+        assertThat(selector.selectRules(new String[]{"A1"})).contains(allRules[0]);
     }
 }

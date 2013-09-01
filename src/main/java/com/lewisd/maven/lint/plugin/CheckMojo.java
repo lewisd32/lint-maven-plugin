@@ -23,7 +23,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
+import org.apache.maven.model.PatternSet;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 
@@ -87,10 +89,15 @@ public class CheckMojo extends AbstractContextMojo {
     private String outputReports;
 
     /**
-     * @parameter expression="${maven-lint.rules}" default-value="all"
+     * @parameter
      */
-    private String[] rules;
+    private PatternSet rules;
 
+    /**
+     * @parameter expression="${maven-lint.rules}"
+     */
+    private String[] onlyRunRules;
+    
     public void execute() throws MojoExecutionException, MojoFailureException {
 
         init();
@@ -131,7 +138,16 @@ public class CheckMojo extends AbstractContextMojo {
         RuleInvoker ruleInvoker = new RuleInvoker(getProject(), modelFactory);
         RulesSelector rulesSelector = new RulesSelector(getRules());
 
-        for (Rule rule : rulesSelector.selectRule(rules)) {
+        final Set<Rule> rulesToRun;
+        if (onlyRunRules != null && onlyRunRules.length > 0) {
+            rulesToRun = rulesSelector.selectRules(onlyRunRules);
+        } else if (rules != null) {
+            rulesToRun = rulesSelector.selectRules(rules);
+        } else {
+            rulesToRun = rulesSelector.selectAllRules();
+        }
+        
+        for (Rule rule : rulesToRun) {
             executeRule(resultCollector, ruleInvoker, rule);
         }
     }

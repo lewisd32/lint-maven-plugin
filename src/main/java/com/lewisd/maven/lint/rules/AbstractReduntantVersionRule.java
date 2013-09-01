@@ -101,7 +101,7 @@ public abstract class AbstractReduntantVersionRule extends AbstractRule {
         }
         final String classifier = modelUtil.tryGetClassifier(object);
         if (classifier != null) {
-            path.append(" and classifier='" + classifier + "']");
+            path.append(" and classifier='" + classifier + "'");
         }
         path.append("]");
 
