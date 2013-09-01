@@ -41,6 +41,7 @@ public class ListRulesMojo extends AbstractContextMojo {
 
         for (AbstractRule rule : beansOfType.values()) {
             buffer.
+                    append("- ").
                     append(rule.getIdentifier()).
                     append("\n\n").
                     append(formatAsBlock(rule)).
@@ -53,7 +54,7 @@ public class ListRulesMojo extends AbstractContextMojo {
     private String formatAsBlock(AbstractRule rule) {
         final String description = rule.getDescription();
         String[] words = description.split("\\ +");
-        StringBuilder lines = new StringBuilder();
+        StringBuilder lines = new StringBuilder("\t");
 
         int maxLength = 80;
         int count = 0;
@@ -66,7 +67,7 @@ public class ListRulesMojo extends AbstractContextMojo {
                 count += +word.length() + 1;
             } else {
                 count = 0;
-                lines.append("\n");
+                lines.append("\n\t");
             }
         }
 
