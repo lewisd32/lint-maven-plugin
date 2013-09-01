@@ -18,7 +18,7 @@ package com.lewisd.maven.lint.plugin;
 
 
 import com.google.common.annotations.VisibleForTesting;
-import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.lewisd.maven.lint.ModelFactory;
 import com.lewisd.maven.lint.ResultCollector;
 import com.lewisd.maven.lint.Rule;
@@ -132,16 +132,8 @@ public class CheckMojo extends AbstractContextMojo {
     private void executeRules(ResultCollector resultCollector) throws MojoExecutionException {
         ModelFactory modelFactory = getContext().getBean(ModelFactory.class);
         RuleInvoker ruleInvoker = new RuleInvoker(getProject(), modelFactory);
-        RulesSelector rulesSelector = new RulesSelector(getRules());
 
-        final Set<Rule> rulesToRun;
-        if (onlyRunRules != null && onlyRunRules.length > 0) {
-            rulesToRun = rulesSelector.selectRules(onlyRunRules);
-        } else if (rules != null) {
-            rulesToRun = rulesSelector.selectRules(rules);
-        } else {
-            rulesToRun = rulesSelector.selectAllRules();
-        }
+        Set<Rule> rulesToRun = new RulesSelector(getRules()).selectRules(rules, onlyRunRules);
 
         for (Rule rule : rulesToRun) {
             executeRule(resultCollector, ruleInvoker, rule);
@@ -220,8 +212,8 @@ public class CheckMojo extends AbstractContextMojo {
         return outputFile;
     }
 
-    private List<Rule> getRules() {
+    private Set<Rule> getRules() {
         final Collection<Rule> ruleCollection = getContext().getBeansOfType(Rule.class).values();
-        return Lists.newArrayList(ruleCollection);
+        return Sets.newHashSet(ruleCollection);
     }
 }
