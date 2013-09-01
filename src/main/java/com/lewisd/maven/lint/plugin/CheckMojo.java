@@ -49,7 +49,9 @@ import static org.apache.maven.plugins.annotations.ResolutionScope.TEST;
 public class CheckMojo extends AbstractContextMojo {
 
     /**
-     * Fail the build when there are violations.
+     * Fail the build when there are violations.<br/>
+     * default: true<br/>
+     * can be overriden by giving -Dmaven-lint.failOnViolation=true|false<br/>
      */
     @Parameter(defaultValue = "true", property = "maven-lint.failOnViolation")
     private boolean failOnViolation;
@@ -61,7 +63,9 @@ public class CheckMojo extends AbstractContextMojo {
     private File summaryOutputFile;
 
     /**
-     * Specifies the path and filename to save the XML report to.
+     * Specifies the path and filename to save the XML report to.<br/>
+     * defaultValue: ${project.build.directory}/maven-lint-result.xml<br/>
+     * can be overriden by giving -Dmaven-lint.output.file.xml=path<br/>
      */
     @Parameter(property = "maven-lint.output.file.xml", defaultValue = "${project.build.directory}/maven-lint-result.xml")
     private File xmlOutputFile;
@@ -83,15 +87,31 @@ public class CheckMojo extends AbstractContextMojo {
     private String outputReports;
 
     /**
-     * @parameter
+     * based on patterns you can include and exclude rules<br/>
+     * default configuration is<br/>
+     * <pre>
+     * &lt;rules&gt;
+     * &nbsp;&nbsp;&lt;excludes/&gt;
+     * &nbsp;&nbsp;&lt;includes&gt;
+     * &nbsp;&nbsp;&nbsp;&nbsp;&lt;include&gt;*&lt;/include&gt;
+     * &nbsp;&nbsp;&lt;/includes/&gt;
+     * &lt;/rules/&gt;
+     * </pre>              <br/>
+     * hints:<br/>
+     * - excludes overrides includes <br/>
+     * - onlyRunRules are overriden by these rules<br/>
      */
     @Parameter
     private PatternSet rules;
 
     /**
-     * describes a list of rules to be executed
+     * Comma-separates list of rules to be executed<br/>
+     * list of rules can be taken from goal 'list'<br/>
+     * default: all<br/>
+     * can be overriden by giving -Dmaven-lint.rules=all <br/>
+     * hint: can be overriden by &lt;rules/&gt;-section<br/>
      */
-    @Parameter(property = "maven-lint.rules", defaultValue = "all")
+    @Parameter(property = "maven-lint.rules", defaultValue = "all",required = true)
     private String[] onlyRunRules;
 
     public void execute() throws MojoExecutionException, MojoFailureException {
