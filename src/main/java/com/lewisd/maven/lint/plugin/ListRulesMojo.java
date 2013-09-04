@@ -20,15 +20,14 @@ package com.lewisd.maven.lint.plugin;
 import com.lewisd.maven.lint.rules.AbstractRule;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.Mojo;
 
 import java.util.Map;
 
 /**
  * Perform checks on the POM, and fail the build if violations are found.
- *
- * @goal list
- * @threadSafe
  */
+@Mojo(name = "list", threadSafe = true,requiresProject = true)
 public class ListRulesMojo extends AbstractContextMojo {
 
     public void execute() throws MojoExecutionException, MojoFailureException {

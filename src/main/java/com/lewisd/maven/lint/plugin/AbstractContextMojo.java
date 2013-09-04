@@ -3,6 +3,8 @@ package com.lewisd.maven.lint.plugin;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugins.annotations.Component;
+import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.context.support.GenericApplicationContext;
@@ -16,21 +18,13 @@ import java.util.List;
 
 public abstract class AbstractContextMojo extends AbstractMojo {
 
-    /**
-     * The Maven Project.
-     *
-     * @parameter expression="${project}"
-     * @required
-     * @readonly
-     */
+    @Component
     private MavenProject project;
 
     /**
      * The root spring config location.
-     *
-     * @parameter expression="${maven-lint.config.location}" default-value="config/maven_lint.xml"
-     * @required
      */
+    @Parameter(required = true,property = "maven-lint.config.location",defaultValue = "config/maven_lint.xml")
     private String configLocation;
 
     private GenericApplicationContext applicationContext;
