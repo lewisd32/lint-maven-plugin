@@ -17,11 +17,16 @@ package com.lewisd.maven.lint.plugin;
  */
 
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.lewisd.maven.lint.rules.AbstractRule;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -34,11 +39,20 @@ public class ListRulesMojo extends AbstractContextMojo {
 
         init();
 
+        Collection<AbstractRule> rules = getContext().getBeansOfType(AbstractRule.class).values();
+
+        Map<String,AbstractRule> name2ruleMap = Maps.newHashMap();
+        for (AbstractRule rule : rules){
+            name2ruleMap.put(rule.getIdentifier(),rule);
+        }
+
+        List<String> names = Lists.newArrayList(name2ruleMap.keySet());
+        Collections.sort(names);
+
         StringBuilder buffer = new StringBuilder();
+        for (String name : names) {
+            AbstractRule rule = name2ruleMap.get(name);
 
-        final Map<String, AbstractRule> beansOfType = getContext().getBeansOfType(AbstractRule.class);
-
-        for (AbstractRule rule : beansOfType.values()) {
             buffer.
                     append("- ").
                     append(rule.getIdentifier()).
@@ -61,15 +75,17 @@ public class ListRulesMojo extends AbstractContextMojo {
             if ((count + word.length() + 1) <= maxLength) {
                 if (count > 0) {
                     lines.append(' ');
+                    count++;
                 }
                 lines.append(word);
-                count += +word.length() + 1;
+                count += word.length();
             } else {
                 count = 0;
                 lines.append("\n\t");
+                lines.append(word);
             }
         }
 
-        return lines.toString().trim();
+        return lines.toString();
     }
 }
