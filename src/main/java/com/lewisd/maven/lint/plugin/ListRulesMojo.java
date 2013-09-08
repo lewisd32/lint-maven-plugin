@@ -77,13 +77,12 @@ public class ListRulesMojo extends AbstractContextMojo {
                     lines.append(' ');
                     count++;
                 }
-                lines.append(word);
-                count += word.length();
             } else {
                 count = 0;
                 lines.append("\n\t");
-                lines.append(word);
             }
+            lines.append(word);
+            count += word.length();
         }
 
         return lines.toString();
