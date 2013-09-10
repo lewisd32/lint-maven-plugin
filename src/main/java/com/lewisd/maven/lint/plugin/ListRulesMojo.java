@@ -17,7 +17,6 @@ package com.lewisd.maven.lint.plugin;
  */
 
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.lewisd.maven.lint.rules.AbstractRule;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -25,14 +24,12 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
 
 import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 /**
  * Perform checks on the POM, and fail the build if violations are found.
  */
-@Mojo(name = "list", threadSafe = true,requiresProject = true)
+@Mojo(name = "list", threadSafe = true, requiresProject = true)
 public class ListRulesMojo extends AbstractContextMojo {
 
     public void execute() throws MojoExecutionException, MojoFailureException {
@@ -41,18 +38,14 @@ public class ListRulesMojo extends AbstractContextMojo {
 
         Collection<AbstractRule> rules = getContext().getBeansOfType(AbstractRule.class).values();
 
-        Map<String,AbstractRule> name2ruleMap = Maps.newHashMap();
-        for (AbstractRule rule : rules){
-            name2ruleMap.put(rule.getIdentifier(),rule);
+        Map<String, AbstractRule> name2ruleMap = Maps.newTreeMap();
+        for (AbstractRule rule : rules) {
+            name2ruleMap.put(rule.getIdentifier(), rule);
         }
 
-        List<String> names = Lists.newArrayList(name2ruleMap.keySet());
-        Collections.sort(names);
-
         StringBuilder buffer = new StringBuilder();
-        for (String name : names) {
-            AbstractRule rule = name2ruleMap.get(name);
-
+        for (Map.Entry<String, AbstractRule> entry : name2ruleMap.entrySet()) {
+            AbstractRule rule = entry.getValue();
             buffer.
                     append("- ").
                     append(rule.getIdentifier()).
