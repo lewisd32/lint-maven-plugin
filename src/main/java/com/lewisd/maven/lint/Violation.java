@@ -19,7 +19,7 @@ public class Violation {
 
 	@Override
 	public String toString() {
-		return rule.getIdentifier() + ": " + message + " : " + inputLocation.getLineNumber() + ":" + inputLocation.getColumnNumber() + " : " + inputLocation.getSource().getLocation();
+		return rule.getIdentifier() + ": " + message + " : " + inputLocation.getLineNumber() + ":" + inputLocation.getColumnNumber() + " " + inputLocation.getSource().getLocation();
 	}
 
 	public MavenProject getMavenProject() {
