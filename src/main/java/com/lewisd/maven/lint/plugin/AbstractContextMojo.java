@@ -27,7 +27,7 @@ public abstract class AbstractContextMojo extends AbstractMojo {
     @Parameter(required = true,property = "maven-lint.config.location",defaultValue = "config/maven_lint.xml")
     private String configLocation;
 
-    private GenericApplicationContext applicationContext;
+    private GenericApplicationContext applicationContext = new GenericApplicationContext();
 
     protected void initializeConfig() throws DependencyResolutionRequiredException, IOException {
 
@@ -41,7 +41,6 @@ public abstract class AbstractContextMojo extends AbstractMojo {
         URLClassLoader classLoader = new URLClassLoader(testUrls, Thread.currentThread().getContextClassLoader());
         ClassPathResource classPathResource = new ClassPathResource(configLocation, classLoader);
 
-        applicationContext = new GenericApplicationContext();
         XmlBeanDefinitionReader xmlBeanDefinitionReader = new XmlBeanDefinitionReader(applicationContext);
         xmlBeanDefinitionReader.loadBeanDefinitions(classPathResource);
 

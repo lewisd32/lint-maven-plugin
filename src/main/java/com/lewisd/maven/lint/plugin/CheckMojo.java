@@ -25,9 +25,13 @@ import com.lewisd.maven.lint.Rule;
 import com.lewisd.maven.lint.RuleInvoker;
 import com.lewisd.maven.lint.report.ReportWriter;
 import com.lewisd.maven.lint.report.summary.SummaryReportWriter;
+import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.PatternSet;
+import org.apache.maven.plugin.MojoExecution;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugin.PluginParameterExpressionEvaluator;
+import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
@@ -114,7 +118,18 @@ public class CheckMojo extends AbstractContextMojo {
     @Parameter(property = "maven-lint.rules", defaultValue = "all",required = true)
     private String[] onlyRunRules;
 
+    @Component
+    private MavenSession session;
+
+    @Component
+    private MojoExecution mojoExecution;
+
+    private PluginParameterExpressionEvaluator pluginParameterExpressionEvaluator;
+
     public void execute() throws MojoExecutionException, MojoFailureException {
+
+        pluginParameterExpressionEvaluator = new PluginParameterExpressionEvaluator(session, mojoExecution);
+        getContext().getBeanFactory().registerResolvableDependency(PluginParameterExpressionEvaluator.class,pluginParameterExpressionEvaluator);
 
         init();
 

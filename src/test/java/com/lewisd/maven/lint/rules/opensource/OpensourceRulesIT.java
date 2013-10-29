@@ -6,6 +6,7 @@ import com.lewisd.maven.lint.rules.AbstractRule;
 import com.lewisd.maven.lint.rules.POM;
 import com.lewisd.maven.lint.rules.RuleInvokerWithPom;
 import org.apache.maven.monitor.logging.DefaultLog;
+import org.apache.maven.plugin.PluginParameterExpressionEvaluator;
 import org.codehaus.plexus.logging.console.ConsoleLogger;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.junit.BeforeClass;
@@ -19,6 +20,7 @@ import java.io.IOException;
 import java.util.List;
 
 import static org.fest.assertions.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 
 public class OpensourceRulesIT {
 
@@ -39,6 +41,7 @@ public class OpensourceRulesIT {
         xmlBeanDefinitionReader.loadBeanDefinitions(classPathResource);
 
         applicationContext.getBeanFactory().registerSingleton("LOG", LOG);
+        applicationContext.getBeanFactory().registerResolvableDependency(PluginParameterExpressionEvaluator.class, mock(PluginParameterExpressionEvaluator.class));
         applicationContext.refresh();
     }
 

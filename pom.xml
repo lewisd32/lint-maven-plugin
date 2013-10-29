@@ -196,6 +196,12 @@
             <artifactId>commons-validator</artifactId>
             <version>1.4.0</version>
         </dependency>
+        <dependency>
+          <groupId>org.mockito</groupId>
+          <artifactId>mockito-core</artifactId>
+          <version>1.9.5</version>
+          <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -333,7 +339,7 @@
     <profiles>
         <profile>
             <activation>
-                <activeByDefault>true</activeByDefault>
+                <activeByDefault>false</activeByDefault>
             </activation>
             <id>run-its</id>
             <build>

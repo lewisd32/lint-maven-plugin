@@ -14,16 +14,21 @@ import com.lewisd.maven.lint.model.Coordinates;
 import com.lewisd.maven.lint.model.ObjectWithPath;
 import com.lewisd.maven.lint.util.ExpressionEvaluator;
 import com.lewisd.maven.lint.util.ModelUtil;
+import org.apache.maven.plugin.PluginParameterExpressionEvaluator;
+import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluationException;
 
 public abstract class AbstractReduntantVersionRule extends AbstractRule {
 
     private final Logger log = Logger.getLogger(this.getClass());
 
     private final Set<Coordinates> excludedCoordinates = new HashSet<Coordinates>();
+    private final PluginParameterExpressionEvaluator pluginParameterExpressionEvaluator;
 
-    public AbstractReduntantVersionRule(
-                                        final ExpressionEvaluator expressionEvaluator, final ModelUtil modelUtil) {
-        super(expressionEvaluator, modelUtil);
+    public AbstractReduntantVersionRule(ExpressionEvaluator expressionEvaluator,
+                                        ModelUtil modelUtil,
+                                        PluginParameterExpressionEvaluator pluginParameterExpressionEvaluator) {
+      super(expressionEvaluator, modelUtil);
+      this.pluginParameterExpressionEvaluator = pluginParameterExpressionEvaluator;
     }
 
     protected void checkForRedundantVersions(final MavenProject mavenProject,
@@ -95,19 +100,29 @@ public abstract class AbstractReduntantVersionRule extends AbstractRule {
         StringBuilder path = new StringBuilder();
         path.append(objectWithPath.getPath());
         path.append("[");
-        path.append("groupId='").append(modelUtil.getGroupId(object) ).append( "'");
-        path.append(" and artifactId='" ).append(modelUtil.getArtifactId(object)) .append("'");
+        path.append("groupId='").append(modelUtil.getGroupId(object)).append("'");
+        path.append(" and artifactId='").append(modelUtil.getArtifactId(object)).append("'");
 
         String type = modelUtil.tryGetType(object);
         if (type != null) {
-            path.append(" and type='").append(type).append("'");
+          path.append(" and type='").append(type).append("'");
         }
 
         String classifier = modelUtil.tryGetClassifier(object);
         if (classifier != null) {
-            path.append(" and classifier='").append(classifier).append("'");
+          path.append(" and classifier='").append(classifier).append("'");
         }
         path.append("]");
+
+        // evaluate embedded properties
+        if ( path.toString().contains("${")){
+          try {
+            Object evaluate = pluginParameterExpressionEvaluator.evaluate(path.toString());
+            path = new StringBuilder(evaluate.toString());
+          } catch (ExpressionEvaluationException e) {
+            throw new IllegalStateException(e);
+          }
+        }
 
         Model model = objectWithPath.getProject().getModel();
         Collection<Object> objects = expressionEvaluator.getPath(model, path.toString());

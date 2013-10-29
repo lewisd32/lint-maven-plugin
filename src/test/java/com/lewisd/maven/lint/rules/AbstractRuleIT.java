@@ -2,6 +2,7 @@ package com.lewisd.maven.lint.rules;
 
 import com.lewisd.maven.lint.rules.basic.ViolationAssert;
 import org.apache.maven.monitor.logging.DefaultLog;
+import org.apache.maven.plugin.PluginParameterExpressionEvaluator;
 import org.codehaus.plexus.logging.console.ConsoleLogger;
 import org.junit.Before;
 import org.junit.Rule;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.core.io.ClassPathResource;
 
+import static org.mockito.Mockito.mock;
 
 public abstract class AbstractRuleIT<T extends AbstractRule> {
     private final static DefaultLog LOG = new DefaultLog(new ConsoleLogger(1, "test"));
@@ -28,6 +30,7 @@ public abstract class AbstractRuleIT<T extends AbstractRule> {
         xmlBeanDefinitionReader.loadBeanDefinitions(classPathResource);
 
         applicationContext.getBeanFactory().registerSingleton("LOG", LOG);
+        applicationContext.getBeanFactory().registerResolvableDependency(PluginParameterExpressionEvaluator.class, mock(PluginParameterExpressionEvaluator.class));
         applicationContext.refresh();
     }
 
