@@ -1,21 +1,20 @@
 package com.lewisd.maven.lint.rules;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-
-import org.apache.log4j.Logger;
-import org.apache.maven.model.InputLocation;
-import org.apache.maven.model.Model;
-import org.apache.maven.project.MavenProject;
-
 import com.lewisd.maven.lint.ResultCollector;
 import com.lewisd.maven.lint.model.Coordinates;
 import com.lewisd.maven.lint.model.ObjectWithPath;
 import com.lewisd.maven.lint.util.ExpressionEvaluator;
 import com.lewisd.maven.lint.util.ModelUtil;
+import org.apache.log4j.Logger;
+import org.apache.maven.model.InputLocation;
+import org.apache.maven.model.Model;
 import org.apache.maven.plugin.PluginParameterExpressionEvaluator;
+import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluationException;
+
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 public abstract class AbstractReduntantVersionRule extends AbstractRule {
 
@@ -27,8 +26,8 @@ public abstract class AbstractReduntantVersionRule extends AbstractRule {
     public AbstractReduntantVersionRule(ExpressionEvaluator expressionEvaluator,
                                         ModelUtil modelUtil,
                                         PluginParameterExpressionEvaluator pluginParameterExpressionEvaluator) {
-      super(expressionEvaluator, modelUtil);
-      this.pluginParameterExpressionEvaluator = pluginParameterExpressionEvaluator;
+        super(expressionEvaluator, modelUtil);
+        this.pluginParameterExpressionEvaluator = pluginParameterExpressionEvaluator;
     }
 
     protected void checkForRedundantVersions(final MavenProject mavenProject,
@@ -39,20 +38,20 @@ public abstract class AbstractReduntantVersionRule extends AbstractRule {
                                              final String inheritedDescription) {
 
         Object modelObject = object.getObject();
-              Object resolvedModelObject = tryResolveObject(object);
+        Object resolvedModelObject = tryResolveObject(object);
 
         if (isExcluded(resolvedModelObject)) {
             return;
         }
 
         String version = resolveVersion(modelObject, resolvedModelObject);
-              String inheritedVersion = modelUtil.getVersion(tryResolveObject(inheritedObject));
-  // both have a version, but if they're different, that might be ok.
+        String inheritedVersion = modelUtil.getVersion(tryResolveObject(inheritedObject));
+        // both have a version, but if they're different, that might be ok.
         // But if they're the same, then one is redundant.
         if (version != null && inheritedVersion != null && inheritedVersion.equals(version)) {
-          InputLocation location = modelUtil.getLocation(modelObject, "version");
-          String message = dependencyDescription + " '" + modelUtil.getKey(modelObject) + "' has same version (" + version + ") as " + inheritedDescription;
-          resultCollector.addViolation(mavenProject, this, message, location);
+            InputLocation location = modelUtil.getLocation(modelObject, "version");
+            String message = dependencyDescription + " '" + modelUtil.getKey(modelObject) + "' has same version (" + version + ") as " + inheritedDescription;
+            resultCollector.addViolation(mavenProject, this, message, location);
         }
     }
 
@@ -105,23 +104,23 @@ public abstract class AbstractReduntantVersionRule extends AbstractRule {
 
         String type = modelUtil.tryGetType(object);
         if (type != null) {
-          path.append(" and type='").append(type).append("'");
+            path.append(" and type='").append(type).append("'");
         }
 
         String classifier = modelUtil.tryGetClassifier(object);
         if (classifier != null) {
-          path.append(" and classifier='").append(classifier).append("'");
+            path.append(" and classifier='").append(classifier).append("'");
         }
         path.append("]");
 
         // evaluate embedded properties
-        if ( path.toString().contains("${")){
-          try {
-            Object evaluate = pluginParameterExpressionEvaluator.evaluate(path.toString());
-            path = new StringBuilder(evaluate.toString());
-          } catch (ExpressionEvaluationException e) {
-            throw new IllegalStateException(e);
-          }
+        if (path.toString().contains("${")) {
+            try {
+                Object evaluate = pluginParameterExpressionEvaluator.evaluate(path.toString());
+                path = new StringBuilder(evaluate.toString());
+            } catch (ExpressionEvaluationException e) {
+                throw new IllegalStateException(e);
+            }
         }
 
         Model model = objectWithPath.getProject().getModel();
