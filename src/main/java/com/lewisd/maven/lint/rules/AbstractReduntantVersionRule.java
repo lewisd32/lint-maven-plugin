@@ -1,51 +1,57 @@
 package com.lewisd.maven.lint.rules;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-
-import org.apache.log4j.Logger;
-import org.apache.maven.model.InputLocation;
-import org.apache.maven.model.Model;
-import org.apache.maven.project.MavenProject;
-
 import com.lewisd.maven.lint.ResultCollector;
 import com.lewisd.maven.lint.model.Coordinates;
 import com.lewisd.maven.lint.model.ObjectWithPath;
 import com.lewisd.maven.lint.util.ExpressionEvaluator;
 import com.lewisd.maven.lint.util.ModelUtil;
+import org.apache.log4j.Logger;
+import org.apache.maven.model.InputLocation;
+import org.apache.maven.model.Model;
+import org.apache.maven.plugin.PluginParameterExpressionEvaluator;
+import org.apache.maven.project.MavenProject;
+import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluationException;
+
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 public abstract class AbstractReduntantVersionRule extends AbstractRule {
 
     private final Logger log = Logger.getLogger(this.getClass());
 
     private final Set<Coordinates> excludedCoordinates = new HashSet<Coordinates>();
+    private final PluginParameterExpressionEvaluator pluginParameterExpressionEvaluator;
 
-    public AbstractReduntantVersionRule(
-                                        final ExpressionEvaluator expressionEvaluator, final ModelUtil modelUtil) {
+    public AbstractReduntantVersionRule(ExpressionEvaluator expressionEvaluator,
+                                        ModelUtil modelUtil,
+                                        PluginParameterExpressionEvaluator pluginParameterExpressionEvaluator) {
         super(expressionEvaluator, modelUtil);
+        this.pluginParameterExpressionEvaluator = pluginParameterExpressionEvaluator;
     }
 
     protected void checkForRedundantVersions(final MavenProject mavenProject,
-                                             final ResultCollector resultCollector, final ObjectWithPath<? extends Object> object,
-                                             final ObjectWithPath<? extends Object> inheritedObject, final String dependencyDescription,
+                                             final ResultCollector resultCollector,
+                                             final ObjectWithPath<? extends Object> object,
+                                             final ObjectWithPath<? extends Object> inheritedObject,
+                                             final String dependencyDescription,
                                              final String inheritedDescription) {
 
-        final Object modelObject = object.getObject();
-        final Object resolvedModelObject = tryResolveObject(object);
+        Object modelObject = object.getObject();
+        Object resolvedModelObject = tryResolveObject(object);
 
         if (isExcluded(resolvedModelObject)) {
             return;
         }
 
-        final String version = resolveVersion(modelObject, resolvedModelObject);
-        final String inheritedVersion = modelUtil.getVersion(tryResolveObject(inheritedObject));
+        String version = resolveVersion(modelObject, resolvedModelObject);
+        String inheritedVersion = modelUtil.getVersion(tryResolveObject(inheritedObject));
         // both have a version, but if they're different, that might be ok.
         // But if they're the same, then one is redundant.
         if (version != null && inheritedVersion != null && inheritedVersion.equals(version)) {
-            final InputLocation location = modelUtil.getLocation(modelObject, "version");
-            resultCollector.addViolation(mavenProject, this, dependencyDescription + " '" + modelUtil.getKey(modelObject) +
-                                                             "' has same version (" + version + ") as " + inheritedDescription, location);
+            InputLocation location = modelUtil.getLocation(modelObject, "version");
+            String message = dependencyDescription + " '" + modelUtil.getKey(modelObject) + "' has same version (" + version + ") as " + inheritedDescription;
+            resultCollector.addViolation(mavenProject, this, message, location);
         }
     }
 
@@ -89,24 +95,36 @@ public abstract class AbstractReduntantVersionRule extends AbstractRule {
      * this is how we find the resolved version of the object.
      */
     private Object resolveObject(final ObjectWithPath<? extends Object> objectWithPath) {
-        final Object object = objectWithPath.getObject();
-        final StringBuilder path = new StringBuilder();
+        Object object = objectWithPath.getObject();
+        StringBuilder path = new StringBuilder();
         path.append(objectWithPath.getPath());
         path.append("[");
-        path.append("groupId='" + modelUtil.getGroupId(object) + "'");
-        path.append(" and artifactId='" + modelUtil.getArtifactId(object) + "'");
-        final String type = modelUtil.tryGetType(object);
+        path.append("groupId='").append(modelUtil.getGroupId(object)).append("'");
+        path.append(" and artifactId='").append(modelUtil.getArtifactId(object)).append("'");
+
+        String type = modelUtil.tryGetType(object);
         if (type != null) {
-            path.append(" and type='" + type + "'");
+            path.append(" and type='").append(type).append("'");
         }
-        final String classifier = modelUtil.tryGetClassifier(object);
+
+        String classifier = modelUtil.tryGetClassifier(object);
         if (classifier != null) {
-            path.append(" and classifier='" + classifier + "'");
+            path.append(" and classifier='").append(classifier).append("'");
         }
         path.append("]");
 
-        final Model model = objectWithPath.getProject().getModel();
-        final Collection<Object> objects = expressionEvaluator.getPath(model, path.toString());
+        // evaluate embedded properties
+        if (path.toString().contains("${")) {
+            try {
+                Object evaluate = pluginParameterExpressionEvaluator.evaluate(path.toString());
+                path = new StringBuilder(evaluate.toString());
+            } catch (ExpressionEvaluationException e) {
+                throw new IllegalStateException(e);
+            }
+        }
+
+        Model model = objectWithPath.getProject().getModel();
+        Collection<Object> objects = expressionEvaluator.getPath(model, path.toString());
         if (objects.isEmpty()) {
             throw new IllegalStateException("Could not resolve " + object + " using path " + path);
         } else if (objects.size() > 1) {

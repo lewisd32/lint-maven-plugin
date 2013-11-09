@@ -6,6 +6,7 @@ import java.util.Set;
 
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Model;
+import org.apache.maven.plugin.PluginParameterExpressionEvaluator;
 import org.apache.maven.project.MavenProject;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -19,8 +20,10 @@ import com.lewisd.maven.lint.util.ModelUtil;
 public class RedundantDependencyVersionsRule extends AbstractReduntantVersionRule {
 
     @Autowired
-    public RedundantDependencyVersionsRule(final ExpressionEvaluator expressionEvaluator, final ModelUtil modelUtil) {
-        super(expressionEvaluator, modelUtil);
+    public RedundantDependencyVersionsRule(ExpressionEvaluator expressionEvaluator,
+                                           ModelUtil modelUtil,
+                                           PluginParameterExpressionEvaluator pluginParameterExpressionEvaluator) {
+        super(expressionEvaluator, modelUtil, pluginParameterExpressionEvaluator);
     }
 
     @Override
