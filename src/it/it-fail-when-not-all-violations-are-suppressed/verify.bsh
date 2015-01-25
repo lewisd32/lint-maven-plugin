@@ -1,26 +1,22 @@
-import java.io.*;
-import org.codehaus.plexus.util.FileUtils;
+source("src/it/shared/it-utils.bsh");
 
 try
 {
-    File file = new File( basedir, "build.log" );
-    String buf = FileUtils.fileRead( file, "UTF-8" );
+    String buf = readBuildLog();
 
-	String[] expectedErrors = new String[] {
+    checkForWarnings(buf);
+
+    String[] expectedErrors = new String[] {
 		"[LINT] Completed with 2 violations",
 		"[LINT] DotVersionProperty: Version property names must use '.version', not '-version': 'dummy-impl-version' : 51:",
 		"[LINT] GAVOrder: Found 'type' but was expecting 'version' : 50:" };
 
-	boolean passed = true;		
-	for (String expectedError : expectedErrors) {
-	    if ( buf.indexOf( expectedError ) < 0 )
-	    {
-	        System.err.println( "Did not find expected violation: " + expectedError );
-	        passed = false;
-	    }
-    }
-    return passed;
-    
+    validateExpectedLintErrors(buf, expectedErrors);
+
+}
+catch( ValidationException t )
+{
+    return false;
 }
 catch( Throwable t )
 {

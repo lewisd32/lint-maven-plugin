@@ -1,0 +1,46 @@
+import java.io.*;
+import org.codehaus.plexus.util.FileUtils;
+
+class ValidationException extends Exception {
+
+}
+
+String readBuildLog() {
+    File file = new File( basedir, "build.log" );
+    String buf = FileUtils.fileRead( file, "UTF-8" );
+    return buf;
+}
+
+void checkForWarnings(buf) {
+    int warnIndex = buf.indexOf(" WARN ");
+    if ( warnIndex >= 0 )
+    {
+        int startOfLine = buf.lastIndexOf('\n', warnIndex);
+        int endOfLine = buf.indexOf('\n', warnIndex);
+        String warning = buf.substring(Math.max(startOfLine, 0), Math.min(endOfLine-1, buf.length()));
+        System.err.println("Unexpected warnings were logged: " + warning);
+        throw new ValidationException();
+    }
+}
+
+void validateExpectedLintErrors(buf, expectedErrors) {
+	boolean passed = true;
+	for (String expectedError : expectedErrors) {
+	    if ( buf.indexOf( expectedError ) < 0 )
+	    {
+	        System.err.println( "Did not find expected violation: " + expectedError );
+	        passed = false;
+	    }
+    }
+    if (!passed) {
+        throw new ValidationException();
+    }
+}
+
+void validateNoLintErrors(buf) {
+    if ( buf.indexOf( "[LINT] Completed with no violations" ) < 0 )
+    {
+        System.err.println( "Did not complete without violations." );
+        throw new ValidationException();
+    }
+}

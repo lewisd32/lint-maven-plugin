@@ -1,25 +1,21 @@
-import java.io.*;
-import org.codehaus.plexus.util.FileUtils;
+source("src/it/shared/it-utils.bsh");
 
 try
 {
-    File file = new File( basedir, "build.log" );
-    String buf = FileUtils.fileRead( file, "UTF-8" );
+    String buf = readBuildLog();
+
+    checkForWarnings(buf);
 
 	String[] expectedErrors = new String[] {
 		"[LINT] Completed with 1 violation",
 		"[LINT] ProfileOnlyAddModules: Found '[build, dependencies, dependencyManagement, distributionManagement, pluginRepositories, properties, repositories]' where only submodules are allowed : 12:14" };
 
-	boolean passed = true;		
-	for (String expectedError : expectedErrors) {
-	    if ( buf.indexOf( expectedError ) < 0 )
-	    {
-	        System.err.println( "Did not find expected violation: " + expectedError );
-	        passed = false;
-	    }
-    }
-    return passed;
-    
+    validateExpectedLintErrors(buf, expectedErrors);
+
+}
+catch( ValidationException t )
+{
+    return false;
 }
 catch( Throwable t )
 {

@@ -1,18 +1,17 @@
-import java.io.*;
-import org.codehaus.plexus.util.FileUtils;
+source("src/it/shared/it-utils.bsh");
 
 try
 {
-    File file = new File( basedir, "build.log" );
-    String buf = FileUtils.fileRead( file, "UTF-8" );
+    String buf = readBuildLog();
 
-    if ( buf.indexOf( "[LINT] Completed with no violations" ) < 0 )
-    {
-        System.err.println( "Did not complete without violations." );
-        return false;
-    }
-    
-    
+    checkForWarnings(buf);
+
+    validateNoLintErrors(buf);
+
+}
+catch( ValidationException t )
+{
+    return false;
 }
 catch( Throwable t )
 {
