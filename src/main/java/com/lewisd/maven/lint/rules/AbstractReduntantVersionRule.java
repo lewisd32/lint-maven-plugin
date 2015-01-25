@@ -5,12 +5,13 @@ import com.lewisd.maven.lint.model.Coordinates;
 import com.lewisd.maven.lint.model.ObjectWithPath;
 import com.lewisd.maven.lint.util.ExpressionEvaluator;
 import com.lewisd.maven.lint.util.ModelUtil;
-import org.apache.log4j.Logger;
 import org.apache.maven.model.InputLocation;
 import org.apache.maven.model.Model;
 import org.apache.maven.plugin.PluginParameterExpressionEvaluator;
+import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluationException;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -18,7 +19,8 @@ import java.util.Set;
 
 public abstract class AbstractReduntantVersionRule extends AbstractRule {
 
-    private final Logger log = Logger.getLogger(this.getClass());
+    @Autowired
+    private Log log;
 
     private final Set<Coordinates> excludedCoordinates = new HashSet<Coordinates>();
     private final PluginParameterExpressionEvaluator pluginParameterExpressionEvaluator;
@@ -133,6 +135,14 @@ public abstract class AbstractReduntantVersionRule extends AbstractRule {
             return objects.iterator().next();
         }
 
+    }
+
+    protected Log getLog() {
+        return log;
+    }
+
+    private void setLog(final Log log) {
+        this.log = log;
     }
 
 }

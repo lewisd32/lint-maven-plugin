@@ -154,6 +154,7 @@
             <artifactId>saxpath</artifactId>
             <version>1.0-FCS</version>
         </dependency>
+        <!-- Log4j is still needed for Spring to log -->
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>

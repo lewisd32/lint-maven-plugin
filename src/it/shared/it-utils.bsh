@@ -12,14 +12,24 @@ String readBuildLog() {
 }
 
 void checkForWarnings(buf) {
-    int warnIndex = buf.indexOf(" WARN ");
-    if ( warnIndex >= 0 )
-    {
-        int startOfLine = buf.lastIndexOf('\n', warnIndex);
-        int endOfLine = buf.indexOf('\n', warnIndex);
-        String warning = buf.substring(Math.max(startOfLine, 0), Math.min(endOfLine-1, buf.length()));
-        System.err.println("Unexpected warnings were logged: " + warning);
-        throw new ValidationException();
+    // Start checking for warnings where we start running the plugin.
+    int startIndex = buf.indexOf("--- lint-maven-plugin:");
+    while (startIndex >= 0) {
+        int warnIndex = buf.indexOf("[WARNING]", startIndex);
+        if ( warnIndex >= 0 )
+        {
+            int endOfLine = buf.indexOf('\n', warnIndex);
+            // If there was no end of line found, use the end of the buffer instead.
+            if (endOfLine < 0) {
+                endOfLine = buf.length();
+            }
+            String warning = buf.substring(warnIndex, endOfLine);
+
+            System.err.println("Unexpected warnings were logged: " + warning);
+            throw new ValidationException();
+        } else {
+            startIndex = warnIndex;
+        }
     }
 }
 

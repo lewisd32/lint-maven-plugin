@@ -7,13 +7,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Exclusion;
 import org.apache.maven.model.InputLocation;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.Plugin;
 import org.apache.maven.model.PluginExecution;
+import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.project.MavenProject;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -24,18 +24,19 @@ import com.lewisd.maven.lint.model.ObjectWithPath;
 
 public class ModelUtil {
 
-    private final Logger log = Logger.getLogger(this.getClass());
-
     private static final Object[] EMPTY_OBJECT_ARRAY = new Object[] {};
     @SuppressWarnings("rawtypes")
     private static final Class[] EMPTY_CLASS_ARRAY = new Class[] {};
     private final ReflectionUtil reflectionUtil;
     private final ExpressionEvaluator expressionEvaluator;
+    private final Log log;
 
     @Autowired
-    public ModelUtil(final ReflectionUtil reflectionUtil, final ExpressionEvaluator expressionEvaluator) {
+    public ModelUtil(final ReflectionUtil reflectionUtil, final ExpressionEvaluator expressionEvaluator,
+                     final Log log) {
         this.reflectionUtil = reflectionUtil;
         this.expressionEvaluator = expressionEvaluator;
+        this.log = log;
     }
 
     /*
