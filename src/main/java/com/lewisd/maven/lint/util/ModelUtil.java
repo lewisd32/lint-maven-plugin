@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Exclusion;
 import org.apache.maven.model.InputLocation;
@@ -22,6 +23,8 @@ import com.lewisd.maven.lint.model.ExtPlugin;
 import com.lewisd.maven.lint.model.ObjectWithPath;
 
 public class ModelUtil {
+
+    private final Logger log = Logger.getLogger(this.getClass());
 
     private static final Object[] EMPTY_OBJECT_ARRAY = new Object[] {};
     @SuppressWarnings("rawtypes")
@@ -111,14 +114,24 @@ public class ModelUtil {
             final List<PluginExecution> executions = plugin.getExecutions();
             if (executions != null && !executions.isEmpty()) {
                 final PluginExecution pluginExecution = executions.get(0);
-                locations.put("execution", pluginExecution.getLocation(""));
+                final InputLocation location = pluginExecution.getLocation("");
+                if (location != null) {
+                    locations.put("execution", location);
+                } else {
+                    log.warn("Unable to determine location for " + pluginExecution);
+                }
             }
         } else if (modelObject instanceof Dependency) {
             final Dependency dependency = (Dependency) modelObject;
             final List<Exclusion> exclusions = dependency.getExclusions();
             if (exclusions != null && !exclusions.isEmpty()) {
                 final Exclusion exclusion = exclusions.get(0);
-                locations.put("exclusion", exclusion.getLocation(""));
+                final InputLocation location = exclusion.getLocation("");
+                if (location != null) {
+                    locations.put("exclusion", location);
+                } else {
+                    log.warn("Unable to determine location for " + exclusion);
+                }
             }
         }
 
@@ -146,8 +159,15 @@ public class ModelUtil {
             final Field field = klass.getDeclaredField("locations");
             field.setAccessible(true);
 
-            final Map<Object, InputLocation> locations = new HashMap<Object, InputLocation>();
-            locations.putAll((Map<Object, InputLocation>) field.get(modelObject));
+            final Map<Object, InputLocation> locations = new HashMap();
+            final Map<Object, InputLocation> locationsFieldValue = (Map) field.get(modelObject);
+            for (Map.Entry<Object, InputLocation> entry : locationsFieldValue.entrySet()) {
+                if (entry.getValue() != null) {
+                    locations.put(entry.getKey(), entry.getValue());
+                } else {
+                    log.warn("Unable to determine location for " + entry.getKey());
+                }
+            }
             return locations;
         } catch (final NoSuchFieldException e) {
             if (klass.getSuperclass() == null) {
