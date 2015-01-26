@@ -56,30 +56,22 @@ public class RedundantPluginVersionsRule extends AbstractReduntantVersionRule {
                                           "Plugin", "in pluginManagement");
             }
 
-            final List<ExtPlugin> inheritedPlugins = modelUtil.findInheritedPlugins(mavenProject, plugin);
-            for (final ExtPlugin inheritedPlugin : inheritedPlugins) {
-                // only check the first inherited one that has a version set.
-                if (inheritedPlugin.getVersion() != null) {
-                    checkForRedundantVersions(mavenProject, resultCollector,
-                                              new ObjectWithPath<Object>(plugin, mavenProject, "build/plugins"),
-                                              new ObjectWithPath<Object>(inheritedPlugin, mavenProject, null),
-                                              "Plugin", "is inherited from " + inheritedPlugin.getMavenProject().getId());
-                    break;
-                }
+            final List<ObjectWithPath<ExtPlugin>> inheritedPlugins = modelUtil.findInheritedPlugins(mavenProject, plugin);
+            for (final ObjectWithPath<ExtPlugin> inheritedPlugin : inheritedPlugins) {
+                checkForRedundantVersions(mavenProject, resultCollector,
+                                          new ObjectWithPath<Object>(plugin, mavenProject, "build/plugins"),
+                                          inheritedPlugin,
+                                          "Plugin", "is inherited from " + inheritedPlugin.getProject().getId());
             }
         }
 
-        for (final Plugin plugin : managedPlugins) {
-            final List<ExtPlugin> inheritedPlugins = modelUtil.findInheritedPlugins(mavenProject, plugin);
-            for (final ExtPlugin inheritedPlugin : inheritedPlugins) {
-                // only check the first inherited one that has a version set.
-                if (inheritedPlugin.getVersion() != null) {
-                    checkForRedundantVersions(mavenProject, resultCollector,
-                                              new ObjectWithPath<Object>(plugin, mavenProject, "build/plugins"),
-                                              new ObjectWithPath<Object>(inheritedPlugin, mavenProject, null),
-                                              "Managed plugin", "is inherited from " + inheritedPlugin.getMavenProject().getId());
-                    break;
-                }
+        for (final Plugin managedPlugin : managedPlugins) {
+            final List<ObjectWithPath<ExtPlugin>> inheritedPlugins = modelUtil.findInheritedPlugins(mavenProject, managedPlugin);
+            for (final ObjectWithPath<ExtPlugin> inheritedPlugin : inheritedPlugins) {
+                checkForRedundantVersions(mavenProject, resultCollector,
+                                          new ObjectWithPath<Object>(managedPlugin, mavenProject, "build/pluginManagement/plugins"),
+                                          inheritedPlugin,
+                                          "Managed plugin", "is inherited from " + inheritedPlugin.getProject().getId());
             }
         }
 

@@ -9,6 +9,9 @@ public class ObjectWithPath<T> {
     private final MavenProject project;
 
     public ObjectWithPath(final T object, final MavenProject project, final String path) {
+        if (path == null) {
+            throw new IllegalArgumentException("path cannot be null");
+        }
         this.object = object;
         this.project = project;
         this.path = path;

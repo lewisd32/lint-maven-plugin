@@ -229,30 +229,32 @@ public class ModelUtil {
         return null;
     }
 
-    public List<ExtPlugin> findInheritedPlugins(final MavenProject mavenProject,
+    public List<ObjectWithPath<ExtPlugin>> findInheritedPlugins(final MavenProject mavenProject,
                                                 final Plugin plugin) {
-        final List<ExtPlugin> inheritedPlugins = new LinkedList<ExtPlugin>();
+        final List<ObjectWithPath<ExtPlugin>> inheritedPlugins = new LinkedList<ObjectWithPath<ExtPlugin>>();
         findInheritedPlugins(inheritedPlugins, mavenProject, plugin);
         return inheritedPlugins;
     }
 
-    private void findInheritedPlugins(final List<ExtPlugin> inheritedPlugins, final MavenProject mavenProject,
+    private void findInheritedPlugins(final List<ObjectWithPath<ExtPlugin>> inheritedPlugins, final MavenProject mavenProject,
                                       final Plugin plugin) {
         final MavenProject parent = mavenProject.getParent();
 
         if (parent != null) {
-            final Map<String, Plugin> dependencies = mapById(expressionEvaluator.<Plugin>getPath(parent.getOriginalModel(), "build/plugins"));
-            final Map<String, Plugin> managedDependencies = mapById(expressionEvaluator.<Plugin>getPath(parent.getOriginalModel(),
+            final Map<String, Plugin> plugins = mapById(expressionEvaluator.<Plugin>getPath(parent.getOriginalModel(), "build/plugins"));
+            final Map<String, Plugin> managedPlugins = mapById(expressionEvaluator.<Plugin>getPath(parent.getOriginalModel(),
                                                                                                         "build/pluginManagement/plugins"));
 
-            final Plugin parentDependency = dependencies.get(plugin.getId());
-            if (parentDependency != null) {
-                inheritedPlugins.add(new ExtPlugin(parent, parentDependency));
+            final Plugin parentPlugin = plugins.get(plugin.getId());
+            if (parentPlugin != null) {
+                // FIXME replace ExtPlugin with Plugin
+                inheritedPlugins.add(new ObjectWithPath(new ExtPlugin(parent, parentPlugin), parent, "build/plugins"));
             }
 
-            final Plugin parentManagedDependency = managedDependencies.get(plugin.getId());
-            if (parentManagedDependency != null) {
-                inheritedPlugins.add(new ExtPlugin(parent, parentManagedDependency));
+            final Plugin parentManagedPlugin = managedPlugins.get(plugin.getId());
+            if (parentManagedPlugin != null) {
+                // FIXME replace ExtPlugin with Plugin
+                inheritedPlugins.add(new ObjectWithPath(new ExtPlugin(parent, parentManagedPlugin), parent, "build/pluginManagement/plugins"));
             }
 
             findInheritedPlugins(inheritedPlugins, parent, plugin);
