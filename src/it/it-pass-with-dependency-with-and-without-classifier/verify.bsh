@@ -1,0 +1,22 @@
+source("src/it/shared/it-utils.bsh");
+
+try
+{
+    String buf = readBuildLog();
+
+    checkForWarnings(buf);
+
+    validateNoLintErrors(buf);
+
+}
+catch( ValidationException t )
+{
+    return false;
+}
+catch( Throwable t )
+{
+    t.printStackTrace();
+    return false;
+}
+
+return true;
