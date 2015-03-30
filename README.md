@@ -70,8 +70,8 @@ mvn com.lewisd:lint-maven-plugin:list
 
 - DotVersionProperty
 
-The convention is to specify properties used to hold versions as
-or some-library.version, but never some-library-version or
+The convention is to specify properties used to hold versions as some.library.version,
+or some-library.version, but never some-library-version or some.library-version.
 
 - VersionProp
 
@@ -79,10 +79,10 @@ The ${version} property is deprecated. Use ${project.version} instead.
 
 - GAVOrder
 
-Maven convention is that the groupId, artifactId, and version elements be
-in that order. Other elements with short, simple content, such as type, scope,
-etc, should be before elements with longer content, such as configuration,
-and exclusions, otherwise they can be easily missed, leading to confusion
+Maven convention is that the groupId, artifactId, and version elements be listed
+in that order. Other elements with short, simple content, such as type, scope, classifier,
+etc, should be before elements with longer content, such as configuration, executions,
+and exclusions, otherwise they can be easily missed, leading to confusion.
 
 - RedundantDepVersion
 
@@ -101,6 +101,7 @@ due to the repetition.
 - ProfileOnlyAddModules
 
 Profiles who's ids match the pattern with-.* must only add modules to the
+reactor.
 
 - DuplicateDep
 
@@ -126,6 +127,7 @@ users to trust.
 - OSSInceptionYearRule
 
 For better understanding the project the inception year of your project is
+required.
 
 - OSSIssueManagementSectionRule
 
