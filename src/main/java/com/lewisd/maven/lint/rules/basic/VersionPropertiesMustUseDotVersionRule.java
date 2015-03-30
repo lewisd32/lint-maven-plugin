@@ -32,7 +32,7 @@ public class VersionPropertiesMustUseDotVersionRule extends AbstractRule {
 
     @Override
     public String getDescription() {
-        return "The convention is to specify properties used to hold versions as \"some.library.version\", or some-library.version, " +
+        return "The convention is to specify properties used to hold versions as some.library.version or some-library.version, " +
                "but never some-library-version or some.library-version.";
     }
 
