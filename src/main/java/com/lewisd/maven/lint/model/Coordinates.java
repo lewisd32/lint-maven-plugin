@@ -44,10 +44,7 @@ public class Coordinates {
         if (type != null && !type.equals(coords.getType())) {
             return false;
         }
-        if (version != null && !version.equals(coords.getVersion())) {
-            return false;
-        }
-        return true;
+        return !(version != null && !version.equals(coords.getVersion()));
     }
 
     public static Coordinates parse(final String coordinate) {

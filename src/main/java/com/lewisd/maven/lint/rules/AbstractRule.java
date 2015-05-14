@@ -44,10 +44,11 @@ public abstract class AbstractRule implements Rule {
 
         if (expressionEvaluator != null ? !expressionEvaluator.equals(rule.expressionEvaluator) : rule.expressionEvaluator != null)
             return false;
-        if (modelUtil != null ? !modelUtil.equals(rule.modelUtil) : rule.modelUtil != null) return false;
+			return !(modelUtil != null ?
+					!modelUtil.equals(rule.modelUtil) :
+					rule.modelUtil != null);
 
-        return true;
-    }
+		}
 
     @Override
     public int hashCode() {
