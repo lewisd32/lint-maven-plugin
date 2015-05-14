@@ -1,11 +1,9 @@
 package com.lewisd.maven.lint.rules.basic;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Set;
-
+import com.lewisd.maven.lint.ResultCollector;
+import com.lewisd.maven.lint.rules.AbstractRule;
+import com.lewisd.maven.lint.util.ExpressionEvaluator;
+import com.lewisd.maven.lint.util.ModelUtil;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.InputLocation;
@@ -13,20 +11,16 @@ import org.apache.maven.model.Model;
 import org.apache.maven.project.MavenProject;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.lewisd.maven.lint.ResultCollector;
-import com.lewisd.maven.lint.rules.AbstractRule;
-import com.lewisd.maven.lint.util.ExpressionEvaluator;
-import com.lewisd.maven.lint.util.ModelUtil;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Map;
 
 public class DuplicateDependenciesRule extends AbstractRule {
 
     @Autowired
     public DuplicateDependenciesRule(final ExpressionEvaluator expressionEvaluator, final ModelUtil modelUtil) {
         super(expressionEvaluator, modelUtil);
-    }
-
-    @Override
-    protected void addRequiredModels(final Set<String> requiredModels) {
     }
 
     @Override

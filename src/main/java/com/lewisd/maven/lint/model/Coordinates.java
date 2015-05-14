@@ -11,10 +11,6 @@ public class Coordinates {
         this(groupId, artifactId, null, null);
     }
 
-    public Coordinates(final String groupId, final String artifactId, final String type) {
-        this(groupId, artifactId, type, null);
-    }
-
     public Coordinates(final String groupId, final String artifactId, final String type, final String version) {
         this.groupId = groupId;
         this.artifactId = artifactId;

@@ -17,7 +17,7 @@ public class RuleInvokerWithPom implements TestRule {
 
     private String filename;
     private RuleInvoker ruleInvoker;
-    private ResultCollector resultCollector = new ResultCollectorImpl(new ViolationSuppressorImpl());
+    private final ResultCollector resultCollector = new ResultCollectorImpl(new ViolationSuppressorImpl());
 
     @Override
     public Statement apply(final Statement base, final Description description) {
@@ -45,7 +45,7 @@ public class RuleInvokerWithPom implements TestRule {
     }
 
     private void initFilename(Description description) {
-        final POM pom = description.getAnnotation(POM.class);
+        POM pom = description.getAnnotation(POM.class);
         if (null == pom) {
             throw new IllegalStateException("need to specify a pom to shouldFailOnMissingSection on ( use " + POM.class + " annotation)");
         } else {

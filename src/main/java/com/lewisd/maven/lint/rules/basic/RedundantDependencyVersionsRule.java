@@ -1,21 +1,19 @@
 package com.lewisd.maven.lint.rules.basic;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
-
-import org.apache.maven.model.Dependency;
-import org.apache.maven.model.Model;
-import org.apache.maven.plugin.PluginParameterExpressionEvaluator;
-import org.apache.maven.project.MavenProject;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.lewisd.maven.lint.ResultCollector;
 import com.lewisd.maven.lint.model.ExtDependency;
 import com.lewisd.maven.lint.model.ObjectWithPath;
 import com.lewisd.maven.lint.rules.AbstractReduntantVersionRule;
 import com.lewisd.maven.lint.util.ExpressionEvaluator;
 import com.lewisd.maven.lint.util.ModelUtil;
+import org.apache.maven.model.Dependency;
+import org.apache.maven.model.Model;
+import org.apache.maven.plugin.PluginParameterExpressionEvaluator;
+import org.apache.maven.project.MavenProject;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Collection;
+import java.util.Map;
 
 public class RedundantDependencyVersionsRule extends AbstractReduntantVersionRule {
 
@@ -24,10 +22,6 @@ public class RedundantDependencyVersionsRule extends AbstractReduntantVersionRul
                                            ModelUtil modelUtil,
                                            PluginParameterExpressionEvaluator pluginParameterExpressionEvaluator) {
         super(expressionEvaluator, modelUtil, pluginParameterExpressionEvaluator);
-    }
-
-    @Override
-    protected void addRequiredModels(final Set<String> requiredModels) {
     }
 
     @Override
