@@ -68,8 +68,9 @@ public class ViolationSuppressorImpl implements ViolationSuppressor {
                 index = 0;
                 line = reader.readLine();
                 comment += "\n";
-                if (line == null)
+                if (line == null) {
                     return null;
+                }
             }
             char c = line.charAt(index);
             if (state == ParserState.STARTING_TAG) {

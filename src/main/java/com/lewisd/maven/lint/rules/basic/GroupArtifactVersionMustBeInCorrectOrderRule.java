@@ -62,11 +62,11 @@ public class GroupArtifactVersionMustBeInCorrectOrderRule extends AbstractRule {
 
 	public void invoke(final MavenProject mavenProject, final Map<String, Object> models, final ResultCollector resultCollector) {
 
-		final Collection<Object> objectsToCheck = modelUtil.findGAVObjects(mavenProject);
+		final Collection<Object> objectsToCheck = getModelUtil().findGAVObjects(mavenProject);
 
 		for (final Object object: objectsToCheck) {
 			final List<String> sortOrder = findSortOrder(object.getClass());
-			final Map<Object, InputLocation> locations = modelUtil.getLocations(object);
+			final Map<Object, InputLocation> locations = getModelUtil().getLocations(object);
 
 			// We don't need the location of the outer element for this rule
 			locations.remove("");

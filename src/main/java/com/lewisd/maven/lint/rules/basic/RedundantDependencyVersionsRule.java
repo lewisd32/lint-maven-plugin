@@ -39,10 +39,10 @@ public class RedundantDependencyVersionsRule extends AbstractReduntantVersionRul
     @Override
     public void invoke(final MavenProject mavenProject, final Map<String, Object> models, final ResultCollector resultCollector) {
         final Model originalModel = mavenProject.getOriginalModel();
-        final Collection<Dependency> dependencies = expressionEvaluator.getPath(originalModel, "dependencies");
-        final Collection<Dependency> managedDependencies = expressionEvaluator.getPath(originalModel, "dependencyManagement/dependencies");
+        final Collection<Dependency> dependencies = getExpressionEvaluator().getPath(originalModel, "dependencies");
+        final Collection<Dependency> managedDependencies = getExpressionEvaluator().getPath(originalModel, "dependencyManagement/dependencies");
 
-        final Map<String, Dependency> managedDependenciesByManagementKey = modelUtil.mapByManagementKey(managedDependencies);
+        final Map<String, Dependency> managedDependenciesByManagementKey = getModelUtil().mapByManagementKey(managedDependencies);
 
         for (final Dependency dependency : dependencies) {
             final Dependency managedDependency = managedDependenciesByManagementKey.get(dependency.getManagementKey());
@@ -53,7 +53,7 @@ public class RedundantDependencyVersionsRule extends AbstractReduntantVersionRul
                                           "Dependency", "in dependencyManagement");
             }
 
-            final ObjectWithPath<ExtDependency> inheritedDependency = modelUtil.findInheritedDependency(mavenProject, dependency);
+            final ObjectWithPath<ExtDependency> inheritedDependency = getModelUtil().findInheritedDependency(mavenProject, dependency);
             if (inheritedDependency != null) {
                 checkForRedundantVersions(mavenProject, resultCollector,
                                           new ObjectWithPath<Object>(dependency, mavenProject, "dependencies"),
@@ -63,7 +63,7 @@ public class RedundantDependencyVersionsRule extends AbstractReduntantVersionRul
         }
 
         for (final Dependency managedDependency : managedDependencies) {
-            final ObjectWithPath<ExtDependency> inheritedDependency = modelUtil.findInheritedDependency(mavenProject, managedDependency);
+            final ObjectWithPath<ExtDependency> inheritedDependency = getModelUtil().findInheritedDependency(mavenProject, managedDependency);
             if (inheritedDependency != null) {
                 checkForRedundantVersions(mavenProject, resultCollector,
                                           new ObjectWithPath<Object>(managedDependency, mavenProject, "dependencyManagement/dependencies"),
