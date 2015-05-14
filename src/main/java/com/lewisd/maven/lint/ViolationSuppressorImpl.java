@@ -31,7 +31,7 @@ public class ViolationSuppressorImpl implements ViolationSuppressor {
             reader = new BufferedReader(new FileReader(file));
 
             int lineNo = 1;
-            String line = null;
+            String line;
             while ((line = reader.readLine()) != null && lineNo < inputLocation.getLineNumber()) {
                 lineNo++;
             }

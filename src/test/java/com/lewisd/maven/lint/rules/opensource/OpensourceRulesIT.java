@@ -27,17 +27,16 @@ public class OpensourceRulesIT {
     private final static DefaultLog LOG = new DefaultLog(new ConsoleLogger(1, "test"));
     private final static String CONFIG_LOCATION = "config/maven_lint.xml";
 
-    private static GenericApplicationContext applicationContext;
-
     @Rule
     public RuleInvokerWithPom invokerWithPom = new RuleInvokerWithPom();
 
     @BeforeClass
     public static void beforeAllTest() {
-        applicationContext = new GenericApplicationContext();
+        GenericApplicationContext applicationContext = new GenericApplicationContext();
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         ClassPathResource classPathResource = new ClassPathResource(CONFIG_LOCATION, classLoader);
-        XmlBeanDefinitionReader xmlBeanDefinitionReader = new XmlBeanDefinitionReader(applicationContext);
+        XmlBeanDefinitionReader xmlBeanDefinitionReader = new XmlBeanDefinitionReader(
+            applicationContext);
         xmlBeanDefinitionReader.loadBeanDefinitions(classPathResource);
 
         applicationContext.getBeanFactory().registerSingleton("LOG", LOG);
