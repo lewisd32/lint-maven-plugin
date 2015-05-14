@@ -1,22 +1,20 @@
 package com.lewisd.maven.lint.rules.basic;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.apache.maven.model.Model;
-import org.apache.maven.model.Plugin;
-import org.apache.maven.plugin.PluginParameterExpressionEvaluator;
-import org.apache.maven.project.MavenProject;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.lewisd.maven.lint.ResultCollector;
 import com.lewisd.maven.lint.model.ExtPlugin;
 import com.lewisd.maven.lint.model.ObjectWithPath;
 import com.lewisd.maven.lint.rules.AbstractReduntantVersionRule;
 import com.lewisd.maven.lint.util.ExpressionEvaluator;
 import com.lewisd.maven.lint.util.ModelUtil;
+import org.apache.maven.model.Model;
+import org.apache.maven.model.Plugin;
+import org.apache.maven.plugin.PluginParameterExpressionEvaluator;
+import org.apache.maven.project.MavenProject;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 public class RedundantPluginVersionsRule extends AbstractReduntantVersionRule {
 

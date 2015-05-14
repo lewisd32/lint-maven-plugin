@@ -34,8 +34,8 @@ public abstract class AbstractReduntantVersionRule extends AbstractRule {
 
     protected void checkForRedundantVersions(final MavenProject mavenProject,
                                              final ResultCollector resultCollector,
-                                             final ObjectWithPath<? extends Object> object,
-                                             final ObjectWithPath<? extends Object> inheritedObject,
+                                             final ObjectWithPath<?> object,
+                                             final ObjectWithPath<?> inheritedObject,
                                              final String dependencyDescription,
                                              final String inheritedDescription) {
 
@@ -82,7 +82,7 @@ public abstract class AbstractReduntantVersionRule extends AbstractRule {
         return false;
     }
 
-    private Object tryResolveObject(final ObjectWithPath<? extends Object> objectWithPath) {
+    private Object tryResolveObject(final ObjectWithPath<?> objectWithPath) {
         try {
             return resolveObject(objectWithPath);
         } catch (final IllegalStateException e) {
@@ -96,7 +96,7 @@ public abstract class AbstractReduntantVersionRule extends AbstractRule {
      * the same object in the "model".  The "model" has had properties replaced with values, so
      * this is how we find the resolved version of the object.
      */
-    private Object resolveObject(final ObjectWithPath<? extends Object> objectWithPath) {
+    private Object resolveObject(final ObjectWithPath<?> objectWithPath) {
         Object object = objectWithPath.getObject();
         StringBuilder path = new StringBuilder();
         path.append(objectWithPath.getPath());
