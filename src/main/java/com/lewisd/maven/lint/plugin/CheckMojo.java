@@ -124,12 +124,12 @@ public class CheckMojo extends AbstractContextMojo {
     @Component
     private MojoExecution mojoExecution;
 
-    private PluginParameterExpressionEvaluator pluginParameterExpressionEvaluator;
-
     public void execute() throws MojoExecutionException, MojoFailureException {
 
-        pluginParameterExpressionEvaluator = new PluginParameterExpressionEvaluator(session, mojoExecution);
-        getContext().getBeanFactory().registerResolvableDependency(PluginParameterExpressionEvaluator.class,pluginParameterExpressionEvaluator);
+        PluginParameterExpressionEvaluator pluginParameterExpressionEvaluator = new PluginParameterExpressionEvaluator(
+            session, mojoExecution);
+        getContext().getBeanFactory().registerResolvableDependency(PluginParameterExpressionEvaluator.class,
+            pluginParameterExpressionEvaluator);
 
         init();
 
