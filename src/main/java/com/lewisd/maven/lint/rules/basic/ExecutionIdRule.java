@@ -1,11 +1,9 @@
 package com.lewisd.maven.lint.rules.basic;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
+import com.lewisd.maven.lint.ResultCollector;
+import com.lewisd.maven.lint.rules.AbstractReduntantVersionRule;
+import com.lewisd.maven.lint.util.ExpressionEvaluator;
+import com.lewisd.maven.lint.util.ModelUtil;
 import org.apache.commons.lang.StringUtils;
 import org.apache.maven.model.InputLocation;
 import org.apache.maven.model.Model;
@@ -15,10 +13,10 @@ import org.apache.maven.plugin.PluginParameterExpressionEvaluator;
 import org.apache.maven.project.MavenProject;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.lewisd.maven.lint.ResultCollector;
-import com.lewisd.maven.lint.rules.AbstractReduntantVersionRule;
-import com.lewisd.maven.lint.util.ExpressionEvaluator;
-import com.lewisd.maven.lint.util.ModelUtil;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 public class ExecutionIdRule extends AbstractReduntantVersionRule {
 
@@ -27,10 +25,6 @@ public class ExecutionIdRule extends AbstractReduntantVersionRule {
                            ModelUtil modelUtil,
                            PluginParameterExpressionEvaluator pluginParameterExpressionEvaluator) {
         super(expressionEvaluator, modelUtil, pluginParameterExpressionEvaluator);
-    }
-
-    @Override
-    protected void addRequiredModels(final Set<String> requiredModels) {
     }
 
     @Override

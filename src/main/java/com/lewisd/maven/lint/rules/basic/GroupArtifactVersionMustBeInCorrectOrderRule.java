@@ -19,7 +19,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -31,10 +30,6 @@ public class GroupArtifactVersionMustBeInCorrectOrderRule extends AbstractRule {
 	@Autowired
 	public GroupArtifactVersionMustBeInCorrectOrderRule(final ExpressionEvaluator expressionEvaluator, final ModelUtil modelUtil) {
 		super(expressionEvaluator, modelUtil);
-	}
-
-	@Override
-	protected void addRequiredModels(final Set<String> requiredModels) {
 	}
 
 	@Override

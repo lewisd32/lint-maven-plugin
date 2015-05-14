@@ -1,40 +1,33 @@
 package com.lewisd.maven.lint;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
-import org.junit.Assert;
-
 import org.apache.maven.project.MavenProject;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JMock;
-import org.junit.Before;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
 @RunWith(JMock.class)
 public class ProjectModelsTest {
-	
+
 	private static final String MAVEN_PROJECT = "mavenProject";
 	private static final String SIMPLE_MODEL = "simpleModel";
 	private static final String DEPENDENT_MODEL = "dependentModel";
 
 	private final Mockery mockery = new Mockery();
-	
+
 	private final MavenProject mavenProject = new MavenProject();
 	private final Map<String, ModelBuilder> modelBuilders = new HashMap<String, ModelBuilder>();
 	private final ProjectModels projectModels = new ProjectModels(mavenProject, modelBuilders);
-	
-	@Before
-	public void before() {
-		
-	}
 
 	@Test
 	public void shouldProvideMavenProject() {
@@ -42,31 +35,31 @@ public class ProjectModelsTest {
 		requiredModels.add(MAVEN_PROJECT);
 
 		Map<String,Object> models = projectModels.getModels(requiredModels);
-		
+
 		Assert.assertEquals(mavenProject, models.get(MAVEN_PROJECT));
 	}
-	
+
 	@Test
 	public void shouldProvideRequiredModelsWhenNoneHaveBeenCreated() {
 		final SimpleModel simpleModel = new SimpleModel();
 		final ModelBuilder simpleModelBuilder = mockery.mock(ModelBuilder.class);
-		
+
 		mockery.checking(new Expectations()
 		{{
 			allowing(simpleModelBuilder).getRequiredModels();
 			will(returnValue(Collections.singleton(MAVEN_PROJECT)));
-			
+
 			one(simpleModelBuilder).buildModel(with(new ModelMapMatcher(MAVEN_PROJECT, MavenProject.class)));
 			will(returnValue(simpleModel));
 		}});
-		
+
 		modelBuilders.put(SIMPLE_MODEL, simpleModelBuilder);
-		
+
 		Set<String> requiredModels = new HashSet<String>();
 		requiredModels.add(SIMPLE_MODEL);
 
 		Map<String,Object> models = projectModels.getModels(requiredModels);
-		
+
 		Assert.assertEquals(simpleModel, models.get(SIMPLE_MODEL));
 	}
 
@@ -74,7 +67,7 @@ public class ProjectModelsTest {
 	public void shouldProvideRequiredModelsWhenAlreadyCreated() {
 		final SimpleModel simpleModel = new SimpleModel();
 		final ModelBuilder simpleModelBuilder = mockery.mock(ModelBuilder.class);
-		
+
 		mockery.checking(new Expectations()
 		{{
 			allowing(simpleModelBuilder).getRequiredModels();
@@ -83,18 +76,18 @@ public class ProjectModelsTest {
 			one(simpleModelBuilder).buildModel(with(new ModelMapMatcher(MAVEN_PROJECT, MavenProject.class)));
 			will(returnValue(simpleModel));
 		}});
-		
+
 		modelBuilders.put(SIMPLE_MODEL, simpleModelBuilder);
-		
+
 		Set<String> requiredModels = new HashSet<String>();
 		requiredModels.add(SIMPLE_MODEL);
 
 		// get models once, creating them
 		projectModels.getModels(requiredModels);
-		
+
 		// get models again
 		Map<String,Object> models = projectModels.getModels(requiredModels);
-		
+
 		Assert.assertEquals(simpleModel, models.get(SIMPLE_MODEL));
 	}
 
@@ -104,42 +97,42 @@ public class ProjectModelsTest {
 		final DependentModel dependentModel = new DependentModel();
 		final ModelBuilder simpleModelBuilder = mockery.mock(ModelBuilder.class, "simpleModelBuilder");
 		final ModelBuilder dependentModelBuilder = mockery.mock(ModelBuilder.class, "dependentModelBuilder");
-		
+
 		mockery.checking(new Expectations()
 		{{
 			allowing(simpleModelBuilder).getRequiredModels();
 			will(returnValue(Collections.singleton(MAVEN_PROJECT)));
-			
+
 			allowing(dependentModelBuilder).getRequiredModels();
 			will(returnValue(Collections.singleton(SIMPLE_MODEL)));
-			
+
 			one(simpleModelBuilder).buildModel(with(new ModelMapMatcher(MAVEN_PROJECT, MavenProject.class)));
 			will(returnValue(simpleModel));
 
 			one(dependentModelBuilder).buildModel(with(new ModelMapMatcher(SIMPLE_MODEL, SimpleModel.class)));
 			will(returnValue(dependentModel));
 		}});
-		
+
 		modelBuilders.put(SIMPLE_MODEL, simpleModelBuilder);
 		modelBuilders.put(DEPENDENT_MODEL, dependentModelBuilder);
-		
+
 		Set<String> requiredModels = new HashSet<String>();
 		requiredModels.add(DEPENDENT_MODEL);
 
 		Map<String,Object> models = projectModels.getModels(requiredModels);
-		
+
 		Assert.assertEquals(dependentModel, models.get(DEPENDENT_MODEL));
 	}
 
 	class SimpleModel {
 	}
-	
+
 	class DependentModel {
 	}
-	
+
 	@SuppressWarnings("rawtypes")
 	class ModelMapMatcher extends BaseMatcher<Map<String,Object>> {
-		
+
 		private final String key;
 		private final Class klass;
 
@@ -158,6 +151,6 @@ public class ProjectModelsTest {
 		public void describeTo(Description description) {
 			description.appendText("Map containing a '" + key + "' key with value of type " + klass);
 		}
-		
+
 	}
 }
