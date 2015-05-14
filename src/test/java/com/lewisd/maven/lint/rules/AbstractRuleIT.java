@@ -39,7 +39,7 @@ public abstract class AbstractRuleIT<T extends AbstractRule> {
     }
 
     protected final T getRule(Class<T> ruleClazz) {
-        return (T) applicationContext.getBean(ruleClazz);
+        return applicationContext.getBean(ruleClazz);
     }
 
     protected ViolationAssert violationAssert() {

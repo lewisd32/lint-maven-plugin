@@ -79,7 +79,7 @@ public class RulesSelectorTest {
     @Test
     public void testUnsupportedRule() {
         try {
-            selector.selectRules(new String[]{"x", "A2"});
+            selector.selectRules("x", "A2");
         } catch (IllegalArgumentException e) {
             assertThat(e).hasMessage("unsupported rule(s) x");
         }
