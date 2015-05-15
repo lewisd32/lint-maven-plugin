@@ -21,6 +21,7 @@ Add Lint to your Build
 				<version>0.0.8</version>
 				<executions>
 					<execution>
+						<id>pom-lint</id>
 						<phase>validate</phase>
 						<goals>
 							<goal>check</goal>
@@ -52,6 +53,7 @@ Configure Rules and Failing on violation
 	</configuration>
 	<executions>
 		<execution>
+			<id>pom-lint</id>
 			<phase>validate</phase>
 			<goals>
 				<goal>check</goal>
