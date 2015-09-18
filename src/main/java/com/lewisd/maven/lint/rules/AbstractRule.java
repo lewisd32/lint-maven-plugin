@@ -12,8 +12,8 @@ public abstract class AbstractRule implements Rule {
   protected static final String VERSION_PROPERTIES = "versionProperties";
   protected static final String MAVEN_PROJECT      = "mavenProject";
 
-  private final ExpressionEvaluator expressionEvaluator;
-  private final ModelUtil           modelUtil;
+  protected final ExpressionEvaluator expressionEvaluator;
+  protected final ModelUtil           modelUtil;
 
   protected AbstractRule() {
     this(null, null);
@@ -33,14 +33,6 @@ public abstract class AbstractRule implements Rule {
 
   protected void addRequiredModels(Set<String> requiredModels) {
     // do nothing by default
-  }
-
-  public ExpressionEvaluator getExpressionEvaluator() {
-    return expressionEvaluator;
-  }
-
-  public ModelUtil getModelUtil() {
-    return modelUtil;
   }
 
   @Override

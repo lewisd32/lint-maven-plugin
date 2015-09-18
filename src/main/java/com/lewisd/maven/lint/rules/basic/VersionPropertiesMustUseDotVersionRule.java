@@ -44,7 +44,7 @@ public class VersionPropertiesMustUseDotVersionRule extends AbstractRule {
             final VersionProperty versionProperty = entry.getValue();
             for (final String propertyName : versionProperty.getPropertyNames()) {
                 if (isVersionProperty(propertyName) && !isAcceptableVersionPropertyName(propertyName)) {
-                    final InputLocation location = getModelUtil().getLocation(entry.getKey(), "version");
+                    final InputLocation location = modelUtil.getLocation(entry.getKey(), "version");
                     resultCollector.addViolation(mavenProject, this, "Version property names must use '.version', not '-version': '" + propertyName + "'",
                                                  location);
                 }

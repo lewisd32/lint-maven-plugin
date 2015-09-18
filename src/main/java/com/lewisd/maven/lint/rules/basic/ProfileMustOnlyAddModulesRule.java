@@ -51,7 +51,7 @@ public class ProfileMustOnlyAddModulesRule extends AbstractRule {
     @Override
     public void invoke(final MavenProject mavenProject, final Map<String, Object> models, final ResultCollector resultCollector) {
         final Model originalModel = mavenProject.getOriginalModel();
-        final Collection<Profile> profiles = getExpressionEvaluator().getPath(originalModel, "/profiles");
+        final Collection<Profile> profiles = expressionEvaluator.getPath(originalModel, "/profiles");
         for (final Profile profile : profiles) {
             if (profile.getId() != null && pattern.matcher(profile.getId()).matches()) {
                 final JXPathBeanInfo profileBeanInfo = JXPathIntrospector.getBeanInfo(Profile.class);
@@ -76,7 +76,7 @@ public class ProfileMustOnlyAddModulesRule extends AbstractRule {
                     }
                 }
                 if (!disallowedDescriptors.isEmpty()) {
-                    final InputLocation location = getModelUtil().getLocation(profile, "");
+                    final InputLocation location = modelUtil.getLocation(profile, "");
                     resultCollector.addViolation(mavenProject, this, "Found '" + disallowedDescriptors + "' where only submodules are allowed", location);
                 }
             }
