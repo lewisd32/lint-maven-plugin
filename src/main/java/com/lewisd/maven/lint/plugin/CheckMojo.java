@@ -115,8 +115,16 @@ public class CheckMojo extends AbstractContextMojo {
      * can be overriden by giving -Dmaven-lint.rules=all <br/>
      * hint: can be overriden by &lt;rules/&gt;-section<br/>
      */
-    @Parameter(property = "maven-lint.rules", defaultValue = "all",required = true)
+    @Parameter
     private String[] onlyRunRules;
+
+    /**
+     * Comma-separates list of rules to be executed<br/>
+     * list of rules can be taken from goal 'list'<br/>
+     * default: all
+     */
+    @Parameter(property = "maven-lint.rules")
+    private String[] onlyRunRulesSwitch;
 
     @Component
     private MavenSession session;
@@ -168,7 +176,19 @@ public class CheckMojo extends AbstractContextMojo {
         ModelFactory modelFactory = getContext().getBean(ModelFactory.class);
         RuleInvoker ruleInvoker = new RuleInvoker(getProject(), modelFactory);
 
-        Set<Rule> rulesToRun = new RulesSelector(getRules()).selectRules(rules, onlyRunRules);
+        String[] runRules;
+        if ( onlyRunRulesSwitch.length==0 ){
+            if ( onlyRunRules == null){
+                runRules = new String[]{};
+            }else{
+                runRules = onlyRunRules;
+            }
+        }else {
+            runRules = onlyRunRulesSwitch;
+        }
+
+
+        Set<Rule> rulesToRun = new RulesSelector(getRules()).selectRules(rules, runRules);
 
         for (Rule rule : rulesToRun) {
             executeRule(resultCollector, ruleInvoker, rule);
