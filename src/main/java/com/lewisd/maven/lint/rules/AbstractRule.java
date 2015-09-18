@@ -11,8 +11,8 @@ public abstract class AbstractRule implements Rule {
 
   protected static final String VERSION_PROPERTIES = "versionProperties";
 
-  protected final ExpressionEvaluator expressionEvaluator;
-  protected final ModelUtil           modelUtil;
+  private final ExpressionEvaluator expressionEvaluator;
+  private final ModelUtil           modelUtil;
 
   protected AbstractRule() {
     this(null, null);
@@ -32,6 +32,14 @@ public abstract class AbstractRule implements Rule {
 
   protected void addRequiredModels(Set<String> requiredModels) {
     // do nothing by default
+  }
+
+  public ExpressionEvaluator getExpressionEvaluator() {
+    return expressionEvaluator;
+  }
+
+  public ModelUtil getModelUtil() {
+    return modelUtil;
   }
 
   @Override

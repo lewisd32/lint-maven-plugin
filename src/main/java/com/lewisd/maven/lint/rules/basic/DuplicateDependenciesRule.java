@@ -37,9 +37,8 @@ public class DuplicateDependenciesRule extends AbstractRule {
     @Override
     public void invoke(final MavenProject mavenProject, final Map<String, Object> models, final ResultCollector resultCollector) {
         final Model originalModel = mavenProject.getOriginalModel();
-        final Collection<Dependency> dependencies = expressionEvaluator.getPath(originalModel, "dependencies");
-        final Collection<Dependency> managedDependencies = expressionEvaluator.getPath(originalModel,
-                                                                                       "dependencyManagement/dependencies");
+        final Collection<Dependency> dependencies = getExpressionEvaluator().getPath(originalModel, "dependencies");
+        final Collection<Dependency> managedDependencies = getExpressionEvaluator().getPath(originalModel, "dependencyManagement/dependencies");
 
         checkForDuplicateDependencies(mavenProject, resultCollector, dependencies, "Dependency");
         checkForDuplicateDependencies(mavenProject, resultCollector, managedDependencies, "Managed dependency");
@@ -62,18 +61,16 @@ public class DuplicateDependenciesRule extends AbstractRule {
             if (otherManagedDependency.getManagementKey().equals(dependency.getManagementKey())) {
                 i.remove();
                 if (otherManagedDependency != dependency) {
-                    final String version = modelUtil.getVersion(dependency);
-                    final String otherVersion = modelUtil.getVersion(otherManagedDependency);
-                    final InputLocation location = modelUtil.getLocation(dependency);
-                    final InputLocation otherLocation = modelUtil.getLocation(otherManagedDependency);
+                    final String version = getModelUtil().getVersion(dependency);
+                    final String otherVersion = getModelUtil().getVersion(otherManagedDependency);
+                    final InputLocation location = getModelUtil().getLocation(dependency);
+                    final InputLocation otherLocation = getModelUtil().getLocation(otherManagedDependency);
                     if (ObjectUtils.equals(version, otherVersion)) {
-                        resultCollector.addViolation(mavenProject, this, dependencyDescription + " '" + modelUtil.getKey(
-                                dependency) +
+                        resultCollector.addViolation(mavenProject, this, dependencyDescription + " '" + getModelUtil().getKey(dependency) +
                                                                          "' is declared multiple times with the same version: " +
                                                                          otherLocation.getLineNumber() + ":" + otherLocation.getColumnNumber(), location);
                     } else {
-                        resultCollector.addViolation(mavenProject, this, dependencyDescription + " '" + modelUtil.getKey(
-                                dependency) +
+                        resultCollector.addViolation(mavenProject, this, dependencyDescription + " '" + getModelUtil().getKey(dependency) +
                                                                          "' is declared multiple times with different versions (" + version + ", "
                                                                          + otherVersion + ")", location);
                     }
