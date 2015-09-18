@@ -1,3 +1,5 @@
+![travisci](https://travis-ci.org/lewisd32/lint-maven-plugin.svg)
+
 One-Time Usage Instructions
 ===========================
 If you want to try out lint, or run it one time with minimal hassle and no config changes, follow these simple steps:
