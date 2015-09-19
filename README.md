@@ -1,4 +1,4 @@
-![travisci](https://travis-ci.org/lewisd32/lint-maven-plugin.svg)
+[![travisci](https://travis-ci.org/lewisd32/lint-maven-plugin.svg)](https://travis-ci.org/lewisd32/lint-maven-plugin)
 
 One-Time Usage Instructions
 ===========================
