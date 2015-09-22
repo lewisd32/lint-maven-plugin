@@ -361,9 +361,7 @@
     <profiles>
         <profile>
             <activation>
-                <property>
-                    <name>!skipTests</name>
-                </property>
+                <activeByDefault>true</activeByDefault>
             </activation>
             <id>run-its</id>
             <build>
