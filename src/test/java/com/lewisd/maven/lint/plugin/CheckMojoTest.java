@@ -1,21 +1,13 @@
 package com.lewisd.maven.lint.plugin;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.PrintStream;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.maven.cli.MavenCli;
+import com.google.common.collect.Lists;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.google.common.collect.Lists;
-
-import static org.fest.assertions.api.Assertions.fail;
-import static org.junit.Assert.assertTrue;
+import java.io.File;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
 
 public class CheckMojoTest {
 
@@ -93,36 +85,5 @@ public class CheckMojoTest {
 		final String expected = "[LINT] Violations found. For more details see results in one of the following files: " + summaryFilePath + ", " + xmlFilePath;
 		final String actual = checkMojo.generateErrorMessage(Lists.newArrayList("summary", "xml"));
 		Assert.assertEquals(expected, actual);
-	}
-
-
-	// TODO must use current version (currently not working with snapshot)
-	@Test
-	public void testDefaultProject() throws Exception {
-		String pom = "src/test/resources/bugs/issue-4-missing-pluginParameterEvaluation/pom.xml";
-		String goal = "com.lewisd:lint-maven-plugin:check";
-		File tempFile = new File(".").createTempFile("log", "log");
-		tempFile.deleteOnExit();
-		File targetDir = new File("src/test/resources/bugs/issue-4-missing-pluginParameterEvaluation/target");
-		targetDir.deleteOnExit();
-		// everything except the warnings are going into this log
-		String[] args = {goal, "-f", pom, "-l", tempFile.getPath(), "-e"};
-
-		PrintStream oldOut = System.out; // remember old System.out
-		try {
-			ByteArrayOutputStream stdout = new ByteArrayOutputStream();
-			System.setOut(new PrintStream(stdout));
-
-			int result = new MavenCli().doMain(args, ".", null, null);
-
-			if (result != 0) {
-				String log = FileUtils.readFileToString(tempFile);
-				fail("sth went wrong : " + log);
-			}
-
-			assertTrue("expected to have some warnings " + stdout.toString(), stdout.toString().contains("WARN "));
-		} finally {
-			System.setOut(oldOut); // cleanup
-		}
 	}
 }
