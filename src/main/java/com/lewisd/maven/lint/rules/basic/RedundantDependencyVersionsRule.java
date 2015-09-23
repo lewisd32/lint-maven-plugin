@@ -1,21 +1,19 @@
 package com.lewisd.maven.lint.rules.basic;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
-
-import org.apache.maven.model.Dependency;
-import org.apache.maven.model.Model;
-import org.apache.maven.plugin.PluginParameterExpressionEvaluator;
-import org.apache.maven.project.MavenProject;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.lewisd.maven.lint.ResultCollector;
 import com.lewisd.maven.lint.model.ExtDependency;
 import com.lewisd.maven.lint.model.ObjectWithPath;
 import com.lewisd.maven.lint.rules.AbstractReduntantVersionRule;
 import com.lewisd.maven.lint.util.ExpressionEvaluator;
 import com.lewisd.maven.lint.util.ModelUtil;
+import org.apache.maven.model.Dependency;
+import org.apache.maven.model.Model;
+import org.apache.maven.plugin.PluginParameterExpressionEvaluator;
+import org.apache.maven.project.MavenProject;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Collection;
+import java.util.Map;
 
 public class RedundantDependencyVersionsRule extends AbstractReduntantVersionRule {
 
@@ -24,10 +22,6 @@ public class RedundantDependencyVersionsRule extends AbstractReduntantVersionRul
                                            ModelUtil modelUtil,
                                            PluginParameterExpressionEvaluator pluginParameterExpressionEvaluator) {
         super(expressionEvaluator, modelUtil, pluginParameterExpressionEvaluator);
-    }
-
-    @Override
-    protected void addRequiredModels(final Set<String> requiredModels) {
     }
 
     @Override
@@ -45,10 +39,10 @@ public class RedundantDependencyVersionsRule extends AbstractReduntantVersionRul
     @Override
     public void invoke(final MavenProject mavenProject, final Map<String, Object> models, final ResultCollector resultCollector) {
         final Model originalModel = mavenProject.getOriginalModel();
-        final Collection<Dependency> dependencies = expressionEvaluator.getPath(originalModel, "dependencies");
-        final Collection<Dependency> managedDependencies = expressionEvaluator.getPath(originalModel, "dependencyManagement/dependencies");
+        final Collection<Dependency> dependencies = getExpressionEvaluator().getPath(originalModel, "dependencies");
+        final Collection<Dependency> managedDependencies = getExpressionEvaluator().getPath(originalModel, "dependencyManagement/dependencies");
 
-        final Map<String, Dependency> managedDependenciesByManagementKey = modelUtil.mapByManagementKey(managedDependencies);
+        final Map<String, Dependency> managedDependenciesByManagementKey = getModelUtil().mapByManagementKey(managedDependencies);
 
         for (final Dependency dependency : dependencies) {
             final Dependency managedDependency = managedDependenciesByManagementKey.get(dependency.getManagementKey());
@@ -59,7 +53,7 @@ public class RedundantDependencyVersionsRule extends AbstractReduntantVersionRul
                                           "Dependency", "in dependencyManagement");
             }
 
-            final ObjectWithPath<ExtDependency> inheritedDependency = modelUtil.findInheritedDependency(mavenProject, dependency);
+            final ObjectWithPath<ExtDependency> inheritedDependency = getModelUtil().findInheritedDependency(mavenProject, dependency);
             if (inheritedDependency != null) {
                 checkForRedundantVersions(mavenProject, resultCollector,
                                           new ObjectWithPath<Object>(dependency, mavenProject, "dependencies"),
@@ -69,7 +63,7 @@ public class RedundantDependencyVersionsRule extends AbstractReduntantVersionRul
         }
 
         for (final Dependency managedDependency : managedDependencies) {
-            final ObjectWithPath<ExtDependency> inheritedDependency = modelUtil.findInheritedDependency(mavenProject, managedDependency);
+            final ObjectWithPath<ExtDependency> inheritedDependency = getModelUtil().findInheritedDependency(mavenProject, managedDependency);
             if (inheritedDependency != null) {
                 checkForRedundantVersions(mavenProject, resultCollector,
                                           new ObjectWithPath<Object>(managedDependency, mavenProject, "dependencyManagement/dependencies"),

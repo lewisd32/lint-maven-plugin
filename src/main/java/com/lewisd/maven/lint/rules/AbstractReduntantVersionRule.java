@@ -34,8 +34,8 @@ public abstract class AbstractReduntantVersionRule extends AbstractRule {
 
     protected void checkForRedundantVersions(final MavenProject mavenProject,
                                              final ResultCollector resultCollector,
-                                             final ObjectWithPath<? extends Object> object,
-                                             final ObjectWithPath<? extends Object> inheritedObject,
+                                             final ObjectWithPath<?> object,
+                                             final ObjectWithPath<?> inheritedObject,
                                              final String dependencyDescription,
                                              final String inheritedDescription) {
 
@@ -47,20 +47,20 @@ public abstract class AbstractReduntantVersionRule extends AbstractRule {
         }
 
         String version = resolveVersion(modelObject, resolvedModelObject);
-        String inheritedVersion = modelUtil.getVersion(tryResolveObject(inheritedObject));
+        String inheritedVersion = getModelUtil().getVersion(tryResolveObject(inheritedObject));
         // both have a version, but if they're different, that might be ok.
         // But if they're the same, then one is redundant.
         if (version != null && inheritedVersion != null && inheritedVersion.equals(version)) {
-            InputLocation location = modelUtil.getLocation(modelObject, "version");
-            String message = dependencyDescription + " '" + modelUtil.getKey(modelObject) + "' has same version (" + version + ") as " + inheritedDescription;
+            InputLocation location = getModelUtil().getLocation(modelObject, "version");
+            String message = dependencyDescription + " '" + getModelUtil().getKey(modelObject) + "' has same version (" + version + ") as " + inheritedDescription;
             resultCollector.addViolation(mavenProject, this, message, location);
         }
     }
 
     private String resolveVersion(final Object modelObject, final Object resolvedModelObject) {
-        final String version = modelUtil.getVersion(modelObject);
+        final String version = getModelUtil().getVersion(modelObject);
         if (version != null && version.contains("${")) {
-            return modelUtil.getVersion(resolvedModelObject);
+            return getModelUtil().getVersion(resolvedModelObject);
         }
         return version;
     }
@@ -73,7 +73,7 @@ public abstract class AbstractReduntantVersionRule extends AbstractRule {
     }
 
     private boolean isExcluded(final Object modelObject) {
-        final Coordinates coords = modelUtil.getCoordinates(modelObject);
+        final Coordinates coords = getModelUtil().getCoordinates(modelObject);
         for (final Coordinates excludedCoordinate : excludedCoordinates) {
             if (excludedCoordinate.matches(coords)) {
                 return true;
@@ -82,7 +82,7 @@ public abstract class AbstractReduntantVersionRule extends AbstractRule {
         return false;
     }
 
-    private Object tryResolveObject(final ObjectWithPath<? extends Object> objectWithPath) {
+    private Object tryResolveObject(final ObjectWithPath<?> objectWithPath) {
         try {
             return resolveObject(objectWithPath);
         } catch (final IllegalStateException e) {
@@ -96,22 +96,22 @@ public abstract class AbstractReduntantVersionRule extends AbstractRule {
      * the same object in the "model".  The "model" has had properties replaced with values, so
      * this is how we find the resolved version of the object.
      */
-    private Object resolveObject(final ObjectWithPath<? extends Object> objectWithPath) {
+    private Object resolveObject(final ObjectWithPath<?> objectWithPath) {
         Object object = objectWithPath.getObject();
         StringBuilder path = new StringBuilder();
         path.append(objectWithPath.getPath());
         path.append("[");
-        path.append("groupId='").append(modelUtil.getGroupId(object)).append("'");
-        path.append(" and artifactId='").append(modelUtil.getArtifactId(object)).append("'");
+        path.append("groupId='").append(getModelUtil().getGroupId(object)).append("'");
+        path.append(" and artifactId='").append(getModelUtil().getArtifactId(object)).append("'");
 
-        String type = modelUtil.tryGetType(object);
+        String type = getModelUtil().tryGetType(object);
         if (type != null) {
             path.append(" and type='").append(type).append("'");
         } else {
             path.append(" and not(type)");
         }
 
-        String classifier = modelUtil.tryGetClassifier(object);
+        String classifier = getModelUtil().tryGetClassifier(object);
         if (classifier != null) {
             path.append(" and classifier='").append(classifier).append("'");
         } else {
@@ -130,7 +130,7 @@ public abstract class AbstractReduntantVersionRule extends AbstractRule {
         }
 
         Model model = objectWithPath.getProject().getModel();
-        Collection<Object> objects = expressionEvaluator.getPath(model, path.toString());
+        Collection<Object> objects = getExpressionEvaluator().getPath(model, path.toString());
         if (objects.isEmpty()) {
             throw new IllegalStateException("Could not resolve " + object + " using path " + path);
         } else if (objects.size() > 1) {

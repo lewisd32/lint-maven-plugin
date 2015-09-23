@@ -11,10 +11,6 @@ public class Coordinates {
         this(groupId, artifactId, null, null);
     }
 
-    public Coordinates(final String groupId, final String artifactId, final String type) {
-        this(groupId, artifactId, type, null);
-    }
-
     public Coordinates(final String groupId, final String artifactId, final String type, final String version) {
         this.groupId = groupId;
         this.artifactId = artifactId;
@@ -48,10 +44,7 @@ public class Coordinates {
         if (type != null && !type.equals(coords.getType())) {
             return false;
         }
-        if (version != null && !version.equals(coords.getVersion())) {
-            return false;
-        }
-        return true;
+        return !(version != null && !version.equals(coords.getVersion()));
     }
 
     public static Coordinates parse(final String coordinate) {

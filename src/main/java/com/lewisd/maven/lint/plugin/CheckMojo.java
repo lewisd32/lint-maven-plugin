@@ -132,12 +132,12 @@ public class CheckMojo extends AbstractContextMojo {
     @Component
     private MojoExecution mojoExecution;
 
-    private PluginParameterExpressionEvaluator pluginParameterExpressionEvaluator;
-
     public void execute() throws MojoExecutionException, MojoFailureException {
 
-        pluginParameterExpressionEvaluator = new PluginParameterExpressionEvaluator(session, mojoExecution);
-        getContext().getBeanFactory().registerResolvableDependency(PluginParameterExpressionEvaluator.class,pluginParameterExpressionEvaluator);
+        PluginParameterExpressionEvaluator pluginParameterExpressionEvaluator = new PluginParameterExpressionEvaluator(
+            session, mojoExecution);
+        getContext().getBeanFactory().registerResolvableDependency(PluginParameterExpressionEvaluator.class,
+            pluginParameterExpressionEvaluator);
 
         init();
 
@@ -148,7 +148,7 @@ public class CheckMojo extends AbstractContextMojo {
         List<String> outputReports = fillOutputReports(resultCollector);
 
         if (failOnViolation && resultCollector.hasViolations()) {
-            final String message = generateErrorMessage(outputReports);
+            String message = generateErrorMessage(outputReports);
             throw new MojoFailureException(message);
         }
     }
@@ -160,7 +160,7 @@ public class CheckMojo extends AbstractContextMojo {
                 outputReportList.add(report);
                 getLog().info("Writing " + report + " report");
                 ReportWriter reportWriter = getContext().getBean(report + "ResultWriter", ReportWriter.class);
-                final File outputFile = getOutputFileForReport(report);
+                File outputFile = getOutputFileForReport(report);
                 getLog().debug("Writing to " + outputFile.getPath());
                 try {
                     reportWriter.writeResults(getProject(), resultCollector.getViolations(), outputFile);
@@ -205,16 +205,15 @@ public class CheckMojo extends AbstractContextMojo {
     }
 
     @VisibleForTesting
-    String generateErrorMessage(List<String> outputReportList)
-            throws MojoExecutionException {
-        final StringBuffer message = new StringBuffer("[LINT] Violations found. ");
+    String generateErrorMessage(List<String> outputReportList) throws MojoExecutionException {
+        StringBuffer message = new StringBuffer("[LINT] Violations found. ");
 
 
         if (outputReportList.isEmpty()) {
             message.append("No output reports have been configured.  Please see documentation regarding the outputReports configuration parameter.");
         } else {
-            final boolean wroteSummaryToConsole;
-            final ArrayList<String> remainingReports = new ArrayList<String>(outputReportList);
+            boolean wroteSummaryToConsole;
+            List<String> remainingReports = new ArrayList<String>(outputReportList);
             if (outputReportList.contains("summary") && SummaryReportWriter.isConsole(summaryOutputFile)) {
                 wroteSummaryToConsole = true;
                 message.append("For more details, see error messages above");
@@ -233,16 +232,16 @@ public class CheckMojo extends AbstractContextMojo {
                 }
                 message.append("results in ");
                 if (remainingReports.size() == 1) {
-                    final File outputFile = getOutputFileForReport(remainingReports.get(0));
+                    File outputFile = getOutputFileForReport(remainingReports.get(0));
                     message.append(outputFile.getAbsolutePath());
                 } else {
                     message.append("one of the following files: ");
                     boolean first = true;
-                    for (final String report : remainingReports) {
+                    for (String report : remainingReports) {
                         if (!first) {
                             message.append(", ");
                         }
-                        final File outputFile = getOutputFileForReport(report);
+                        File outputFile = getOutputFileForReport(report);
                         message.append(outputFile.getAbsolutePath());
                         first = false;
                     }
@@ -252,23 +251,20 @@ public class CheckMojo extends AbstractContextMojo {
         return message.toString();
     }
 
-    private File getOutputFileForReport(String report)
-            throws MojoExecutionException {
-        final File outputFile;
+    private File getOutputFileForReport(String report) throws MojoExecutionException {
         if ("summary".equals(report)) {
-            outputFile = summaryOutputFile;
+            return summaryOutputFile;
         } else if ("xml".equals(report)) {
-            outputFile = xmlOutputFile;
+            return xmlOutputFile;
         } else if ("html".equals(report)) {
-            outputFile = htmlOutputFile;
+            return htmlOutputFile;
         } else {
             throw new MojoExecutionException("Unsupported report: '" + report + "'");
         }
-        return outputFile;
     }
 
     private Set<Rule> getRules() {
-        final Collection<Rule> ruleCollection = getContext().getBeansOfType(Rule.class).values();
+        Collection<Rule> ruleCollection = getContext().getBeansOfType(Rule.class).values();
         return Sets.newHashSet(ruleCollection);
     }
 }

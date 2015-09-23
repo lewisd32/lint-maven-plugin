@@ -1,15 +1,15 @@
 package com.lewisd.maven.lint.model;
 
-import javax.annotation.PostConstruct;
-
 import com.lewisd.maven.lint.ModelBuilder;
 import com.lewisd.maven.lint.ModelFactory;
 
+import javax.annotation.PostConstruct;
+
 public abstract class AbstractModelBuilder implements ModelBuilder {
-	
+
 	protected static final String MAVEN_PROJECT = "mavenProject";
-	
-	private ModelFactory modelFactory;
+
+	private final ModelFactory modelFactory;
 
 	public AbstractModelBuilder(final ModelFactory modelFactory) {
 		this.modelFactory = modelFactory;
