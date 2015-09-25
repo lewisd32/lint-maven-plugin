@@ -1,8 +1,11 @@
 package com.lewisd.maven.lint.plugin;
 
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
+import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugin.MojoExecution;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.PluginParameterExpressionEvaluator;
 import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
@@ -20,6 +23,12 @@ public abstract class AbstractContextMojo extends AbstractMojo {
 
     @Component
     private MavenProject project;
+
+    @Component
+    private MavenSession session;
+
+    @Component
+    private MojoExecution mojoExecution;
 
     /**
      * The root spring config location.
@@ -53,6 +62,11 @@ public abstract class AbstractContextMojo extends AbstractMojo {
     }
 
     protected void init() throws MojoExecutionException {
+        PluginParameterExpressionEvaluator pluginParameterExpressionEvaluator = new PluginParameterExpressionEvaluator(
+                session, mojoExecution);
+        getContext().getBeanFactory().registerResolvableDependency(PluginParameterExpressionEvaluator.class,
+                pluginParameterExpressionEvaluator);
+
         try {
             initializeConfig();
         } catch (DependencyResolutionRequiredException e) {

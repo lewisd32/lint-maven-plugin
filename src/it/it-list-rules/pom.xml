@@ -1,0 +1,43 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>localhost</groupId>
+  <artifactId>it-list-rules</artifactId>
+  <version>1.0</version>
+  <packaging>jar</packaging>
+  <name>test list goal</name>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.lewisd</groupId>
+        <artifactId>lint-maven-plugin</artifactId>
+        <version>0.0.10</version> <!-- Not actually used, overridden by invoker.properties -->
+        <configuration>
+          <onlyRunRules>
+            <rule>ExecutionId</rule>
+            <rule>RedundantPluginVersion</rule>
+            <rule>RedundantDepVersion</rule>
+            <rule>GAVOrder</rule>
+            <rule>DuplicateDep</rule>
+          </onlyRunRules>
+        </configuration>
+        <executions>
+          <execution>
+            <id>pom-lint</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>

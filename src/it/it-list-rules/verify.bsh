@@ -1,0 +1,27 @@
+source("src/it/shared/it-utils.bsh");
+
+try
+{
+    String buf = readBuildLog();
+
+    checkForWarnings(buf);
+
+	String[] expectedOutputs = new String[] {
+		"- ExecutionId",
+		"- RedundantPluginVersion",
+		"- OSSDevelopersSectionRule" };
+
+    validateExpectedOutput(buf, expectedOutputs);
+
+}
+catch( ValidationException t )
+{
+    return false;
+}
+catch( Throwable t )
+{
+    t.printStackTrace();
+    return false;
+}
+
+return true;
