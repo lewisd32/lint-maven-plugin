@@ -198,8 +198,8 @@ public class ModelUtil {
     public Map<String, Plugin> mapById(final Collection<Plugin> dependencies) {
         final Map<String, Plugin> map = new HashMap<String, Plugin>();
 
-        for (final Plugin Plugin : dependencies) {
-            map.put(Plugin.getId(), Plugin);
+        for (final Plugin plugin : dependencies) {
+            map.put(plugin.getId(), plugin);
         }
 
         return map;

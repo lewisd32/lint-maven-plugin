@@ -9,8 +9,8 @@ import java.io.IOException;
 
 public class ViolationSuppressorImpl implements ViolationSuppressor {
 
-    private static enum ParserState {
-        UNKNOWN, STARTING_TAG, STARTING_COMMENT, IN_COMMENT, IN_END_TAG;
+    private enum ParserState {
+        UNKNOWN, STARTING_TAG, STARTING_COMMENT, IN_COMMENT, IN_END_TAG
     }
 
     @Override
@@ -68,8 +68,9 @@ public class ViolationSuppressorImpl implements ViolationSuppressor {
                 index = 0;
                 line = reader.readLine();
                 comment += "\n";
-                if (line == null)
+                if (line == null) {
                     return null;
+                }
             }
             char c = line.charAt(index);
             if (state == ParserState.STARTING_TAG) {

@@ -27,7 +27,7 @@ public abstract class AbstractContextMojo extends AbstractMojo {
     @Parameter(required = true,property = "maven-lint.config.location",defaultValue = "config/maven_lint.xml")
     private String configLocation;
 
-    private GenericApplicationContext applicationContext = new GenericApplicationContext();
+    private final GenericApplicationContext applicationContext = new GenericApplicationContext();
 
     protected void initializeConfig() throws DependencyResolutionRequiredException, IOException {
 

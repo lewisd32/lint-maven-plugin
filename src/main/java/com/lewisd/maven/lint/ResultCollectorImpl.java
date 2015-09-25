@@ -1,11 +1,11 @@
 package com.lewisd.maven.lint;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import org.apache.maven.model.InputLocation;
 import org.apache.maven.project.MavenProject;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.LinkedList;
+import java.util.List;
 
 public class ResultCollectorImpl implements ResultCollector {
 
@@ -17,9 +17,6 @@ public class ResultCollectorImpl implements ResultCollector {
 		this.violationSuppressor = violationSuppressor;
 	}
 
-	public void writeSummary() {
-	}
-	
 	public void addViolation(final MavenProject mavenProject, final Rule rule, final String message, final InputLocation inputLocation) {
 		Violation violation = new Violation(mavenProject, rule, message, inputLocation);
 		if (!violationSuppressor.isSuppressed(violation)) {
@@ -34,5 +31,5 @@ public class ResultCollectorImpl implements ResultCollector {
 	public List<Violation> getViolations() {
 		return violations;
 	}
-	
+
 }

@@ -41,13 +41,13 @@
 
     <!-- Checks that each Java package has a Javadoc file used for commenting. -->
     <!-- See http://checkstyle.sf.net/config_javadoc.html#JavadocPackage       -->
-    <module name="JavadocPackage">
-      <property name="allowLegacy" value="true"/>
-    </module>
+    <!--<module name="JavadocPackage">-->
+      <!--<property name="allowLegacy" value="true"/>-->
+    <!--</module>-->
 
     <!-- Checks whether files end with a new line.                        -->
     <!-- See http://checkstyle.sf.net/config_misc.html#NewlineAtEndOfFile -->
-    <module name="NewlineAtEndOfFile"/>
+    <!--<module name="NewlineAtEndOfFile"/>-->
 
     <!-- Checks that property files contain the same keys.         -->
     <!-- See http://checkstyle.sf.net/config_misc.html#Translation -->
@@ -55,18 +55,24 @@
 
     <module name="FileLength"/>
 
+    <module name="SuppressionCommentFilter">
+        <property name="offCommentFormat" value="CHECKSTYLE.OFF\: ([\w\|]+)"/>
+        <property name="onCommentFormat" value="CHECKSTYLE.ON\: ([\w\|]+)"/>
+        <property name="checkFormat" value="$1"/>
+    </module>
+
     <!-- Following interprets the header file as regular expressions. -->
     <!-- <module name="RegexpHeader"/>                                -->
 
-    <module name="FileTabCharacter">
-        <property name="eachLine" value="true"/>
-    </module>
+    <!--<module name="FileTabCharacter">-->
+        <!--<property name="eachLine" value="true"/>-->
+    <!--</module>-->
 
-    <module name="RegexpSingleline">
-        <!-- \s matches whitespace character, $ matches end of line. -->
-        <property name="format" value="\s+$"/>
-        <property name="message" value="Line has trailing spaces."/>
-    </module>
+    <!--<module name="RegexpSingleline">-->
+        <!--&lt;!&ndash; \s matches whitespace character, $ matches end of line. &ndash;&gt;-->
+        <!--<property name="format" value="\s+$"/>-->
+        <!--<property name="message" value="Line has trailing spaces."/>-->
+    <!--</module>-->
 
     <module name="TreeWalker">
 
@@ -77,7 +83,9 @@
 <!--         <module name="JavadocMethod"/> -->
 <!--         <module name="JavadocType"/> -->
 <!--         <module name="JavadocVariable"/> -->
-        <module name="JavadocStyle"/>
+        <!--<module name="JavadocStyle"/>-->
+
+        <module name="FileContentsHolder" />
 
 
         <!-- Checks for Naming Conventions.                  -->
@@ -118,22 +126,22 @@
 
         <!-- Checks for Size Violations.                    -->
         <!-- See http://checkstyle.sf.net/config_sizes.html -->
-        <module name="LineLength"/>
+        <!--<module name="LineLength"/>-->
         <module name="MethodLength"/>
         <module name="ParameterNumber"/>
 
 
         <!-- Checks for whitespace                               -->
         <!-- See http://checkstyle.sf.net/config_whitespace.html -->
-        <module name="EmptyForIteratorPad"/>
-        <module name="MethodParamPad"/>
-        <module name="NoWhitespaceAfter"/>
-        <module name="NoWhitespaceBefore"/>
-        <module name="OperatorWrap"/>
-        <module name="ParenPad"/>
-        <module name="TypecastParenPad"/>
-        <module name="WhitespaceAfter"/>
-        <module name="WhitespaceAround"/>
+        <!--<module name="EmptyForIteratorPad"/>-->
+        <!--<module name="MethodParamPad"/>-->
+        <!--<module name="NoWhitespaceAfter"/>-->
+        <!--<module name="NoWhitespaceBefore"/>-->
+        <!--<module name="OperatorWrap"/>-->
+        <!--<module name="ParenPad"/>-->
+        <!--<module name="TypecastParenPad"/>-->
+        <!--<module name="WhitespaceAfter"/>-->
+        <!--<module name="WhitespaceAround"/>-->
 
 
         <!-- Modifier Checks                                    -->
@@ -145,7 +153,7 @@
         <!-- Checks for blocks. You know, those {}'s         -->
         <!-- See http://checkstyle.sf.net/config_blocks.html -->
         <module name="AvoidNestedBlocks"/>
-        <module name="EmptyBlock"/>
+        <!--<module name="EmptyBlock"/>-->
         <module name="LeftCurly"/>
         <module name="NeedBraces"/>
         <module name="RightCurly"/>
@@ -153,14 +161,13 @@
 
         <!-- Checks for common coding problems               -->
         <!-- See http://checkstyle.sf.net/config_coding.html -->
-        <module name="AvoidInlineConditionals"/>
-        <module name="DoubleCheckedLocking"/>    <!-- MY FAVOURITE -->
+        <!--<module name="AvoidInlineConditionals"/>-->
         <module name="EmptyStatement"/>
         <module name="EqualsHashCode"/>
-        <module name="HiddenField"/>
+        <!--<module name="HiddenField"/>-->
         <module name="IllegalInstantiation"/>
-        <module name="InnerAssignment"/>
-        <module name="MagicNumber"/>
+        <!--<module name="InnerAssignment"/>-->
+        <!--<module name="MagicNumber"/>-->
         <module name="MissingSwitchDefault"/>
         <module name="RedundantThrows"/>
         <module name="SimplifyBooleanExpression"/>
@@ -168,7 +175,7 @@
 
         <!-- Checks for class design                         -->
         <!-- See http://checkstyle.sf.net/config_design.html -->
-        <module name="DesignForExtension"/>
+        <!--<module name="DesignForExtension"/>-->
         <module name="FinalClass"/>
         <module name="HideUtilityClassConstructor"/>
         <module name="InterfaceIsType"/>
@@ -178,8 +185,8 @@
         <!-- Miscellaneous other checks.                   -->
         <!-- See http://checkstyle.sf.net/config_misc.html -->
         <module name="ArrayTypeStyle"/>
-        <module name="FinalParameters"/>
-        <module name="TodoComment"/>
+        <!--<module name="FinalParameters"/>-->
+        <!--<module name="TodoComment"/>-->
         <module name="UpperEll"/>
 
     </module>

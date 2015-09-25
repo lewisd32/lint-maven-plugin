@@ -4,3 +4,4 @@
 /.project
 .idea
 *.iml
+src/test/resources/bugs/issue-4-missing-pluginParameterEvaluation/target/

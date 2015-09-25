@@ -17,7 +17,7 @@ public class RuleInvokerWithPom implements TestRule {
 
     private String filename;
     private RuleInvoker ruleInvoker;
-    private ResultCollector resultCollector = new ResultCollectorImpl(new ViolationSuppressorImpl());
+    private final ResultCollector resultCollector = new ResultCollectorImpl(new ViolationSuppressorImpl());
 
     @Override
     public Statement apply(final Statement base, final Description description) {

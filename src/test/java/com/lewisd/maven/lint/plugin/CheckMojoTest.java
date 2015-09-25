@@ -101,7 +101,7 @@ public class CheckMojoTest {
 	public void testDefaultProject() throws Exception {
 		String pom = "src/test/resources/bugs/issue-4-missing-pluginParameterEvaluation/pom.xml";
 		String goal = "com.lewisd:lint-maven-plugin:check";
-		File tempFile = new File(".").createTempFile("log", "log");
+		File tempFile = File.createTempFile("log", "log");
 		tempFile.deleteOnExit();
 		File targetDir = new File("src/test/resources/bugs/issue-4-missing-pluginParameterEvaluation/target");
 		targetDir.deleteOnExit();

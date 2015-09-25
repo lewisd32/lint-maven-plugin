@@ -1,13 +1,10 @@
 package com.lewisd.maven.lint.rules.basic;
 
-import java.beans.PropertyDescriptor;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.regex.Pattern;
-
+import com.google.common.collect.Sets;
+import com.lewisd.maven.lint.ResultCollector;
+import com.lewisd.maven.lint.rules.AbstractRule;
+import com.lewisd.maven.lint.util.ExpressionEvaluator;
+import com.lewisd.maven.lint.util.ModelUtil;
 import org.apache.commons.jxpath.JXPathBeanInfo;
 import org.apache.commons.jxpath.JXPathIntrospector;
 import org.apache.commons.jxpath.util.ValueUtils;
@@ -17,11 +14,13 @@ import org.apache.maven.model.Profile;
 import org.apache.maven.project.MavenProject;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.google.common.collect.Sets;
-import com.lewisd.maven.lint.ResultCollector;
-import com.lewisd.maven.lint.rules.AbstractRule;
-import com.lewisd.maven.lint.util.ExpressionEvaluator;
-import com.lewisd.maven.lint.util.ModelUtil;
+import java.beans.PropertyDescriptor;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.regex.Pattern;
 
 public class ProfileMustOnlyAddModulesRule extends AbstractRule {
 
@@ -32,10 +31,6 @@ public class ProfileMustOnlyAddModulesRule extends AbstractRule {
     @Autowired
     public ProfileMustOnlyAddModulesRule(final ExpressionEvaluator expressionEvaluator, final ModelUtil modelUtil) {
         super(expressionEvaluator, modelUtil);
-    }
-
-    @Override
-    protected void addRequiredModels(final Set<String> requiredModels) {
     }
 
     public void setPattern(final String patternString) {
