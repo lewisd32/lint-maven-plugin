@@ -1,4 +1,5 @@
-![travisci](https://travis-ci.org/lewisd32/lint-maven-plugin.svg)
+[![travisci](https://travis-ci.org/lewisd32/lint-maven-plugin.svg)](https://travis-ci.org/lewisd32/lint-maven-plugin)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.lewisd/lint-maven-plugin/badge.svg)](https://search.maven.org/#search%7Cga%7C1%7Cg%3Acom.lewisd)
 
 One-Time Usage Instructions
 ===========================
