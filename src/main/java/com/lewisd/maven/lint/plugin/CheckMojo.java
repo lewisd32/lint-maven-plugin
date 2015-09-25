@@ -252,19 +252,16 @@ public class CheckMojo extends AbstractContextMojo {
         return message.toString();
     }
 
-    private File getOutputFileForReport(String report)
-            throws MojoExecutionException {
-        final File outputFile;
+    private File getOutputFileForReport(String report) throws MojoExecutionException {
         if ("summary".equals(report)) {
-            outputFile = summaryOutputFile;
+            return summaryOutputFile;
         } else if ("xml".equals(report)) {
-            outputFile = xmlOutputFile;
+            return xmlOutputFile;
         } else if ("html".equals(report)) {
-            outputFile = htmlOutputFile;
+            return htmlOutputFile;
         } else {
             throw new MojoExecutionException("Unsupported report: '" + report + "'");
         }
-        return outputFile;
     }
 
     private Set<Rule> getRules() {
