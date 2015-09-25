@@ -55,7 +55,7 @@
       <plugin>
         <groupId>com.lewisd</groupId>
         <artifactId>lint-maven-plugin</artifactId>
-        <version>0.0.10-SNAPSHOT</version> <!-- Not actually used, overridden by invoker.properties -->
+        <version>0.0.10</version> <!-- Not actually used, overridden by invoker.properties -->
         <configuration>
           <onlyRunRules>
             <rule>ExecutionId</rule>
