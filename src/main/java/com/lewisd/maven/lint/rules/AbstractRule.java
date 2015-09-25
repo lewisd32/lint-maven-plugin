@@ -10,7 +10,6 @@ import java.util.Set;
 public abstract class AbstractRule implements Rule {
 
 	protected static final String VERSION_PROPERTIES = "versionProperties";
-	protected static final String MAVEN_PROJECT = "mavenProject";
 
 	protected final ExpressionEvaluator expressionEvaluator;
 	protected final ModelUtil modelUtil;
