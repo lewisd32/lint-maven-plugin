@@ -27,7 +27,7 @@ import java.util.Collection;
 import java.util.Map;
 
 /**
- * Perform checks on the POM, and fail the build if violations are found.
+ * List all available rules.
  */
 @Mojo(name = "list", threadSafe = true, requiresProject = true)
 public class ListRulesMojo extends AbstractContextMojo {

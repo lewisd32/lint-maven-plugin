@@ -47,6 +47,20 @@ void validateExpectedLintErrors(buf, expectedErrors) {
     }
 }
 
+void validateExpectedOutput(buf, expectedOutputs) {
+	boolean passed = true;
+	for (String expectedOutput : expectedOutputs) {
+	    if ( buf.indexOf( expectedOutput ) < 0 )
+	    {
+	        System.err.println( "Did not find expected output: " + expectedOutput );
+	        passed = false;
+	    }
+    }
+    if (!passed) {
+        throw new ValidationException();
+    }
+}
+
 void validateNoLintErrors(buf) {
     if ( buf.indexOf( "[LINT] Completed with no violations" ) < 0 )
     {
