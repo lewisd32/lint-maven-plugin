@@ -9,7 +9,7 @@
 
     <groupId>com.lewisd</groupId>
     <artifactId>lint-maven-plugin</artifactId>
-    <version>0.0.11</version>
+    <version>0.0.12-SNAPSHOT</version>
     <packaging>maven-plugin</packaging>
 
     <name>Maven POM lint plugin</name>
@@ -31,7 +31,7 @@
         <url>https://github.com/lewisd32/lint-maven-plugin</url>
         <connection>scm:git:git@github.com:lewisd32/lint-maven-plugin.git</connection>
         <developerConnection>scm:git:git@github.com:lewisd32/lint-maven-plugin.git</developerConnection>
-      <tag>lint-maven-plugin-0.0.11</tag>
+      <tag>HEAD</tag>
   </scm>
 
     <distributionManagement>
