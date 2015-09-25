@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -60,7 +61,7 @@
         <spring.version>3.1.1.RELEASE</spring.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <it.extra.maven.opts />
+        <it.extra.maven.opts/>
     </properties>
 
     <dependencies>
@@ -197,32 +198,32 @@
             <version>1.4.1</version>
         </dependency>
         <dependency>
-          <groupId>org.mockito</groupId>
-          <artifactId>mockito-core</artifactId>
-          <version>1.9.5</version>
-          <scope>test</scope>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>1.9.5</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
-          <groupId>org.apache.maven.plugin-testing</groupId>
-          <artifactId>maven-plugin-testing-harness</artifactId>
-          <version>3.3.0</version>
-          <scope>test</scope>
+            <groupId>org.apache.maven.plugin-testing</groupId>
+            <artifactId>maven-plugin-testing-harness</artifactId>
+            <version>3.3.0</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
-          <groupId>org.apache.maven</groupId>
-          <artifactId>maven-embedder</artifactId>
-          <version>${maven.version}</version>
-          <scope>test</scope>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-embedder</artifactId>
+            <version>${maven.version}</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.sonatype.aether</groupId>
-          <artifactId>aether-connector-wagon</artifactId>
-          <version>1.13.1</version>
+            <artifactId>aether-connector-wagon</artifactId>
+            <version>1.13.1</version>
         </dependency>
         <dependency>
-          <groupId>org.apache.maven.wagon</groupId>
-          <artifactId>wagon-http</artifactId>
-          <version>2.9</version>
+            <groupId>org.apache.maven.wagon</groupId>
+            <artifactId>wagon-http</artifactId>
+            <version>2.9</version>
         </dependency>
     </dependencies>
 
@@ -320,8 +321,8 @@
                         <goals>
                             <goal>descriptor</goal>
                         </goals>
-                      </execution>
-                      <execution>
+                    </execution>
+                    <execution>
                         <id>generated-helpmojo</id>
                         <goals>
                             <goal>helpmojo</goal>
@@ -380,7 +381,7 @@
                                 <mockRepo>
                                     <source>src/it-repo</source>
                                 </mockRepo>
-                                <proxyRepo />
+                                <proxyRepo/>
                             </repositories>
                         </configuration>
                     </plugin>
