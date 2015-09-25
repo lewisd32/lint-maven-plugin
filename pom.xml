@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -10,7 +9,7 @@
 
     <groupId>com.lewisd</groupId>
     <artifactId>lint-maven-plugin</artifactId>
-    <version>0.0.11-SNAPSHOT</version>
+    <version>0.0.11</version>
     <packaging>maven-plugin</packaging>
 
     <name>Maven POM lint plugin</name>
@@ -32,7 +31,8 @@
         <url>https://github.com/lewisd32/lint-maven-plugin</url>
         <connection>scm:git:git@github.com:lewisd32/lint-maven-plugin.git</connection>
         <developerConnection>scm:git:git@github.com:lewisd32/lint-maven-plugin.git</developerConnection>
-    </scm>
+      <tag>lint-maven-plugin-0.0.11</tag>
+  </scm>
 
     <distributionManagement>
         <site>
@@ -61,7 +61,7 @@
         <spring.version>3.1.1.RELEASE</spring.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <it.extra.maven.opts/>
+        <it.extra.maven.opts />
     </properties>
 
     <dependencies>
@@ -395,7 +395,7 @@
                                 <mockRepo>
                                     <source>src/it-repo</source>
                                 </mockRepo>
-                                <proxyRepo/>
+                                <proxyRepo />
                             </repositories>
                         </configuration>
                     </plugin>
