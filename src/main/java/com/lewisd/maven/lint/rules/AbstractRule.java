@@ -12,7 +12,6 @@ public abstract class AbstractRule implements Rule {
 	protected static final String VERSION_PROPERTIES = "versionProperties";
 	protected static final String MAVEN_PROJECT = "mavenProject";
 
-  // TODO reduce scope to private and respect principle of lizkov
 	protected final ExpressionEvaluator expressionEvaluator;
 	protected final ModelUtil modelUtil;
 
