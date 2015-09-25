@@ -5,7 +5,11 @@ import com.google.common.collect.Lists;
 import java.util.List;
 import java.util.regex.Pattern;
 
-public class PatternSetUtil {
+public final class PatternSetUtil {
+    private PatternSetUtil(){
+        // hide constructor
+    }
+
     public static String convertGlobToRegex(String glob) {
         StringBuilder sb = new StringBuilder('^');
         for (int i = 0; i < glob.length(); ++i) {
