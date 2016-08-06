@@ -21,7 +21,7 @@ Add Lint to your Build
 			<plugin>
 				<groupId>com.lewisd</groupId>
 				<artifactId>lint-maven-plugin</artifactId>
-				<version>0.0.8</version>
+				<version>0.0.9</version>
 				<executions>
 					<execution>
 						<id>pom-lint</id>
@@ -46,7 +46,7 @@ Configure Rules and Failing on violation
 <plugin>
 	<groupId>com.lewisd</groupId>
 	<artifactId>lint-maven-plugin</artifactId>
-	<version>0.0.8</version>
+	<version>0.0.9</version>
 	<configuration>
 		<failOnViolation>false</failOnViolation>
 		<onlyRunRules>
