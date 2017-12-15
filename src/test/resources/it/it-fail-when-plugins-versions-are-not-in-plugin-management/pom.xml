@@ -1,0 +1,57 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>localhost</groupId>
+        <artifactId>dummy-parent</artifactId>
+        <version>3.0</version>
+    </parent>
+
+    <artifactId>it-fail-when-plugins-versions-are-not-in-plugin-management</artifactId>
+    <version>1.0.1</version>
+    <packaging>jar</packaging>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>localhost</groupId>
+                <artifactId>dummy-a</artifactId>
+                <version>1.0</version>
+            </plugin>
+            <plugin>
+                <groupId>localhost</groupId>
+                <artifactId>dummy-b</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>localhost</groupId>
+                <artifactId>dummy-c</artifactId>
+                <version>${dummy.version}</version>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>test</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>localhost</groupId>
+                        <artifactId>dummy-a</artifactId>
+                        <version>1.0</version>
+                    </plugin>
+                    <plugin>
+                        <groupId>localhost</groupId>
+                        <artifactId>dummy-b</artifactId>
+                    </plugin>
+                    <plugin>
+                        <groupId>localhost</groupId>
+                        <artifactId>dummy-c</artifactId>
+                        <version>${dummy.version}</version>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+</project>

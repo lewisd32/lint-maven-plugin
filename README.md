@@ -148,3 +148,32 @@ clear.
 
 For better understanding the project a link to your project is required.
 
+- DependenciesAreOrdered
+
+Dependencies are supposed to be ordered alphabetically for organization and easier navigation.
+This checks for the module dependencies and dependency management, as well for profile dependencies and dependency management.
+
+- PluginsAreOrdered
+
+Plugins are  supposed to be ordered alphabetically for organization and easier navigation.
+This checks for the module plugins and plugin management, as well for profiles plugins and plugin management.
+
+- DependencyVersioningByProperties
+
+Dependencies are supposed to use properties instead of inlined version.
+This checks for the module dependencies and dependency management, as well for profile dependencies and dependency management.
+
+- PluginVersioningByProperties
+
+Plugins are supposed to use properties instead of inlined version.
+This checks for the module plugins and plugin management.
+
+- VersioningOnlyInDependencyManagement
+
+Dependencies should be versioned in the dependency management section and only referred in the actual dependencies section.
+This checks for the module plugins and plugin management, as well for profiles plugins and plugin management.
+
+- VersioningOnlyInPluginManagement
+
+Plugins should be versioned in the plugin management section and only referred in the actual plugins section.
+This checks for the module plugins and plugin management, as well for profiles plugins and plugin management.
