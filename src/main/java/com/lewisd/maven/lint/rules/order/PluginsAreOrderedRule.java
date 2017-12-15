@@ -1,11 +1,3 @@
-/*
- * The copyright of this file belongs to Feedzai. The file cannot be
- * reproduced in whole or in part, stored in a retrieval system,
- * transmitted in any form, or by any means electronic, mechanical,
- * photocopying, or otherwise, without the prior permission of the owner.
- *
- * © 2017 Feedzai, Strictly Confidential
- */
 package com.lewisd.maven.lint.rules.order;
 
 import com.google.common.collect.ComparisonChain;
@@ -116,6 +108,8 @@ public class PluginsAreOrderedRule extends AbstractRule {
 
     @Override
     public String getDescription() {
-        return "Plugins should be ordered.";
+        return "Plugins should be ordered alphabetically." +
+                "This checks for ordering within the modules build plugins and plugin management," +
+                "as well for their respective sections inside the profiles build section.";
     }
 }

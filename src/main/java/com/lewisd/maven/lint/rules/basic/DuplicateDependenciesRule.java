@@ -30,7 +30,7 @@ public class DuplicateDependenciesRule extends AbstractRule {
 
     @Override
     public String getDescription() {
-        return "Multiple dependencies, in <dependencies> or <managedDependencies>, with the same co-ordinates are reduntant, " +
+        return "Multiple dependencies, in <dependencies> or <managedDependencies>, with the same co-ordinates are redundant, " +
                "and can be confusing.  If they have different versions, they can lead to unexpected behaviour.";
     }
 

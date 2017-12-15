@@ -1,11 +1,3 @@
-/*
- * The copyright of this file belongs to Feedzai. The file cannot be
- * reproduced in whole or in part, stored in a retrieval system,
- * transmitted in any form, or by any means electronic, mechanical,
- * photocopying, or otherwise, without the prior permission of the owner.
- *
- * © 2017 Feedzai, Strictly Confidential
- */
 package com.lewisd.maven.lint.rules.order;
 
 import com.google.common.base.Optional;
@@ -180,7 +172,9 @@ public class DependenciesAreOrderedRule extends AbstractRule {
 
     @Override
     public String getDescription() {
-        return "Dependencies should be ordered.";
+        return "Dependencies should be ordered alphabetically." +
+                "This checks for ordering within the modules dependencies and dependency management," +
+                "as well for their respective sections inside the profiles section.";
     }
 
     private String descript(Dependency dependency) {

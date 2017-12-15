@@ -1,11 +1,3 @@
-/*
- * The copyright of this file belongs to Feedzai. The file cannot be
- * reproduced in whole or in part, stored in a retrieval system,
- * transmitted in any form, or by any means electronic, mechanical,
- * photocopying, or otherwise, without the prior permission of the owner.
- *
- * © 2017 Feedzai, Strictly Confidential
- */
 package com.lewisd.maven.lint.rules.basic;
 
 import com.lewisd.maven.lint.ResultCollector;
@@ -47,6 +39,8 @@ public class VersioningOnlyInPluginManagementRule extends AbstractRule {
 
     @Override
     public String getDescription() {
-        return "";
+        return "The versioning of build plugins should be done in the plugin management section " +
+                "and only referred in the modules build plugins." +
+                "This checks for versioning within the build plugins sections and the profiles build plugins section.";
     }
 }

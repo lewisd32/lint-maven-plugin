@@ -1,11 +1,3 @@
-/*
- * The copyright of this file belongs to Feedzai. The file cannot be
- * reproduced in whole or in part, stored in a retrieval system,
- * transmitted in any form, or by any means electronic, mechanical,
- * photocopying, or otherwise, without the prior permission of the owner.
- *
- * © 2017 Feedzai, Strictly Confidential
- */
 package com.lewisd.maven.lint.rules.basic;
 
 import com.lewisd.maven.lint.ResultCollector;
@@ -19,10 +11,6 @@ import org.apache.maven.project.MavenProject;
 import java.util.List;
 import java.util.Map;
 
-/**
- * @author Fernando Correa (fernando.correa@feedzai.com)
- * @since 1.0.0
- */
 public class DependencyVersioningByPropertiesRule extends AbstractRule {
     @Override
     public void invoke(final MavenProject mavenProject, final Map<String, Object> models, final ResultCollector resultCollector) {
@@ -66,6 +54,9 @@ public class DependencyVersioningByPropertiesRule extends AbstractRule {
 
     @Override
     public String getDescription() {
-        return "";
+        return "Dependencies should be versioned with properties from the Properties section of the POM." +
+                "This checks for versioning within the dependencies and dependency management section " +
+                "as well for their respective sections inside the profiles section" +
+                "This benefits the project maintainability and legibility.";
     }
 }
