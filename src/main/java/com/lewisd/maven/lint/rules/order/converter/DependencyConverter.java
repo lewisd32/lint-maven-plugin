@@ -1,11 +1,3 @@
-/*
- * The copyright of this file belongs to Feedzai. The file cannot be
- * reproduced in whole or in part, stored in a retrieval system,
- * transmitted in any form, or by any means electronic, mechanical,
- * photocopying, or otherwise, without the prior permission of the owner.
- *
- * © 2017 Feedzai, Strictly Confidential
- */
 package com.lewisd.maven.lint.rules.order.converter;
 
 import com.thoughtworks.xstream.converters.Converter;
