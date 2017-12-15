@@ -1,0 +1,94 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>localhost</groupId>
+        <artifactId>dummy-parent</artifactId>
+        <version>3.0</version>
+    </parent>
+
+    <artifactId>it-fail-when-dependencies-versions-are-not-in-properties</artifactId>
+    <version>1.0.1</version>
+    <packaging>jar</packaging>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>localhost</groupId>
+                <artifactId>dummy-a</artifactId>
+                <version>1.0</version>
+            </dependency>
+            <dependency>
+                <groupId>localhost</groupId>
+                <artifactId>dummy-b</artifactId>
+                <version>${dummy.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>localhost</groupId>
+                <artifactId>dummy-c</artifactId>
+                <version>1.0</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>localhost</groupId>
+            <artifactId>dummy-d</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>localhost</groupId>
+            <artifactId>dummy-e</artifactId>
+            <version>${dummy.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>localhost</groupId>
+            <artifactId>dummy-f</artifactId>
+            <version>1.0</version>
+        </dependency>
+    </dependencies>
+
+    <profiles>
+        <profile>
+            <id>test</id>
+            <dependencyManagement>
+                <dependencies>
+                    <dependency>
+                        <groupId>localhost</groupId>
+                        <artifactId>dummy-g</artifactId>
+                        <version>1.0</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>localhost</groupId>
+                        <artifactId>dummy-h</artifactId>
+                        <version>${dummy.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>localhost</groupId>
+                        <artifactId>dummy-i</artifactId>
+                        <version>1.0</version>
+                    </dependency>
+                </dependencies>
+            </dependencyManagement>
+            <dependencies>
+                <dependency>
+                    <groupId>localhost</groupId>
+                    <artifactId>dummy-j</artifactId>
+                    <version>1.0</version>
+                </dependency>
+                <dependency>
+                    <groupId>localhost</groupId>
+                    <artifactId>dummy-k</artifactId>
+                    <version>${dummy.version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>localhost</groupId>
+                    <artifactId>dummy-l</artifactId>
+                    <version>1.0</version>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
+</project>
